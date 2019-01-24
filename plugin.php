@@ -10,7 +10,7 @@ set_include_path(get_include_path().PATH_SEPARATOR.dirname(__file__).'/include')
 return array(
    'id' => 'lucentminds:osticket-ticket-options-plugin', # notrans
    'version' => '0.1',
-   'name' => 'Ticket options for osTicket',
+   'name' => 'Ticket options for osTicket 1.10.4',
    'author' => 'Scott Johnson',
    'description' => 'Adds handy features and tweaks to individual tickets.',
    'url' => 'https://lucentminds.com',
