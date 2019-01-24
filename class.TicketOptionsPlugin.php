@@ -26,12 +26,15 @@ require_once(INCLUDE_DIR . 'class.app.php');
 
 require_once(INCLUDE_DIR . 'class.osticket.php');
 require_once('config.php');
+require_once( 'class.AgentInclude.php' );
 
 class TicketOptionsPlugin extends Plugin
 {
    var $config_class = 'TicketOptionsConfig';
 
    protected $_ost;
+
+   protected $_included;
 
    public static function render_included_agents()
    {
@@ -50,12 +53,6 @@ class TicketOptionsPlugin extends Plugin
 
 
       // require_once( 'staff/ticket-view.inc.php' );
-
-
-      Application::registerStaffApp ( 'Equipment', 'dispatcher.php/equipment/dashboard/', array (
-      iconclass => 'faq-categories' 
-      ) );
-
 
       $config = $this->getConfig();
       $this->_ost = new osTicket();
