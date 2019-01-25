@@ -1,0 +1,44 @@
+
+/**
+build time: Thu Jan 24 2019 20:29:50 GMT-0600 (CST)
+build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-user-list/build/ui-user-list.css
+**/
+.ui-widget-user-list
+{
+   /* display: flex */
+}
+
+.ui-widget-user-list .item
+{
+   /* flex-grow: 0 */
+}
+
+/**
+ * Hide the number scroll arrows in number input fields.
+ */
+.ui-widget-user-list input[type=number]
+{
+   -moz-appearance: textfield;
+}
+
+.ui-widget-user-list input[type=number]::-webkit-outer-spin-button,
+.ui-widget-user-list input[type=number]::-webkit-inner-spin-button
+{
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Small only */
+/*@media screen and (max-width: 39.9375em) {}*/
+
+/* Medium and up */
+/*@media screen and (min-width: 40em) {}*/
+
+/* Medium only */
+/*@media screen and (min-width: 40em) and (max-width: 63.9375em) {}*/
+
+/* Large and up */
+/*@media screen and (min-width: 64em) {}*/
+
+/* Large only */
+/*@media screen and (min-width: 64em) and (max-width: 74.9375em) {}*/

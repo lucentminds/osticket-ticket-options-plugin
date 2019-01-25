@@ -27,6 +27,16 @@ class TicketOptionsConfig extends PluginConfig
             'configuration' => array(
                'desc' => 'enabled'
             )
+         )),
+
+         'enable_agent_include' => new BooleanField(array(
+            'id' => 'enable_agent_include',
+            'label' => 'Enable agent respsponse e-mails.',
+            'required' => false,
+            'hint' => __( 'Allow agents to be added to a ticket and be copied on ticket response e-mails.' ),
+            'configuration' => array(
+               'desc' => 'enabled'
+            )
          ))
       );
    }// /getOptions()

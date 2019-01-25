@@ -56,10 +56,8 @@ if($ticket->isOverdue())
 
 ?>
 
-<style type="text/css">
-    <?php include( AIP_PATH_VIEW.'/asset/ticket-view-agents.css' ) ?>
-</style>
-
+<link rel="stylesheet" type="text/css" media="all" href="ajax.php/ticket_options/static/asset/ticket-view-agents.css" />
+<script type="text/javascript" src="ajax.php/ticket_options/static/app/app.js"></script>
 
 
 
@@ -330,47 +328,7 @@ $tcount = $ticket->getThreadEntries($types)->count();
 
 
 
-<!-- ************************************************************************-->
-<?php if( TicketOptionsPlugin::details_tab_enabled() ): ?>
-
-<div id="ticket_details" class="tab_content">
-
-    <?php include( TicketOptionsPlugin::resolve_view( 'ticket-view.inc-ticket_info.php' ) ) ?>
-
-
-    <?= TicketOptionsPlugin::render_included_agents() ?>
-
-</div>
-
-<?php endif ?>
-<!-- ************************************************************************-->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <div id="ticket_thread" class="tab_content">
-
-
 
 <?php if( TicketOptionsPlugin::staff_thread_order() == 'desc'): ?>
     <?php include( TicketOptionsPlugin::resolve_view( 'ticket-view.inc-ticket_response.php' ) ) ?>
@@ -388,26 +346,32 @@ $tcount = $ticket->getThreadEntries($types)->count();
             );
 ?>
 
-
-
-
-
-
-
-
-
 <?php if( TicketOptionsPlugin::staff_thread_order() == 'asc'): ?>
     <?php include( TicketOptionsPlugin::resolve_view( 'ticket-view.inc-ticket_response.php' ) ) ?>
 <?php endif ?>
 
-
-
-
-
-
-
- </div>
 </div>
+
+
+
+
+<!-- ************************************************************************-->
+<?php if( TicketOptionsPlugin::details_tab_enabled() ): ?>
+
+<div id="ticket_details" class="tab_content">
+
+    <?php include( TicketOptionsPlugin::resolve_view( 'ticket-view.inc-ticket_info.php' ) ) ?>
+    <?php include( TicketOptionsPlugin::resolve_view( 'ticket-view-agents.php' ) ) ?>
+
+</div>
+
+<?php endif ?>
+<!-- ************************************************************************-->
+
+
+</div><!-- /#ticket_tabs_container -->
+
+
 <div style="display:none;" class="dialog" id="print-options">
     <h3><?php echo __('Ticket Print Options');?></h3>
     <a class="close" href=""><i class="icon-remove-circle"></i></a>
