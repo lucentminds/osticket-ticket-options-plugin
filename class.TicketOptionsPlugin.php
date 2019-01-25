@@ -46,6 +46,22 @@ class TicketOptionsPlugin extends Plugin
 
    protected $_included;
 
+   protected $a_replace_paths = array(
+         array(
+            'src' => AIP_PATH.'/replace/ticket-view.inc.php',
+            'original' => INCLUDE_DIR.'staff/ticket-view.inc.php',
+            'dest' => AIP_PATH.'/replaced/ticket-view.inc.php'
+         ),
+
+         array(
+            'src' => AIP_PATH.'/replace/footer.inc.php',
+            'original' => INCLUDE_DIR.'staff/footer.inc.php',
+            'dest' => AIP_PATH.'/replaced/footer.inc.php'
+         )
+      );
+
+   protected static $_javascript_src_urls;
+
    public static function render_included_agents()
    {
       if( !self::agent_include_enabled() )
@@ -189,69 +205,83 @@ class TicketOptionsPlugin extends Plugin
     */
    protected function replace_original_files( &$errors )
    {
-      $c_path_replacer = AIP_PATH.'/replace/ticket-view.inc.php';
+
 
       // $errors[ 'err' ] = 'I can\'t do that right now Dave.';
       // $this->log( LOG_ERR, 'TicketOptionsPlugin enable fail 500', $errors[ 'err' ] );
       // return false;
 
-
-      if( !file_exists( AIP_PATH_TICKET_VIEW ) )
+      foreach( $this->a_replace_paths as $a_path )
       {
-         exit( 'a' );
-         // The page we want to replace doesn't exist.
-         $errors[ 'err' ] = 'Path "'.AIP_PATH_TICKET_VIEW.'" does not exist.';
-         $this->log( LOG_ERR, 'TicketOptionsPlugin enable fail 101', $errors[ 'err' ] );
-         return false;
-      }
 
-
-      if( !file_exists( $c_path_replacer ) )
-      {
-         exit( 'b' );
-         // The page we want to use as a replacement doesn't exist!?
-         $errors[ 'err' ] = 'Path "'.$c_path_replacer.'" does not exist.';
-         $this->log( LOG_ERR, 'TicketOptionsPlugin enable fail 102', $errors[ 'err' ] );
-         return false;
-      }
-
-      // Copy the original file to the "replaced" directory.
-      if( !copy( AIP_PATH_TICKET_VIEW, AIP_PATH_TICKET_VIEW_REPLACED ) )
-      {
-         // Get the copy error.
-         $a_error = error_get_last();
-
-         if( $a_error )
+         if( !file_exists( $a_path[ 'original' ] ) )
          {
-            $errors[ 'err' ] = $a_error[ 'message' ];
+            // The page we want to replace doesn't exist.
+            $errors[ 'err' ] = 'Path "'.$a_path[ 'original' ].'" does not exist.';
+            $this->log( LOG_ERR, 'TicketOptionsPlugin enable fail 101', $errors[ 'err' ] );
+            return false;
          }
-         else
-         {
-            $errors[ 'err' ] = 'Failed to copy original "'.AIP_PATH_TICKET_VIEW.'".';
-         }
-         
-         $this->log( LOG_ERR, 'TicketOptionsPlugin enable fail 103', $errors[ 'err' ] );
-         return false;
-      }
 
-      // Copy the replacement file over the original.
-      if( !copy( $c_path_replacer, AIP_PATH_TICKET_VIEW ) )
-      {
-         // Get the copy error.
-         $a_error = error_get_last();
+         if( $this->is_replaced_file( $a_path[ 'original' ] ) )
+         {
+            // This is already done.
+            continue;
+         }
 
-         if( $a_error )
+
+         if( !file_exists( $a_path[ 'src' ] ) )
          {
-            $errors[ 'err' ] = $a_error[ 'message' ];
+            // The page we want to use as a replacement doesn't exist!?
+            $errors[ 'err' ] = 'Path "'.$a_path[ 'src' ].'" does not exist.';
+            $this->log( LOG_ERR, 'TicketOptionsPlugin enable fail 102', $errors[ 'err' ] );
+            return false;
          }
-         else
+
+         // Copy the original file to the "replaced" directory.
+         if( !copy( $a_path[ 'original' ], $a_path[ 'dest' ] ) )
          {
-            $errors[ 'err' ] = 'Failed to copy replacer "'.$c_path_replacer.'".';
+            // Get the copy error.
+            $a_error = error_get_last();
+
+            if( $a_error )
+            {
+               $errors[ 'err' ] = $a_error[ 'message' ];
+            }
+            else
+            {
+               $errors[ 'err' ] = 'Failed to copy original "'.$a_path[ 'original' ].'".';
+            }
+            
+            $this->log( LOG_ERR, 'TicketOptionsPlugin enable fail 103', $errors[ 'err' ] );
+            return false;
          }
-         
-         $this->log( LOG_ERR, 'TicketOptionsPlugin enable fail 104', $errors[ 'err' ] );
-         return false;
-      }
+
+         // Copy the replacement file over the original.
+         if( !copy( $a_path[ 'src' ], $a_path[ 'original' ] ) )
+         {
+            // Get the copy error.
+            $a_error = error_get_last();
+
+            if( $a_error )
+            {
+               $errors[ 'err' ] = $a_error[ 'message' ];
+            }
+            else
+            {
+               $errors[ 'err' ] = 'Failed to copy replacer "'.$a_path[ 'src' ].'".';
+            }
+            
+            $this->log( LOG_ERR, 'TicketOptionsPlugin enable fail 104', $errors[ 'err' ] );
+            return false;
+         }
+
+      }// /foreach()
+
+      return true;
+
+
+
+
 
       // $this->log( LOG_ERR, 'TicketOptionsPlugin enable fail 500', 'I can\'t do that right now Dave.' );
       // return false;
@@ -269,41 +299,44 @@ class TicketOptionsPlugin extends Plugin
     */
    protected function restore_original_files( &$errors )
    {
-
-      // Do not bother with this if the original file is not in our "replaced" directory.
-      if( file_exists( AIP_PATH_TICKET_VIEW_REPLACED ) )
+      foreach( $this->a_replace_paths as $a_path )
       {
-         /** 
-          * A copy of original page we replaced is currently in the "replaced"
-          * directory. We need to copy it back to it's original location and 
-          * then delete the one in the "replaced" directory.
-          */
 
-         if( !$this->is_replaced_file( AIP_PATH_TICKET_VIEW ) )
+         // Do not bother with this if the original file is not in our "replaced" directory.
+         if( file_exists( $a_path[ 'dest' ] ) )
          {
-            // The file at AIP_PATH_TICKET_VIEW doesn't look like one we put there.
-            $errors[ 'err' ] = 'Failed to confirm replaced "'.AIP_PATH_TICKET_VIEW.'".';
-            $this->log( LOG_ERR, 'TicketOptionsPlugin restore fail 101', $errors[ 'err' ] );
-            return false;
-         }
+            /** 
+            * A copy of original page we replaced is currently in the "replaced"
+            * directory. We need to copy it back to it's original location and 
+            * then delete the one in the "replaced" directory.
+            */
 
-         // Copy the original file back from the "replaced" directory.
-         if( !copy( AIP_PATH_TICKET_VIEW_REPLACED, AIP_PATH_TICKET_VIEW ) )
-         {
-            $errors[ 'err' ] = 'Failed to restore original "'.AIP_PATH_TICKET_VIEW.'".';
-            $this->log( LOG_ERR, 'TicketOptionsPlugin restore fail 102', $errors[ 'err' ] );
-            return false;
-         }
+            if( !$this->is_replaced_file( $a_path[ 'original' ] ) )
+            {
+               // The file at "original" doesn't look like one we put there.
+               $errors[ 'err' ] = 'Failed to confirm replaced "'.$a_path[ 'original' ].'".';
+               $this->log( LOG_ERR, 'TicketOptionsPlugin restore fail 101', $errors[ 'err' ] );
+               return false;
+            }
 
-         // Delete the file in the "replaced" directory.
-         if( !unlink( AIP_PATH_TICKET_VIEW_REPLACED ) )
-         {
-            $errors[ 'err' ] = 'Failed to delete original backup "'.AIP_PATH_TICKET_VIEW_REPLACED.'".';
-            $this->log( LOG_ERR, 'TicketOptionsPlugin restore fail 103', $errors[ 'err' ] );
-            return false;
-         }
+            // Copy the original file back from the "replaced" directory.
+            if( !copy( $a_path[ 'dest' ], $a_path[ 'original' ] ) )
+            {
+               $errors[ 'err' ] = 'Failed to restore original "'.$a_path[ 'original' ].'".';
+               $this->log( LOG_ERR, 'TicketOptionsPlugin restore fail 102', $errors[ 'err' ] );
+               return false;
+            }
 
-      }
+            // Delete the file in the "replaced" directory.
+            if( !unlink( $a_path[ 'dest' ] ) )
+            {
+               $errors[ 'err' ] = 'Failed to delete original backup "'.$a_path[ 'dest' ].'".';
+               $this->log( LOG_ERR, 'TicketOptionsPlugin restore fail 103', $errors[ 'err' ] );
+               return false;
+            }
+
+         }
+      }// /foreach()
       
       return true;
    }// /restore_original_files()
@@ -394,6 +427,24 @@ class TicketOptionsPlugin extends Plugin
    {
       return AIP_PATH_VIEW.'/'.$c_filename;
    }// /resolve_view()
+
+   public static function add_javascript_src( $c_src_url )
+   {
+      if( gettype( self::$_javascript_src_urls ) != 'array' )
+      {
+         self::$_javascript_src_urls = array();
+      }
+      array_push( self::$_javascript_src_urls, $c_src_url );
+   }// /add_javascript_src()
+
+   public static function render_javascript_sources()
+   {
+      foreach( self::$_javascript_src_urls as $c_url )
+      {
+         echo '<script type="text/javascript" src="'.$c_url.'"></script>'."\n";
+      }// /foreach()
+      
+   }// /render_javascript_sources()
 
 
 }// /class TicketOptionsPlugin

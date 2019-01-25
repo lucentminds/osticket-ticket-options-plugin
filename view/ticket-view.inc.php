@@ -8,7 +8,7 @@ if(!@$thisstaff->isStaff() || !$ticket->checkStaffPerm($thisstaff)) die('Access 
 //Re-use the post info on error...savekeyboards.org (Why keyboard? -> some people care about objects than users!!)
 $info=($_POST && $errors)?Format::input($_POST):array();
 
-
+TicketOptionsPlugin::add_javascript_src( 'ajax.php/ticket_options/static/app/plugin.js' );
 
 //Get the goodies.
 $dept  = $ticket->getDept();  //Dept
@@ -57,7 +57,7 @@ if($ticket->isOverdue())
 ?>
 
 <link rel="stylesheet" type="text/css" media="all" href="ajax.php/ticket_options/static/asset/ticket-view-agents.css" />
-<script type="text/javascript" src="ajax.php/ticket_options/static/app/app.js"></script>
+
 
 
 

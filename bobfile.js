@@ -189,7 +189,9 @@ var build = module.exports = function (bob) { // jshint ignore:line
             });
 
             // Setup the watcher for the main source.
-            return bob.watch('./src');
+            return bob.watch([
+               './widgets/ui-user-list/src'
+            ]);
 
          });
    });
