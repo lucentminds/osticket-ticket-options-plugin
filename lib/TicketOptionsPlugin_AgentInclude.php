@@ -78,7 +78,7 @@ class TicketOptionsPlugin_AgentInclude
          ) );
          
          
-         echo '<pre>', print_r( $a_included_staff, 1 ), '</pre>';
+         //echo '<pre>', print_r( $a_included_staff, 1 ), '</pre>';
       }// /foreach()
 
       return $a_included_staff;

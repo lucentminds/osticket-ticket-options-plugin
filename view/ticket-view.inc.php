@@ -8,7 +8,6 @@ if(!@$thisstaff->isStaff() || !$ticket->checkStaffPerm($thisstaff)) die('Access 
 //Re-use the post info on error...savekeyboards.org (Why keyboard? -> some people care about objects than users!!)
 $info=($_POST && $errors)?Format::input($_POST):array();
 
-TicketOptionsPlugin::add_javascript_src( 'ajax.php/ticket_options/static/app/plugin.js' );
 
 //Get the goodies.
 $dept  = $ticket->getDept();  //Dept
@@ -55,8 +54,9 @@ if($ticket->isOverdue())
     $warn.='&nbsp;&nbsp;<span class="Icon overdueTicket">'.__('Marked overdue!').'</span>';
 
 ?>
-
-<link rel="stylesheet" type="text/css" media="all" href="ajax.php/ticket_options/static/asset/ticket-view-agents.css" />
+<!-- 
+<link rel="stylesheet" type="text/css" media="all" href="ajax.php/ticket_options/static/asset/ticket-view-agents.css" /> -->
+<link rel="stylesheet" type="text/css" media="all" href="ajax.php/ticket_options/static/app/ticket-view-agents.css" />
 
 
 
@@ -303,13 +303,15 @@ $tcount = $ticket->getThreadEntries($types)->count();
     <li class="active"><a id="ticket-thread-tab" href="#ticket_thread"><?php
         echo sprintf(__('Ticket Thread (%d)'), $tcount); ?></a></li>
 
-    <li><a id="ticket-tasks-tab" href="#tasks"
-            data-url="<?php
-        echo sprintf('#tickets/%d/tasks', $ticket->getId()); ?>"><?php
-        echo __('Tasks');
-        if ($ticket->getNumTasks())
-            echo sprintf('&nbsp;(<span id="ticket-tasks-count">%d</span>)', $ticket->getNumTasks());
-        ?></a></li>
+    <li>
+        <a id="ticket-tasks-tab" href="#tasks" data-url="#tickets/<?= $ticket->getId() ?>/tasks">
+        <?= __('Tasks') ?>
+        
+        <?php if ( $ticket->getNumTasks() ): ?>
+        (<span id="ticket-tasks-count"><?= $ticket->getNumTasks() ?></span>)
+        <?php endif ?>
+        </a>
+    </li>
 
 
     <?php if( TicketOptionsPlugin::details_tab_enabled() ): ?>
@@ -358,7 +360,7 @@ $tcount = $ticket->getThreadEntries($types)->count();
 <!-- ************************************************************************-->
 <?php if( TicketOptionsPlugin::details_tab_enabled() ): ?>
 
-<div id="ticket_details" class="tab_content">
+<div id="ticket_details" class="tab_content" style="display:none;">
 
     <?php include( TicketOptionsPlugin::resolve_view( 'ticket-view.inc-ticket_info.php' ) ) ?>
     <?php include( TicketOptionsPlugin::resolve_view( 'ticket-view-agents.php' ) ) ?>

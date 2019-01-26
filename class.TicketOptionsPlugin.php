@@ -13,6 +13,9 @@ define( 'AIP_PATH_RELATIVE', str_replace( ROOT_DIR.'include/', '', AIP_PATH ) );
 // Determines the full local path to the ticket-view.inc.php in production.
 define( 'AIP_PATH_VIEW', __DIR__. '/view' );
 
+// Determines the full local path to the public files.
+define( 'AIP_PATH_PUBLIC', __DIR__. '/public' );
+
 // Determines the full local path to the lib in production.
 define( 'AIP_PATH_LIB', __DIR__. '/lib' );
 
@@ -48,6 +51,12 @@ class TicketOptionsPlugin extends Plugin
 
    protected $a_replace_paths = array(
          array(
+            'src' => AIP_PATH.'/replace/tickets.inc.php',
+            'original' => INCLUDE_DIR.'staff/tickets.inc.php',
+            'dest' => AIP_PATH.'/replaced/tickets.inc.php'
+         ),
+
+         array(
             'src' => AIP_PATH.'/replace/ticket-view.inc.php',
             'original' => INCLUDE_DIR.'staff/ticket-view.inc.php',
             'dest' => AIP_PATH.'/replaced/ticket-view.inc.php'
@@ -58,9 +67,10 @@ class TicketOptionsPlugin extends Plugin
             'original' => INCLUDE_DIR.'staff/footer.inc.php',
             'dest' => AIP_PATH.'/replaced/footer.inc.php'
          )
+
       );
 
-   protected static $_javascript_src_urls;
+   protected static $_javascript_src_urls = array();
 
    public static function render_included_agents()
    {
@@ -422,6 +432,12 @@ class TicketOptionsPlugin extends Plugin
       return self::get_value( 'sort_staff_thread_desc' ) ?'desc' :'asc';
    }// /staff_thread_order()
 
+   // Returns `true` if the details tab is enabled.
+   public static function show_all_ticket_columns()
+   {
+      return self::get_value( 'show_all_ticket_columns' ) == '1';
+   }// /show_all_ticket_columns()
+
    // Returns the current instance of this class.
    public static function resolve_view( $c_filename )
    {
@@ -430,11 +446,8 @@ class TicketOptionsPlugin extends Plugin
 
    public static function add_javascript_src( $c_src_url )
    {
-      if( gettype( self::$_javascript_src_urls ) != 'array' )
-      {
-         self::$_javascript_src_urls = array();
-      }
       array_push( self::$_javascript_src_urls, $c_src_url );
+
    }// /add_javascript_src()
 
    public static function render_javascript_sources()

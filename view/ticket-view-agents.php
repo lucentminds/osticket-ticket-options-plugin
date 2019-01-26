@@ -11,7 +11,9 @@ $o_included = new TicketOptionsPlugin_AgentInclude( $ticket );
    gets a new comment or internal note.
    </p>
 
-
+   <div id="agent-list-error"></div>
+   <div id="agent-list-form"></div>
+   <div id="agent-list"></div>
 
       <?php $a_agents = $o_included->fetch_agents( $errors ) ?>
       <?php if( !$a_agents ):?>
@@ -22,7 +24,8 @@ $o_included = new TicketOptionsPlugin_AgentInclude( $ticket );
       </div>
 
       <?php endif ?>
-
+<?php
+/*
    <?php if( $a_agents ):?>
       <div class="ticket-options-plugin__agents">
          
@@ -66,6 +69,12 @@ $o_included = new TicketOptionsPlugin_AgentInclude( $ticket );
 
       </div>
    <?php endif ?>
+   */
+?>
 
 
 </div>
+
+<?php
+TicketOptionsPlugin::add_javascript_src( 'ajax.php/ticket_options/static/app/ticket-view-agents.js' );
+?>

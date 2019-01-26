@@ -37,7 +37,19 @@ class TicketOptionsConfig extends PluginConfig
             'configuration' => array(
                'desc' => 'enabled'
             )
+         )),
+
+         'show_all_ticket_columns' => new BooleanField(array(
+            'id' => 'show_all_ticket_columns',
+            'label' => 'Show all columns in ticket list.',
+            'required' => false,
+            'hint' => __( 'Show all columns in ticket list including priority and status.' ),
+            'configuration' => array(
+               'desc' => 'enabled'
+            )
          ))
+
+         
       );
    }// /getOptions()
 
