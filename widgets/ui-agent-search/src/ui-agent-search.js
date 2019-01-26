@@ -1,7 +1,7 @@
 /**
- * 01-24-2019
+ * 01-25-2019
  * The best app ever.
- * Check for instance using $( el ).data( 'uiUserList' );
+ * Check for instance using $( el ).data( 'uiAgentSearch' );
  * ~~ Scott Johnson
  */
 
@@ -14,25 +14,21 @@
 /** List jshint ignore directives here. **/
 (function( $ ){
 
-   $.widget( 'ui.userList', {
+   $.widget( 'ui.agentSearch', {
       //_id: null,
       //_lastErrors: null,
       _invalidateTimeout: 0,
 
       options: {
-         users: null,
-         on_remove_click: null,
-         on_add_click: null
       },
       _create: function() {
          //this._id = Math.round( Math.random()*10000000 );
          //this._lastErrors = [];
-         this.element.addClass( 'ui-widget-user-list' );
+         this.element.addClass( 'ui-widget-agent-search' );
          this.element.template({
             renderOnInit: false,
             template: cTemplate,
             state: {
-               users: this.options.users,
                error: null,
                wait: null
             },
@@ -44,7 +40,7 @@
           * This is how to set a deferred event listener that will automatically
           * be destroyed when the widget is destroyed.
           */
-         this.element.on( 'click.user-list', '.user-list__btn-add', {self:this}, this._on_add_click );
+         // this.element.on( 'EVENT.agent-search', '.CLASSNAME', {self:this}, this._HANDLERMETHOD );
 
          /*
           * Make sure render() is always called within the context/scope of
@@ -53,6 +49,15 @@
          this.render = $.proxy( this.render, this );
          this.render();
       },// /_create()
+
+      //_setOption: function( option, value ) {
+      //   $.Widget.prototype._setOption.apply( this, arguments );
+      //
+      //   switch( option ) {
+      //      default:
+      //         return;
+      //   }// /switch()
+      //},// /setOption()
 
       _invalidate: function( undefined ) {
          clearTimeout( this._invalidateTimeout );
@@ -82,13 +87,6 @@
          this._triggerEvent( 'afterRender', { widget:this } );
       },// /_afterRender()
 
-      _on_add_click: function( event ){
-         var self = event.data.self;
-
-         // Trigger an event.
-         self._triggerEvent( 'add_click', { widget:self } );
-      },// /_on_add_click()
-
       /**
        * This method allows you to call a method listening to this element
        * only as well as trigger a bubbling event.
@@ -99,8 +97,8 @@
          var oEvent = $.Event( cFullEventType );
 
          switch( cType ){
-         case 'add_click':
-            fnMethod = this.options.on_add_click;
+         case 'anything':
+            fnMethod = this.options.onEvent;
             break;
 
          }// /switch()
@@ -188,9 +186,9 @@
       _destroy: function(){
          // Undo everything.
          this._beforeRender();
-         this.element.off( '.user-list' );
+         this.element.off( '.agent-search' );
          this.element.template( 'destroy' );
-         this.element.removeClass( 'ui-widget-user-list' );
+         this.element.removeClass( 'ui-widget-agent-search' );
       }// /_destroy()
    });
 

@@ -42,7 +42,9 @@ var build = module.exports = function (bob) { // jshint ignore:line
 
    // Add the dependencies from the modules.
    buildJobMods.addDependencies('build', [
-      bob.resolve( './widgets/ui-user-list' )
+      bob.resolve( './widgets/ui-user-list' ),
+      bob.resolve( './widgets/ui-error-banner' ),
+      bob.resolve( './widgets/ui-agent-search' )
    ], {});
 
    // Create the 'deploy' job.
@@ -66,18 +68,27 @@ var build = module.exports = function (bob) { // jshint ignore:line
          // ], './temp'),
 
          concat([
-            './widgets/ui-user-list/build/ui-user-list.css'
+            './widgets/ui-user-list/build/ui-user-list.css',
+            './widgets/ui-agent-search/build/ui-agent-search.css',
+            './src/ticket-view-agents.css'
          ],
-            './temp/plugin.css', {
+            './temp/ticket-view-agents.css', {
                prependSourcePath: true,
                prependDatetime: true
 
             }),
 
          concat([
-            './widgets/ui-user-list/build/ui-user-list.js'
+            
+            './widgets/mustache/2.0.0/mustache.js',
+            './widgets/ui-state/ui-state.js',
+            './widgets/ui-template/ui-template.js',
+            './widgets/ui-error-banner/build/ui-error-banner.js',
+            './widgets/ui-user-list/build/ui-user-list.js',
+            './widgets/ui-agent-search/build/ui-agent-search.js',
+            './src/ticket-view-agents.js'
          ],
-            './temp/plugin.js', {
+            './temp/ticket-view-agents.js', {
                prependSourcePath: true,
                prependDatetime: true,
                header: '(function( undefined ){\n',
@@ -156,7 +167,7 @@ var build = module.exports = function (bob) { // jshint ignore:line
       var cPathShare = path.resolve('./');
 
       // Determines the path that will exist AFTER copying is done.
-      var cPathDest = path.join(cPathShare, '/static/app' );
+      var cPathDest = path.join(cPathShare, '/public/static/app' );
 
       console.log('Copy to', cPathDest);
 
@@ -190,7 +201,10 @@ var build = module.exports = function (bob) { // jshint ignore:line
 
             // Setup the watcher for the main source.
             return bob.watch([
-               './widgets/ui-user-list/src'
+               './widgets/ui-error-banner/src',
+               './widgets/ui-user-list/src',
+               './widgets/ui-agent-search/src',
+               './src'
             ]);
 
          });

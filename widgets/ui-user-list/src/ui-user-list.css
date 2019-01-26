@@ -3,24 +3,75 @@
    /* display: flex */
 }
 
-.ui-widget-user-list .item
+.ui-widget-user-list .action-button
 {
-   /* flex-grow: 0 */
+   margin: 0;
+   margin-bottom: 1em;
 }
 
-/**
- * Hide the number scroll arrows in number input fields.
- */
-.ui-widget-user-list input[type=number]
+
+
+
+
+
+
+.ticket-options-plugin__agents
 {
-   -moz-appearance: textfield;
+   display: flex;
 }
 
-.ui-widget-user-list input[type=number]::-webkit-outer-spin-button,
-.ui-widget-user-list input[type=number]::-webkit-inner-spin-button
+.ticket-options-plugin__agents .icon-remove-circle
 {
-    -webkit-appearance: none;
-    margin: 0;
+   font-size: 1.5em;
+   position: absolute;
+   cursor: pointer;
+}
+
+.ticket-options-plugin__agents .icon-remove-circle:hover
+{
+   background-color: #999999;
+}
+
+
+
+.ticket-options-plugin__agents .ticket-options-plugin__agent
+{
+   display: flex;
+   border: 1px solid #cccccc;
+   border-left: 1em solid #ff8637;
+   padding: 0.3em;
+   margin-right: 0.3em;
+}
+
+.ticket-options-plugin__agents .ticket-options-plugin__agent-avatar
+{
+   margin-right: 0.3em;
+}
+
+.ticket-options-plugin__agents .ticket-options-plugin__agent-detail
+{
+   margin-bottom: 0.2em;
+}
+
+
+.ticket-options-plugin__agents .ticket-options-plugin__agent-name
+{
+   font-weight: bold;
+}
+
+.ticket-options-plugin__agents .ticket-options-plugin__agent-email,
+.ticket-options-plugin__agents .ticket-options-plugin__agent-phone,
+.ticket-options-plugin__agents .ticket-options-plugin__agent-role,
+.ticket-options-plugin__agents .ticket-options-plugin__agent-dept
+{
+   font-size: 0.9em;
+}
+
+.ticket-options-plugin__agents .ticket-options-plugin__agent-phone,
+.ticket-options-plugin__agents .ticket-options-plugin__agent-role,
+.ticket-options-plugin__agents .ticket-options-plugin__agent-dept
+{
+   opacity: 0.5;
 }
 
 /* Small only */

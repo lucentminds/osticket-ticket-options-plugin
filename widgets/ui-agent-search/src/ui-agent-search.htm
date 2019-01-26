@@ -1,0 +1,21 @@
+<div class="agent-search">
+
+   {{#error}}
+   <div class="callout alert">
+      {{error}}
+   </div>
+   {{/error}}
+   
+   {{#wait}}
+   <div class="callout primary">
+      {{wait}}
+   </div>
+   {{/wait}}
+
+   {{^error}}
+   {{^wait}}
+   Hello, World!
+   {{/wait}}
+   {{/error}}
+
+</div>
