@@ -43,17 +43,32 @@ var build = module.exports = function( bob ){ // jshint ignore:line
    // Jsify the html files for this plugin.
    oJobBuild.addTask( 'jsify', function(){
       // Jsify and minify.
-      return jsify( bob.resolve( './src/ui-agent-search.htm' ), true )
-      .then(function( cResult ){
+      return Q.all([
+         jsify( bob.resolve( './src/ui-agent-search.htm' ), true )
+         .then(function( cResult ){
 
-         var cJs;
+            var cJs;
 
-         cResult = cResult.replace( /'/g, '\\\'' );
+            cResult = cResult.replace( /'/g, '\\\'' );
 
-         cJs = "var cTemplate='".concat( cResult, "';");
-         return write( bob.resolve( './temp/ui-agent-search-htm.js' ), cJs );
-      });
+            cJs = "var cTemplate='".concat( cResult, "';");
+            return write( bob.resolve( './temp/ui-agent-search-htm.js' ), cJs );
+         }),
+
+         jsify( bob.resolve( './src/ui-agent-search-results.htm' ), true )
+         .then(function( cResult ){
+
+            var cJs;
+
+            cResult = cResult.replace( /'/g, '\\\'' );
+
+            cJs = "var cResultsTemplate='".concat( cResult, "';");
+            return write( bob.resolve( './temp/ui-agent-search-htm-results.js' ), cJs );
+         }),
+      ]);
    });
+
+   
 
    // Concatenate the main js files for this plugin.
    oJobBuild.addTask( 'concat', function(){
@@ -71,6 +86,7 @@ var build = module.exports = function( bob ){ // jshint ignore:line
          concat( [
 
             bob.resolve( './temp/ui-agent-search-htm.js' ),
+            bob.resolve( './temp/ui-agent-search-htm-results.js' ),
             bob.resolve( './src/ui-agent-search.js' ),
          ], bob.resolve( './build/ui-agent-search.js' ), {
             prependDatetime: true,

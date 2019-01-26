@@ -29,24 +29,17 @@
 
    function process_request()
    {
-      if( !isset( $_GET[ 'ticket_id' ] ) )
+
+
+      if( !isset( $_GET[ 'q' ] ) )
       {
-         return reply_error( 400, 'Ticket ID is missing or invalid.' );
+         return reply_error( 400, 'Staff search string is missing or invalid.' );
       }
 
-      $c_ticket_id = $_GET[ 'ticket_id' ];
+      $c_query = $_GET[ 'q' ];
+      $o_included = new TicketOptionsPlugin_AgentInclude( null );
+      $a_agents = $o_included->search_agents( $c_query, $errors );
 
-      require_once( INCLUDE_DIR.'class.ticket.php' );
-
-      $o_ticket = Ticket::lookupByNumber( $c_ticket_id );
-
-      if( !$o_ticket )
-      {
-         return reply_error( 400, 'Ticket #'.$c_ticket_id.' not found.' );
-      }
-
-      $o_included = new TicketOptionsPlugin_AgentInclude( $o_ticket );
-      $a_agents = $o_included->fetch_agents( $errors );
 
       if( $errors )
       {

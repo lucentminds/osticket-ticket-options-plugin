@@ -1,0 +1,50 @@
+<div class="agent-search-results">
+
+   {{#error}}
+   <div class="error-banner">
+      {{error}}
+   </div>
+   {{/error}}
+   
+   {{#wait}}
+   <div class="warning-banner">
+      {{wait}}
+   </div>
+   {{/wait}}
+
+   {{^error}}
+   {{^wait}}
+   
+   <div>
+   {{#results}}
+   <div class="agent-search-results__agent">
+      <button class="agent-search-results__btn-add action-button" data-staff_id="{{staff_id}}">
+         <i class="icon-plus"></i>
+         Add
+      </button>
+
+      <div class="agent-search-results__agent-card">
+
+         <img class="ticket-options-plugin__agent-avatar" src="{{avatar}}"/>
+         
+         <div>
+         
+         <div class="agent-search-results__agent-name agent-search-results__agent-detail">
+         {{name}}
+         </div>
+
+         <div class="agent-search-results__agent-email agent-search-results__agent-detail">
+         {{email}}
+         </div>
+         
+         </div>
+
+      </div>
+   </div>
+   {{/results}}
+   </div>
+
+   {{/wait}}
+   {{/error}}
+
+</div>

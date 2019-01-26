@@ -20,7 +20,7 @@
       _invalidateTimeout: 0,
 
       options: {
-         message: 'Some error happened.'
+         message: null
       },
       _create: function() {
          //this._id = Math.round( Math.random()*10000000 );
@@ -51,15 +51,6 @@
          this.render = $.proxy( this.render, this );
          this.render();
       },// /_create()
-
-      //_setOption: function( option, value ) {
-      //   $.Widget.prototype._setOption.apply( this, arguments );
-      //
-      //   switch( option ) {
-      //      default:
-      //         return;
-      //   }// /switch()
-      //},// /setOption()
 
       _invalidate: function( undefined ) {
          clearTimeout( this._invalidateTimeout );
@@ -149,41 +140,17 @@
          this.element.template( 'setState', oState, lRender, lDiff );
       },// /setState()
 
-      ///**
-      // * This returns the data of the form.
-      // */
-      //getData: function(){
-      //   var oState = this.getState();
-      //   var oForm = $.deserialize( this._$form.serialize() );
-      //
-      //   return {
-      //      somestring: oState.somestring,
-      //      somedate: oState.somedate
-      //   };
-      //},// /getData()
-      //
-      ///**
-      // * This validates the data of the form.
-      // */
-      //validate: function(){
-      //   var oData = this.getData();
-      //   this._lastErrors = [];
-      //
-      //   if( oData.somestring.length < 3 ){
-      //      this._lastErrors.push({
-      //         message: 'Somestring is NOT valid. Must be at least three characters.'
-      //      });
-      //   }
-      //
-      //   return this._lastErrors.length < 1;
-      //},// /validate()
-      //
-      ///**
-      // * This returns the last validation errors.
-      // */
-      //getErrors: function(){
-      //   return this._lastErrors;
-      //},// /getErrors()
+      set_message: function( c_msg ){
+         this.setState({
+            message: c_msg
+         });
+      },// /set_message()
+
+      clear: function(){
+         this.setState({
+            message: null
+         });
+      },// /clear()
 
       _destroy: function(){
          // Undo everything.

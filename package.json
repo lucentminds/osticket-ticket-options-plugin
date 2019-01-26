@@ -36,7 +36,8 @@
       "promise-file-replace": "git+https://github.com/lucentminds/promise-file-replace.git",
       "promise-resolve-path": "git+https://github.com/lucentminds/promise-resolve-path.git",
       "promise-file-uglify": "git+https://github.com/lucentminds/promise-file-uglify.git",
-      "promise-file-jsify": "git+https://github.com/lucentminds/promise-file-jsify.git"
+      "promise-file-jsify": "git+https://github.com/lucentminds/promise-file-jsify.git",
+      "bower-foundation-6": "git@github.com:life-corp/bower-foundation-6.git"
    },
    "dependencies": {
       "what-input": "^5.1.3"

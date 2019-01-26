@@ -81,6 +81,7 @@ var build = module.exports = function (bob) { // jshint ignore:line
          concat([
             
             './widgets/mustache/2.0.0/mustache.js',
+            './widgets/jquery-debounce/jquery-debounce.js',
             './widgets/ui-state/ui-state.js',
             './widgets/ui-template/ui-template.js',
             './widgets/ui-error-banner/build/ui-error-banner.js',

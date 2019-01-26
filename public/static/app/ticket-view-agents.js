@@ -1,7 +1,7 @@
 (function( undefined ){
 
 /**
-build time: Fri Jan 25 2019 17:35:45 GMT-0600 (CST)
+build time: Fri Jan 25 2019 22:43:31 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/mustache/2.0.0/mustache.js
 **/
 /*!
@@ -607,7 +607,69 @@ build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/includ
 }));
 
 /**
-build time: Fri Jan 25 2019 17:35:45 GMT-0600 (CST)
+build time: Fri Jan 25 2019 22:43:31 GMT-0600 (CST)
+build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/jquery-debounce/jquery-debounce.js
+**/
+/**
+ * 08-04-2016
+ * jqUI Plugin Template
+ * ~~ Scott Johnson
+ */
+
+/** List jshint ignore directives here. **/
+/* global alert:false */
+/* global clearTimeout:false */
+/* global setTimeout:false */
+/* global $:false */
+/* global cTemplate:false */
+
+(function( $ ){
+
+
+
+   /**
+    * Allows a function to be called only ONCE then stops all subsequent
+    * requests within a given timeframe.
+    * @param  {number} nMsWait    Number of seconds to wait before allowing more requests.
+    * @param  {function} fnCallback The function to trigger.
+    * @return {function}            The function returned.
+    */
+   //$.debounce = function( nMsWait, context, fnCallback, aParams ) {
+   $.debounce = function( fnCallback, nMsWait, context, aParams ) {
+
+
+      var nTimeout;
+      var aArguments;
+
+      //if( typeof context == 'function' ){
+      //	aParams = fnCallback;
+      //	fnCallback = context;
+      //	context = null;
+      //}
+
+      aParams = aParams || [];
+      nMsWait = nMsWait || 0;
+
+      var doCallback = function(){
+         clearTimeout( nTimeout );
+         aArguments = [].slice.call( aArguments ).concat( aParams );
+         fnCallback.apply( context, aArguments );
+      };// /doCallback()
+
+      return function(){
+         aArguments = arguments;
+         context = context || this;
+         clearTimeout( nTimeout );
+         nTimeout = setTimeout( doCallback, nMsWait );
+      };
+   };// /debounce()
+
+
+}( jQuery ));
+
+
+/**
+build time: Fri Jan 25 2019 22:43:31 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-state/ui-state.js
 **/
 /**
@@ -938,7 +1000,7 @@ build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/includ
 }( jQuery ));
 
 /**
-build time: Fri Jan 25 2019 17:35:45 GMT-0600 (CST)
+build time: Fri Jan 25 2019 22:43:31 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-template/ui-template.js
 **/
 /**
@@ -1121,18 +1183,18 @@ build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/includ
 }( jQuery ));
 
 /**
-build time: Fri Jan 25 2019 17:35:45 GMT-0600 (CST)
+build time: Fri Jan 25 2019 22:43:31 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-error-banner/build/ui-error-banner.js
 **/
 (function( window, undefined ){
 
 /**
-build time: Fri Jan 25 2019 17:35:45 GMT-0600 (CST)
+build time: Fri Jan 25 2019 22:43:31 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-error-banner/temp/ui-error-banner-htm.js
 **/
-var cTemplate='<div class="error-banner"> {{message}} </div>';
+var cTemplate='{{#message}} <div class="error-banner"> {{message}} </div> {{/message}}';
 /**
-build time: Fri Jan 25 2019 17:35:45 GMT-0600 (CST)
+build time: Fri Jan 25 2019 22:43:31 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-error-banner/src/ui-error-banner.js
 **/
 /**
@@ -1157,7 +1219,7 @@ build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/includ
       _invalidateTimeout: 0,
 
       options: {
-         message: 'Some error happened.'
+         message: null
       },
       _create: function() {
          //this._id = Math.round( Math.random()*10000000 );
@@ -1188,15 +1250,6 @@ build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/includ
          this.render = $.proxy( this.render, this );
          this.render();
       },// /_create()
-
-      //_setOption: function( option, value ) {
-      //   $.Widget.prototype._setOption.apply( this, arguments );
-      //
-      //   switch( option ) {
-      //      default:
-      //         return;
-      //   }// /switch()
-      //},// /setOption()
 
       _invalidate: function( undefined ) {
          clearTimeout( this._invalidateTimeout );
@@ -1286,41 +1339,17 @@ build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/includ
          this.element.template( 'setState', oState, lRender, lDiff );
       },// /setState()
 
-      ///**
-      // * This returns the data of the form.
-      // */
-      //getData: function(){
-      //   var oState = this.getState();
-      //   var oForm = $.deserialize( this._$form.serialize() );
-      //
-      //   return {
-      //      somestring: oState.somestring,
-      //      somedate: oState.somedate
-      //   };
-      //},// /getData()
-      //
-      ///**
-      // * This validates the data of the form.
-      // */
-      //validate: function(){
-      //   var oData = this.getData();
-      //   this._lastErrors = [];
-      //
-      //   if( oData.somestring.length < 3 ){
-      //      this._lastErrors.push({
-      //         message: 'Somestring is NOT valid. Must be at least three characters.'
-      //      });
-      //   }
-      //
-      //   return this._lastErrors.length < 1;
-      //},// /validate()
-      //
-      ///**
-      // * This returns the last validation errors.
-      // */
-      //getErrors: function(){
-      //   return this._lastErrors;
-      //},// /getErrors()
+      set_message: function( c_msg ){
+         this.setState({
+            message: c_msg
+         });
+      },// /set_message()
+
+      clear: function(){
+         this.setState({
+            message: null
+         });
+      },// /clear()
 
       _destroy: function(){
          // Undo everything.
@@ -1335,18 +1364,18 @@ build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/includ
 
 }( window ));
 /**
-build time: Fri Jan 25 2019 17:35:45 GMT-0600 (CST)
+build time: Fri Jan 25 2019 22:43:31 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-user-list/build/ui-user-list.js
 **/
 (function( window, undefined ){
 
 /**
-build time: Fri Jan 25 2019 17:35:44 GMT-0600 (CST)
+build time: Fri Jan 25 2019 22:43:31 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-user-list/temp/ui-user-list-htm.js
 **/
 var cTemplate='<div class="user-list"> {{#error}} <div class="callout alert"> {{error}} </div> {{/error}} {{#wait}} <div class="callout primary"> {{wait}} </div> {{/wait}} {{^error}} {{^wait}} <button class="user-list__btn-add action-button"> <i class="icon-plus"></i> Add an agent </button> {{^users}} <div class="warning-banner"> No agents found. Add some! </div> {{/users}} <div class="ticket-options-plugin__agents"> {{#users}} <div class="ticket-options-plugin__agent"> <i class="icon-remove-circle" data-staff_id="{{staff_id}}" title="Remove {{name}}"></i> <img class="ticket-options-plugin__agent-avatar" src="{{avatar}}"/> <div> <div class="ticket-options-plugin__agent-name ticket-options-plugin__agent-detail"> {{name}} </div> <div class="ticket-options-plugin__agent-email ticket-options-plugin__agent-detail"> {{email}} </div> <div class="ticket-options-plugin__agent-phone ticket-options-plugin__agent-detail"> {{#mobile}} {{mobile}} {{/mobile}} {{^mobile}} {{phone}} {{/mobile}} </div> <div class="ticket-options-plugin__agent-dept ticket-options-plugin__agent-detail"> {{department}} </div> </div> </div> {{/users}} </div> {{/wait}} {{/error}} </div>';
 /**
-build time: Fri Jan 25 2019 17:35:44 GMT-0600 (CST)
+build time: Fri Jan 25 2019 22:43:31 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-user-list/src/ui-user-list.js
 **/
 /**
@@ -1549,18 +1578,23 @@ build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/includ
 
 }( window ));
 /**
-build time: Fri Jan 25 2019 17:35:45 GMT-0600 (CST)
+build time: Fri Jan 25 2019 22:43:31 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-agent-search/build/ui-agent-search.js
 **/
 (function( window, undefined ){
 
 /**
-build time: Fri Jan 25 2019 17:35:45 GMT-0600 (CST)
+build time: Fri Jan 25 2019 22:43:31 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-agent-search/temp/ui-agent-search-htm.js
 **/
-var cTemplate='<div class="agent-search"> {{#error}} <div class="callout alert"> {{error}} </div> {{/error}} {{#wait}} <div class="callout primary"> {{wait}} </div> {{/wait}} {{^error}} {{^wait}} Hello, World! {{/wait}} {{/error}} </div>';
+var cTemplate='<div class="agent-search"> {{#error}} <div class="callout alert"> {{error}} </div> {{/error}} {{#wait}} <div class="callout primary"> {{wait}} </div> {{/wait}} {{^error}} {{^wait}} <form class="agent-search__form"> <label for="query_{{id}}">Search term:</label> <input class="agent-search__form-query" type="text" name="search_query" placeholder="Type a username or id." id="query_{{id}}"/> </form> <div class="agent-search__results"></div> {{/wait}} {{/error}} </div>';
 /**
-build time: Fri Jan 25 2019 17:35:45 GMT-0600 (CST)
+build time: Fri Jan 25 2019 22:43:31 GMT-0600 (CST)
+build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-agent-search/temp/ui-agent-search-htm-results.js
+**/
+var cResultsTemplate='<div class="agent-search-results"> {{#error}} <div class="error-banner"> {{error}} </div> {{/error}} {{#wait}} <div class="warning-banner"> {{wait}} </div> {{/wait}} {{^error}} {{^wait}} <div> {{#results}} <div class="agent-search-results__agent"> <button class="agent-search-results__btn-add action-button" data-staff_id="{{staff_id}}"> <i class="icon-plus"></i> Add </button> <div class="agent-search-results__agent-card"> <img class="ticket-options-plugin__agent-avatar" src="{{avatar}}"/> <div> <div class="agent-search-results__agent-name agent-search-results__agent-detail"> {{name}} </div> <div class="agent-search-results__agent-email agent-search-results__agent-detail"> {{email}} </div> </div> </div> </div> {{/results}} </div> {{/wait}} {{/error}} </div>';
+/**
+build time: Fri Jan 25 2019 22:43:31 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-agent-search/src/ui-agent-search.js
 **/
 /**
@@ -1575,25 +1609,33 @@ build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/includ
 /* jshint browser:true */
 /* global jQuery:false */
 /* global cTemplate:false */
+/* global cResultsTemplate:false */
+
 
 /** List jshint ignore directives here. **/
 (function( $ ){
 
    $.widget( 'ui.agentSearch', {
-      //_id: null,
+      _id: null,
       //_lastErrors: null,
       _invalidateTimeout: 0,
+      _$results: null,
+      _$form: null,
+      _$query: null,
+      _last_query: null,
 
       options: {
+         on_add_click: null
       },
       _create: function() {
-         //this._id = Math.round( Math.random()*10000000 );
+         this._id = Math.round( Math.random()*10000000 );
          //this._lastErrors = [];
          this.element.addClass( 'ui-widget-agent-search' );
          this.element.template({
             renderOnInit: false,
             template: cTemplate,
             state: {
+               id: this._id,
                error: null,
                wait: null
             },
@@ -1605,7 +1647,12 @@ build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/includ
           * This is how to set a deferred event listener that will automatically
           * be destroyed when the widget is destroyed.
           */
-         // this.element.on( 'EVENT.agent-search', '.CLASSNAME', {self:this}, this._HANDLERMETHOD );
+         this.element.on( 'keyup.agent-search', '.agent-search__form-query', {self:this}, this._on_search_change );
+         this.element.on( 'change.agent-search', '.agent-search__form-query', {self:this}, this._on_search_change );
+         this.element.on( 'submit.agent-search', '.agent-search__form', {self:this}, this._on_submit );
+         
+         // params: fnCallback, nMsWait, context, aParams
+         this._defer_search = $.debounce( this._defer_search, 500, this, [] );
 
          /*
           * Make sure render() is always called within the context/scope of
@@ -1614,15 +1661,6 @@ build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/includ
          this.render = $.proxy( this.render, this );
          this.render();
       },// /_create()
-
-      //_setOption: function( option, value ) {
-      //   $.Widget.prototype._setOption.apply( this, arguments );
-      //
-      //   switch( option ) {
-      //      default:
-      //         return;
-      //   }// /switch()
-      //},// /setOption()
 
       _invalidate: function( undefined ) {
          clearTimeout( this._invalidateTimeout );
@@ -1639,6 +1677,13 @@ build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/includ
        * previous render.
        */
       _beforeRender: function( undefined ) {
+         if( this._$results ){
+            this._$results.agentSearchResults( 'destroy' );
+         }
+
+         this._$results = null;
+         this._$form = null;
+         this._$query = null;
       },// /_beforeRender()
 
       /**
@@ -1648,9 +1693,106 @@ build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/includ
       _afterRender: function( undefined ) {
          var oState = this.getState();
 
+         this._$results = $( '.agent-search__results', this.element )
+         .agentSearchResults({
+            on_add_click: this.options.on_add_click
+         });
+         this._$form = $( '.agent-search__form', this.element );
+         this._$query = $( '.agent-search__form-query', this.element );
+
+         this._$query.focus();
+
          // Trigger an event.
          this._triggerEvent( 'afterRender', { widget:this } );
       },// /_afterRender()
+
+      _on_submit: function( event ){
+         var self = event.data.self;
+         var c_value = self._$query[0].value;
+
+         event.preventDefault();
+
+         self._$query.blur();
+         self._search( c_value );
+
+      },// /_on_submit()
+
+      _on_search_change: function( event ){
+         var self = event.data.self;
+         var c_value = this.value;
+
+
+         self._search( c_value );
+
+      },// /_on_search_change()
+
+      _search: function( c_value ){
+         var self = this;
+
+         if( this._last_query == c_value ){
+            return;
+         }
+
+         this._showWait( 'Searching...' );
+
+         this._last_query = c_value;
+
+         self._defer_search( c_value );
+
+      },// /_search()
+
+      _defer_search: function( c_value ){
+         var self = this;
+
+         self._search_now( c_value )
+         .then(function( a_agents ){
+            self._$results.agentSearchResults( 'update_results', a_agents, c_value );
+         });
+
+      },// /_defer_search()
+
+      _search_now: function( c_query ){
+         var deferred = $.Deferred();
+         var self = this;
+
+         this._showWait( 'Searching...' );
+
+         console.log( '_search_now' );
+
+         $.ajax({
+            url: 'ajax.php/ticket_options/script/search_agents.php',
+            method: 'get',
+            type: 'json',
+            dataType: 'json',
+            data: {
+               q: c_query
+            }
+         })
+         .then(function( o_result, status, o_xhr ){
+            if( o_result.error ) {
+               return self._showError( o_result.error.message );
+            }
+
+            if( o_result.result == 'ok' )
+            {
+               deferred.resolve( o_result.agents );
+               return;
+            }
+
+            debugger;
+            
+         })
+         .fail(function( o_xhr, c_status, o_error  ){
+            if( c_status == 'parsererror' )
+            {
+               return self._showError( 'get_ticket_agents failure: '.concat( o_error.message ) );
+            }
+
+            debugger;
+         });
+
+         return deferred.promise();
+      },// /_search_now()
 
       /**
        * This method allows you to call a method listening to this element
@@ -1686,10 +1828,7 @@ build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/includ
       },// /_showError()
 
       _showWait: function( cMessage ){
-         this.setState({
-            error: null,
-            wait: cMessage
-         });
+         this._$results.agentSearchResults( 'show_wait', cMessage );
 
       },// /_showWait()
 
@@ -1757,85 +1896,348 @@ build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/includ
       }// /_destroy()
    });
 
+
+   $.widget( 'ui.agentSearchResults', {
+      //_id: null,
+      //_lastErrors: null,
+      _invalidateTimeout: 0,
+
+      options: {
+         results: null,
+         on_add_click: null
+      },
+      _create: function() {
+         //this._id = Math.round( Math.random()*10000000 );
+         //this._lastErrors = [];
+         this.element.addClass( 'ui-widget-agent-search-results' );
+         this.element.template({
+            renderOnInit: false,
+            template: cResultsTemplate,
+            state: {
+               results: this.options.results,
+               error: null,
+               wait: null
+            },
+            beforeRender: $.proxy( this._beforeRender, this ),
+            onRender: $.proxy( this._afterRender, this )
+         });
+
+         /** 
+          * This is how to set a deferred event listener that will automatically
+          * be destroyed when the widget is destroyed.
+          */
+         this.element.on( 'click.agent-search-results', '.agent-search-results__btn-add', {self:this}, this._on_add_click );
+
+         /*
+          * Make sure render() is always called within the context/scope of
+          * this widget.
+          */
+         this.render = $.proxy( this.render, this );
+         this.render();
+      },// /_create()
+
+      _invalidate: function( undefined ) {
+         clearTimeout( this._invalidateTimeout );
+         this._invalidateTimeout = setTimeout( this.render, 20 );
+      },// /_invalidate()
+
+      render: function( undefined ) {
+         clearTimeout( this._invalidateTimeout );
+         this.element.template( 'render' );
+      },// /render()
+
+      /**
+       * This method allows you to undo anything that was done during the
+       * previous render.
+       */
+      _beforeRender: function( undefined ) {
+      },// /_beforeRender()
+
+      /**
+       * This method allows you to initialize widgets, bind events, or do
+       * anything else necessary after the new html has been rendered.
+       */
+      _afterRender: function( undefined ) {
+         var oState = this.getState();
+
+         // Trigger an event.
+         this._triggerEvent( 'afterRender', { widget:this } );
+      },// /_afterRender()
+
+      _on_add_click: function( event ){
+         var self = event.data.self;
+         var n_staff_id = $(this).data( 'staff_id' );
+
+         console.log( 'click', n_staff_id );
+
+         self._triggerEvent( 'addClick', { widget:self, staff_id: n_staff_id } );
+      },// /_on_add_click()
+
+      /**
+       * This method allows you to call a method listening to this element
+       * only as well as trigger a bubbling event.
+       */
+      _triggerEvent: function( cType, oData ){
+         var fnMethod;
+         var cFullEventType = ( this.widgetEventPrefix + cType ).toLowerCase();
+         var oEvent = $.Event( cFullEventType );
+
+         switch( cType ){
+         case 'addClick':
+            fnMethod = this.options.on_add_click;
+            break;
+
+         }// /switch()
+
+
+         if ( fnMethod ) {
+            fnMethod( oEvent, oData );
+         }
+
+         //this._trigger( cType, oEvent, oData );
+         this.element.trigger( oEvent, oData );
+      },// /_triggerEvent()
+
+      _showError: function( cMessage ){
+         this.setState({
+            error: cMessage,
+            wait: null
+         });
+
+      },// /_showError()
+
+      _showWait: function( cMessage ){
+         this.setState({
+            error: null,
+            wait: cMessage
+         });
+
+      },// /_showWait()
+
+      /**
+       * This is a proxy method that allows you to get the template state.
+       */
+      getState: function(){
+         return this.element.template( 'getState' );
+      },// /getState()
+
+      /**
+       * This is a proxy method that allows you to change the template state.
+       * @param  {object} oState      Object with changed state values.
+       * @param  {boolean} lRender   Whether or not to render changes.
+       * @param  {boolean} lDiff      Whether or not to check for changes.
+       *                         Useful for saving cpu cycles on changes
+       *                         that we don't care about.
+       */
+      setState: function( oState, lRender, lDiff ){
+         this.element.template( 'setState', oState, lRender, lDiff );
+      },// /setState()
+
+      update_results: function( a_results, c_term ){
+
+         if( a_results.length < 1 ){
+            this.show_wait( ''.concat( 'No results for "',c_term,'".' ) );
+            return;
+         }
+
+         this.setState({
+            results: a_results,
+            error: null,
+            wait: null
+         });
+      },// /update_results()
+
+      show_error: function( cMessage ){
+         this._showError( _showError );
+
+      },// /show_error()
+
+      show_wait: function( cMessage ){
+         this._showWait( cMessage );
+
+      },// /show_wait()
+
+      ///**
+      // * This returns the data of the form.
+      // */
+      //getData: function(){
+      //   var oState = this.getState();
+      //   var oForm = $.deserialize( this._$form.serialize() );
+      //
+      //   return {
+      //      somestring: oState.somestring,
+      //      somedate: oState.somedate
+      //   };
+      //},// /getData()
+      //
+      ///**
+      // * This validates the data of the form.
+      // */
+      //validate: function(){
+      //   var oData = this.getData();
+      //   this._lastErrors = [];
+      //
+      //   if( oData.somestring.length < 3 ){
+      //      this._lastErrors.push({
+      //         message: 'Somestring is NOT valid. Must be at least three characters.'
+      //      });
+      //   }
+      //
+      //   return this._lastErrors.length < 1;
+      //},// /validate()
+      //
+      ///**
+      // * This returns the last validation errors.
+      // */
+      //getErrors: function(){
+      //   return this._lastErrors;
+      //},// /getErrors()
+
+      _destroy: function(){
+         // Undo everything.
+         this._beforeRender();
+         this.element.off( '.agent-search-results' );
+         this.element.template( 'destroy' );
+         this.element.removeClass( 'ui-widget-agent-search-results' );
+      }// /_destroy()
+   });
+
 }( jQuery ));
 
 }( window ));
 /**
-build time: Fri Jan 25 2019 17:35:45 GMT-0600 (CST)
+build time: Fri Jan 25 2019 22:43:31 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/src/ticket-view-agents.js
 **/
 /**
- * {%= date %}
- * {%= description %}
+ * 01-25-2019
+ * Main app/tab.
  * ~~ {%= author_name %}
  */
 
 /** List jshint ignore directives here. **/
 /* jshint undef: true, unused: true */
 /* jshint browser:true */
-/* global App:false */
+/* global jQuery:false */
 
 (function ($, undefined) {
    var $agent_list = $( '#agent-list' );
-   var $agent_list_error = $( '#agent-list-error' );
+   var $agent_list_error = $( '#agent-list-error' ).errorBanner();
    var $agent_list_search = $( '#agent-list-search' );
 
-   var show_add = function(){
-      $agent_list_search.agentSearch();
-   };// /show_add()
+   var view = {
+      _views: {},
+      _current: null,
 
-   var hide_add = function(){
-      $agent_list_search.agentSearch( 'destroy' );
-   };// /hide_add()
+      add: function( c_name, o_view ) {
+         return this._views[ c_name ] = o_view;
+      },// /add()
 
-   var show_agents = function(){
+      show: function( c_name ) {
+         var self = this;
 
-      $.ajax({
-         url: 'ajax.php/ticket_options/script/get_ticket_agents.php?ticket_id=20000',
-         method: 'get',
-         type: 'json',
-         dataType: 'json'
-      })
-      .then(function( o_result, status, o_xhr ){
-         if( o_result.error ) {
-            return $agent_list_error.errorBanner({ message: o_result.error.message });
+         if( !this._views[ c_name ] ) {
+            throw new Error( ''.concat( 'View "',c_name,'" is not defined.' ) );
          }
 
-         if( o_result.result == 'ok' )
-         {
-            $agent_list.userList({
-               users: o_result.agents,
-               on_add_click: function( event, ui ){
-                  hide_agents();
-                  show_add();
-               }// /on_add_click()
-            });
+         if( this._current == this._views[ c_name ] ) {
             return;
          }
 
-         debugger;
-         
-      })
-      .fail(function( o_xhr, c_status, o_error  ){
-         if( c_status == 'parsererror' )
-         {
-            return $agent_list_error.errorBanner({ message: 'get_ticket_agents failure: '.concat( o_error.message ) });
-            
+         if( this._current != null ) {
+            $.when( this._views[ this._current ].hide() )
+            .then(function(){
+               self._show_now( c_name );
+            });
+
+            return;
          }
 
-         debugger;
-      });
+         return self._show_now( c_name );
 
-   };// /show_agents()
+      },// /show()
+
+      _show_now: function( c_name ) {
+         var c_previous = this._current;
+
+         this._current = c_name;
+         this._views[ c_name ].show( c_previous );
+
+      }// /_show_now()
 
 
-   var hide_agents = function(){
-      $agent_list.userList( 'destroy' );
-      $agent_list_error.errorBanner( 'destroy' );
+   };
 
-   };// /hide_agents()
+   var show_error = function( c_msg ){
+      return $agent_list_error.errorBanner( 'set_message', c_msg );
+   };// /show_error()
 
-   show_agents();
+   var clear_error = function(){
+      return $agent_list_error.errorBanner( 'clear' );
+   };// /clear_error()
+
+   view.add( 'default', {
+      show: function(){
+         $.ajax({
+            url: 'ajax.php/ticket_options/script/get_ticket_agents.php?ticket_id=20000',
+            method: 'get',
+            type: 'json',
+            dataType: 'json'
+         })
+         .then(function( o_result, status, o_xhr ){
+            if( o_result.error ) {
+               return show_error( o_result.error.message );
+            }
+
+            if( o_result.result == 'ok' )
+            {
+               $agent_list.userList({
+                  users: o_result.agents,
+                  on_add_click: function( event, ui ){
+                     view.show( 'add_agent_form' );
+                  }// /on_add_click()
+               });
+               return;
+            }
+
+            debugger;
+            
+         })
+         .fail(function( o_xhr, c_status, o_error  ){
+            if( c_status == 'parsererror' )
+            {
+               return show_error( 'get_ticket_agents failure: '.concat( o_error.message ) );
+               
+            }
+
+            debugger;
+         });
+
+      },
+
+      hide: function(){
+         $agent_list.userList( 'destroy' );
+         clear_error();
+      }
+   });
+
+   view.add( 'add_agent_form', {
+      show: function(){
+         $agent_list_search.agentSearch({
+            on_add_click: function( event, ui ){
+               console.log( ui.staff_id );
+            }
+         });
+      },
+
+      hide: function(){
+         $agent_list_search.agentSearch( 'destroy' );
+         clear_error();
+      }
+   });
+
+
+   view.show( 'default' );
 
 }( jQuery ))
 }());

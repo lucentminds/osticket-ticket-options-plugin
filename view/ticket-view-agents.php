@@ -12,7 +12,8 @@ $o_included = new TicketOptionsPlugin_AgentInclude( $ticket );
    </p>
 
    <div id="agent-list-error"></div>
-   <div id="agent-list-form"></div>
+   <div id="agent-list-search"></div>
+   <div id="agent-list-add"></div>
    <div id="agent-list"></div>
 
       <?php $a_agents = $o_included->fetch_agents( $errors ) ?>
