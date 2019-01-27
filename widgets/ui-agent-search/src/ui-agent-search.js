@@ -327,7 +327,7 @@
           * This is how to set a deferred event listener that will automatically
           * be destroyed when the widget is destroyed.
           */
-         this.element.on( 'click.agent-search-results', '.agent-search-results__btn-add', {self:this}, this._on_add_click );
+         this.element.on( 'click.agent-search-results', '.agent-search-results__agent', {self:this}, this._on_add_click );
 
          /*
           * Make sure render() is always called within the context/scope of
@@ -368,6 +368,8 @@
       _on_add_click: function( event ){
          var self = event.data.self;
          var n_staff_id = $(this).data( 'staff_id' );
+
+         event.preventDefault();
 
          console.log( 'click', n_staff_id );
 

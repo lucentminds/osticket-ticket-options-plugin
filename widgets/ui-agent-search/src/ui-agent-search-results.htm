@@ -15,16 +15,17 @@
    {{^error}}
    {{^wait}}
    
-   <div>
+   <div class="agent-search-results__agents">
    {{#results}}
-   <div class="agent-search-results__agent">
-      <button class="agent-search-results__btn-add action-button" data-staff_id="{{staff_id}}">
+   <div class="agent-search-results__agent" data-staff_id="{{staff_id}}">
+      
+      <div class="agent-search-results__agent-button">
          <i class="icon-plus"></i>
-         Add
-      </button>
+      </div>
 
       <div class="agent-search-results__agent-card">
 
+         
          <img class="ticket-options-plugin__agent-avatar" src="{{avatar}}"/>
          
          <div>

@@ -11,32 +11,40 @@
    margin-bottom: 1em;
 }
 
+.agent-search-results .agent-search-results__agents
+{
+   display: flex;
+   flex-wrap: wrap;
+}
+
 .agent-search-results .agent-search-results__agent
 {
    margin-bottom: 1em;
    display: flex;
    align-items: center;
-   width: 20em;
+   width: 17em;
    justify-content: space-between;
+   border: 1px solid #999999;
+   margin-right: 1em;
+   cursor: pointer;
 }
 
 
 .agent-search-results .agent-search-results__agent:hover
 {
-   background-color: #eef3f8;
+   background-color: #74b9fd;
 }
 
-.agent-search-results .action-button
+.agent-search-results .agent-search-results__agent-button
 {
-   margin: 0;
-   margin-right: 0.5em;
+   text-align: center;
+   width: 3em;
 }
 
 .agent-search-results .agent-search-results__agent-card
 {
    display: flex;
    padding: 0.3em;
-   border: 1px solid #999999;
    border-left: 1em solid #ff8637;
    font-size: 0.8em;
    width: 17em;
