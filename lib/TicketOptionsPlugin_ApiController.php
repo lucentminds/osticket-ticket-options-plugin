@@ -16,7 +16,6 @@ class TicketOptionsPlugin_ApiController extends ApiController
 
    public function show_view( $c_path )
    {
-
       switch( true )
       {
          case preg_match( '/.css$/', $c_path ):
@@ -95,12 +94,18 @@ class TicketOptionsPlugin_ApiController extends ApiController
       self::$_route_dispatch_object = $object;
       self::get( '^/ticket_options(/static/[^\?]*)$', array( TicketOptionsPlugin_ApiController, 'show_view' ) );
       self::get( '^/ticket_options(/script/[^\?]*)$', array( TicketOptionsPlugin_ApiController, 'show_view' ) );
+      self::post( '^/ticket_options(/script/[^\?]*)$', array( TicketOptionsPlugin_ApiController, 'show_view' ) );
 
    }// /route_dispatch()
 
    public static function get( $c_match, $a_callback )
    {
       self::$_route_dispatch_object->append( url_get( $c_match, $a_callback ) );
-   }// /route_dispatch()
+   }// /get()
+
+   public static function post( $c_match, $a_callback )
+   {
+      self::$_route_dispatch_object->append( url_post( $c_match, $a_callback ) );
+   }// /post()
 
 }// /TicketOptionsPlugin_ApiController()

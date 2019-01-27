@@ -76,6 +76,11 @@ $o_included = new TicketOptionsPlugin_AgentInclude( $ticket );
 
 </div>
 
+<script type="text/javascript">
+// Make the CSRF token available to javascript. jQuery can hold it for us.
+$.csrf_token = '<?= $ost->getCSRF()->getToken() ?>';
+</script>
+
 <?php
 TicketOptionsPlugin::add_javascript_src( 'ajax.php/ticket_options/static/app/ticket-view-agents.js' );
 ?>
