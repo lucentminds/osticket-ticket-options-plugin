@@ -14,6 +14,10 @@
    var $agent_list_error = $( '#agent-list-error' ).errorBanner();
    var $agent_list_search = $( '#agent-list-search' );
    var $agent_add_progress = $( '#agent-add-progress' );
+   var $agent_remove_progress = $( '#agent-remove-progress' );
+   var $agent_confirm_remove = $( '#agent-confirm-remove' );
+
+   
 
    var view = {
       _views: {},
@@ -77,7 +81,7 @@
                ticket_id: $.ticket_id
             }
          })
-         .then(function( o_result, status, o_xhr ){
+         .then(function( o_result/* , status, o_xhr */ ){
             if( o_result.error ) {
                return show_error( o_result.error.message );
             }
@@ -88,7 +92,13 @@
                   users: o_result.agents,
                   on_add_click: function( event, ui ){
                      view.show( 'add_agent_form' );
-                  }// /on_add_click()
+                  },// /on_add_click()
+
+                  on_remove_click: function( event, ui ){
+                     console.log( ui );
+                     view.show( 'remove_agent_confirm', { agent: ui.user });
+                  }// /on_remove_click()
+                  
                });
                return;
             }
@@ -145,6 +155,53 @@
          $agent_add_progress.showAgentAdd( 'destroy' );
       }
    });
+
+
+   view.add( 'remove_agent_progress', {
+      show: function( c_previous, o_data ){
+
+         $agent_remove_progress.showAgentRemove({
+            staff_id: o_data.agent.staff_id,
+            ticket_id: $.ticket_id,
+
+            on_response: function( /* event, ui */ ){
+               view.show( 'default' );
+            }
+         });
+      },
+
+      hide: function(){
+         $agent_remove_progress.showAgentRemove( 'destroy' );
+      }
+   });
+
+
+   view.add( 'remove_agent_confirm', {
+      show: function( c_previous, o_data ){
+         
+         $agent_confirm_remove.dialogConfirm({
+            message: ''.concat( 'This cannot be undone.',
+            ' Are you sure you wish to remove staff member "',o_data.agent.name,'" from this ticket?' ),
+
+            text_confirm: 'Yes, remove this agent',
+            text_cancel: 'No, Do NOT remove this agent',
+
+            on_cancel_click: function( /* event, ui */ ){
+               view.show( 'default' );
+            },
+
+            on_confirm_click: function( /* event, ui */ ){
+               view.show( 'remove_agent_progress', o_data );
+            }
+         });
+      },
+
+      hide: function(){
+         $agent_confirm_remove.dialogConfirm( 'destroy' );
+      }
+   });
+
+   
 
 
    view.show( 'default' );

@@ -1,7 +1,7 @@
 /**
- * 01-25-2019
+ * 01-28-2019
  * The best app ever.
- * Check for instance using $( el ).data( 'uiErrorBanner' );
+ * Check for instance using $( el ).data( 'uiDialogConfirm' );
  * ~~ Scott Johnson
  */
 
@@ -14,23 +14,31 @@
 /** List jshint ignore directives here. **/
 (function( $ ){
 
-   $.widget( 'ui.errorBanner', {
+   $.widget( 'ui.dialogConfirm', {
       //_id: null,
       //_lastErrors: null,
       _invalidateTimeout: 0,
 
       options: {
-         message: null
+         message: null,
+         text_confirm: 'OK',
+         text_cancel: 'Cancel',
+         on_cancel_click: null,
+         on_confirm_click: null
       },
       _create: function() {
          //this._id = Math.round( Math.random()*10000000 );
          //this._lastErrors = [];
-         this.element.addClass( 'ui-widget-error-banner' );
+         this.element.addClass( 'ui-widget-dialog-confirm' );
          this.element.template({
             renderOnInit: false,
             template: cTemplate,
             state: {
-               message: this.options.message
+               message: this.options.message,
+               text_confirm: this.options.text_confirm,
+               text_cancel: this.options.text_cancel,
+               error: null,
+               wait: null
             },
             beforeRender: $.proxy( this._beforeRender, this ),
             onRender: $.proxy( this._afterRender, this )
@@ -40,7 +48,10 @@
           * This is how to set a deferred event listener that will automatically
           * be destroyed when the widget is destroyed.
           */
-         // this.element.on( 'EVENT.error-banner', '.CLASSNAME', {self:this}, this._HANDLERMETHOD );
+         this.element.on( 'click.dialog-confirm', '.dialog-confirm__btn-cancel', {self:this}, this._on_cancel_click );
+         this.element.on( 'click.dialog-confirm', '.dialog-confirm__btn-ok', {self:this}, this._on_confirm_click );
+
+         
 
          /*
           * Make sure render() is always called within the context/scope of
@@ -77,6 +88,20 @@
          // Trigger an event.
          this._triggerEvent( 'afterRender', { widget:this } );
       },// /_afterRender()
+      
+      _on_cancel_click: function( event ) {
+         var self = event.data.self;
+
+         // Trigger an event.
+         self._triggerEvent( 'clickCancel', { widget:self } );
+      },// /_on_cancel_click()
+      
+      _on_confirm_click: function( event ) {
+         var self = event.data.self;
+
+         // Trigger an event.
+         self._triggerEvent( 'clickConfirm', { widget:self } );
+      },// /_on_confirm_click()
 
       /**
        * This method allows you to call a method listening to this element
@@ -88,8 +113,12 @@
          var oEvent = $.Event( cFullEventType );
 
          switch( cType ){
-         case 'anything':
-            fnMethod = this.options.onEvent;
+         case 'clickCancel':
+            fnMethod = this.options.on_cancel_click;
+            break;
+
+         case 'clickConfirm':
+            fnMethod = this.options.on_confirm_click;
             break;
 
          }// /switch()
@@ -102,6 +131,22 @@
          //this._trigger( cType, oEvent, oData );
          this.element.trigger( oEvent, oData );
       },// /_triggerEvent()
+
+      _showError: function( cMessage ){
+         this.setState({
+            error: cMessage,
+            wait: null
+         });
+
+      },// /_showError()
+
+      _showWait: function( cMessage ){
+         this.setState({
+            error: null,
+            wait: cMessage
+         });
+
+      },// /_showWait()
 
       /**
        * This is a proxy method that allows you to get the template state.
@@ -122,24 +167,12 @@
          this.element.template( 'setState', oState, lRender, lDiff );
       },// /setState()
 
-      set_message: function( c_msg ){
-         this.setState({
-            message: c_msg
-         });
-      },// /set_message()
-
-      clear: function(){
-         this.setState({
-            message: null
-         });
-      },// /clear()
-
       _destroy: function(){
          // Undo everything.
          this._beforeRender();
-         this.element.off( '.error-banner' );
+         this.element.off( '.dialog-confirm' );
          this.element.template( 'destroy' );
-         this.element.removeClass( 'ui-widget-error-banner' );
+         this.element.removeClass( 'ui-widget-dialog-confirm' );
       }// /_destroy()
    });
 

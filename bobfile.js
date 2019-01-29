@@ -42,10 +42,12 @@ var build = module.exports = function (bob) { // jshint ignore:line
 
    // Add the dependencies from the modules.
    buildJobMods.addDependencies('build', [
+      bob.resolve( './widgets/ui-dialog-confirm' ),
       bob.resolve( './widgets/ui-user-list' ),
       bob.resolve( './widgets/ui-error-banner' ),
       bob.resolve( './widgets/ui-agent-search' ),
-      bob.resolve( './widgets/ui-show-agent-add' )
+      bob.resolve( './widgets/ui-show-agent-add' ),
+      bob.resolve( './widgets/ui-show-agent-remove' )
    ], {});
 
    // Create the 'deploy' job.
@@ -69,9 +71,11 @@ var build = module.exports = function (bob) { // jshint ignore:line
          // ], './temp'),
 
          concat([
+            './widgets/ui-dialog-confirm/build/ui-dialog-confirm.css',
             './widgets/ui-user-list/build/ui-user-list.css',
             './widgets/ui-agent-search/build/ui-agent-search.css',
             './widgets/ui-show-agent-add/build/ui-show-agent-add.css',
+            './widgets/ui-show-agent-remove/build/ui-show-agent-remove.css',
             './src/ticket-view-agents.css'
          ],
             './temp/ticket-view-agents.css', {
@@ -86,10 +90,12 @@ var build = module.exports = function (bob) { // jshint ignore:line
             './widgets/jquery-debounce/jquery-debounce.js',
             './widgets/ui-state/ui-state.js',
             './widgets/ui-template/ui-template.js',
+            './widgets/ui-dialog-confirm/build/ui-dialog-confirm.js',
             './widgets/ui-error-banner/build/ui-error-banner.js',
             './widgets/ui-user-list/build/ui-user-list.js',
             './widgets/ui-agent-search/build/ui-agent-search.js',
             './widgets/ui-show-agent-add/build/ui-show-agent-add.js',
+            './widgets/ui-show-agent-remove/build/ui-show-agent-remove.js',
             './src/ticket-view-agents.js'
          ],
             './temp/ticket-view-agents.js', {
@@ -205,10 +211,12 @@ var build = module.exports = function (bob) { // jshint ignore:line
 
             // Setup the watcher for the main source.
             return bob.watch([
+               './widgets/ui-dialog-confirm/src',
                './widgets/ui-error-banner/src',
                './widgets/ui-user-list/src',
                './widgets/ui-agent-search/src',
                './widgets/ui-show-agent-add/src',
+               './widgets/ui-show-agent-remove/src',
                './src'
             ]);
 

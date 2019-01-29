@@ -50,7 +50,7 @@
 
       if( $errors )
       {
-         return reply_error( $errors[ 'err' ] );
+         return reply_error( 500, $errors[ 'err' ] );
       }
 
       return reply_result( $a_agents );

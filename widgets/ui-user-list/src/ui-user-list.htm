@@ -21,7 +21,7 @@
    </button>
    
    {{^users}}
-   <div class="warning-banner">
+   <div class="info-banner">
       No agents found. Add some!
    </div>
    {{/users}}
@@ -29,7 +29,7 @@
    <div class="ticket-options-plugin__agents">
    {{#users}}
    <div class="ticket-options-plugin__agent">
-      <i class="icon-remove-circle" data-staff_id="{{staff_id}}"
+      <i class="user-list__btn-remove icon-remove-circle" data-staff_id="{{staff_id}}"
       title="Remove {{name}}"></i>
       
       <img class="ticket-options-plugin__agent-avatar" src="{{avatar}}"/>

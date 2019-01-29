@@ -1,0 +1,37 @@
+<div class="dialog-confirm">
+
+   {{#error}}
+   <div class="callout alert">
+      {{error}}
+   </div>
+   {{/error}}
+   
+   {{#wait}}
+   <div class="callout primary">
+      {{wait}}
+   </div>
+   {{/wait}}
+
+   {{^error}}
+   {{^wait}}
+   <div class="warning-banner">
+     Please confirm!
+   </div>
+   
+   <p>
+      {{message}}
+   </p>
+
+
+   <button class="dialog-confirm__btn-cancel action-button">
+      {{text_cancel}}
+   </button>
+
+
+   <button class="dialog-confirm__btn-ok action-button">
+      {{text_confirm}}
+   </button>
+   {{/wait}}
+   {{/error}}
+
+</div>

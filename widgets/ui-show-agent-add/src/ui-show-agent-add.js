@@ -35,7 +35,7 @@
             template: cTemplate,
             state: {
                error: null,
-               wait: ''.concat( 'Adding agent ',this.options.staff_id,' to ticket ',this.options.ticket_id,'...' )
+               wait: null,
             },
             beforeRender: $.proxy( this._beforeRender, this ),
             onRender: $.proxy( this._afterRender, this )
@@ -120,14 +120,14 @@
          .fail(function( o_xhr, c_status, o_error  ){
             if( c_status == 'parsererror' )
             {
-               return self._showError( 'get_ticket_agents failure: '.concat( o_error.message ) );
+               return self._showError( 'get_ticket_agent failure: '.concat( o_error.message ) );
             }
 
             debugger;
          });
 
          return deferred.promise();
-      },// /_search_now()
+      },// /_add_ticket_agent()
 
       /**
        * This method allows you to call a method listening to this element
@@ -188,42 +188,6 @@
       setState: function( oState, lRender, lDiff ){
          this.element.template( 'setState', oState, lRender, lDiff );
       },// /setState()
-
-      ///**
-      // * This returns the data of the form.
-      // */
-      //getData: function(){
-      //   var oState = this.getState();
-      //   var oForm = $.deserialize( this._$form.serialize() );
-      //
-      //   return {
-      //      somestring: oState.somestring,
-      //      somedate: oState.somedate
-      //   };
-      //},// /getData()
-      //
-      ///**
-      // * This validates the data of the form.
-      // */
-      //validate: function(){
-      //   var oData = this.getData();
-      //   this._lastErrors = [];
-      //
-      //   if( oData.somestring.length < 3 ){
-      //      this._lastErrors.push({
-      //         message: 'Somestring is NOT valid. Must be at least three characters.'
-      //      });
-      //   }
-      //
-      //   return this._lastErrors.length < 1;
-      //},// /validate()
-      //
-      ///**
-      // * This returns the last validation errors.
-      // */
-      //getErrors: function(){
-      //   return this._lastErrors;
-      //},// /getErrors()
 
       _destroy: function(){
          // Undo everything.

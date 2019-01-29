@@ -45,30 +45,22 @@
       }
 
       $o_included = new TicketOptionsPlugin_AgentInclude( $o_ticket );
-      $a_agents = $o_included->fetch_agents( $errors );
 
       if( $errors )
       {
-         return reply_error( $errors[ 'err' ] );
+         return reply_error( 500, $errors[ 'err' ] );
       }
 
-      // Let's see if this agent is already in the list.
-      foreach( $a_agents as $a_agent )
-      {
-         if( $a_agent[ 'staff_id' ] == $n_staff_id )
-         {
-            // This agent is already in the list.
-            return reply_result( $a_agents );
-            exit;
-         }
-
-      }// /foreach()
-
       
-      $a_agents = $o_included->add_agent( $n_staff_id, $errors );
+      $n_added = $o_included->add_agent( $n_staff_id, $errors );
+
+      if( $errors )
+      {
+         return reply_error( 500, $errors[ 'err' ] );
+      }
 
 
-      return reply_result( $a_agents );
+      return reply_result( $n_added );
 
    }// /process_request()
 
@@ -85,10 +77,10 @@
 
    }// /reply_error()
 
-   function reply_result( $a_agents )
+   function reply_result( $n_added )
    {
       $a_response = array(
-         'agents' => $a_agents,
+         'added' => $n_added,
          'error' => null,
          'result' => 'ok'
       );

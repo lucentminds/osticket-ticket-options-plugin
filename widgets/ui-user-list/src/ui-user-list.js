@@ -18,6 +18,7 @@
       //_id: null,
       //_lastErrors: null,
       _invalidateTimeout: 0,
+      _user_list: null,
 
       options: {
          users: null,
@@ -26,7 +27,7 @@
       },
       _create: function() {
          //this._id = Math.round( Math.random()*10000000 );
-         //this._lastErrors = [];
+         this._user_list = this.options.users;
          this.element.addClass( 'ui-widget-user-list' );
          this.element.template({
             renderOnInit: false,
@@ -45,6 +46,7 @@
           * be destroyed when the widget is destroyed.
           */
          this.element.on( 'click.user-list', '.user-list__btn-add', {self:this}, this._on_add_click );
+         this.element.on( 'click.user-list', '.user-list__btn-remove', {self:this}, this._on_remove_click );
 
          /*
           * Make sure render() is always called within the context/scope of
@@ -86,8 +88,29 @@
          var self = event.data.self;
 
          // Trigger an event.
-         self._triggerEvent( 'add_click', { widget:self } );
+         self._triggerEvent( 'addClick', { widget:self } );
       },// /_on_add_click()
+
+      _on_remove_click: function( event ){
+         var self = event.data.self;
+         var i, l, n_user_id = $(this).data( 'staff_id' );
+         var o_user = null;
+
+
+         // Loop over each user to find this staff_id.
+         for( i = 0, l = self._user_list.length; i < l; i++ )
+         {
+            if( self._user_list[ i ].staff_id  == n_user_id ) {
+               o_user = self._user_list[ i ];
+            }
+         }// /for()
+
+         // Trigger an event.
+         self._triggerEvent( 'removeClick', { widget:self, user: o_user } );
+      },// /_on_remove_click()
+
+
+      
 
       /**
        * This method allows you to call a method listening to this element
@@ -99,8 +122,12 @@
          var oEvent = $.Event( cFullEventType );
 
          switch( cType ){
-         case 'add_click':
+         case 'addClick':
             fnMethod = this.options.on_add_click;
+            break;
+
+         case 'removeClick':
+            fnMethod = this.options.on_remove_click;
             break;
 
          }// /switch()
@@ -148,42 +175,6 @@
       setState: function( oState, lRender, lDiff ){
          this.element.template( 'setState', oState, lRender, lDiff );
       },// /setState()
-
-      ///**
-      // * This returns the data of the form.
-      // */
-      //getData: function(){
-      //   var oState = this.getState();
-      //   var oForm = $.deserialize( this._$form.serialize() );
-      //
-      //   return {
-      //      somestring: oState.somestring,
-      //      somedate: oState.somedate
-      //   };
-      //},// /getData()
-      //
-      ///**
-      // * This validates the data of the form.
-      // */
-      //validate: function(){
-      //   var oData = this.getData();
-      //   this._lastErrors = [];
-      //
-      //   if( oData.somestring.length < 3 ){
-      //      this._lastErrors.push({
-      //         message: 'Somestring is NOT valid. Must be at least three characters.'
-      //      });
-      //   }
-      //
-      //   return this._lastErrors.length < 1;
-      //},// /validate()
-      //
-      ///**
-      // * This returns the last validation errors.
-      // */
-      //getErrors: function(){
-      //   return this._lastErrors;
-      //},// /getErrors()
 
       _destroy: function(){
          // Undo everything.

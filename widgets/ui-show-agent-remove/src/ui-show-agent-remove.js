@@ -1,7 +1,7 @@
 /**
- * 01-25-2019
+ * 01-28-2019
  * The best app ever.
- * Check for instance using $( el ).data( 'uiErrorBanner' );
+ * Check for instance using $( el ).data( 'uiShowAgentRemove' );
  * ~~ Scott Johnson
  */
 
@@ -14,23 +14,28 @@
 /** List jshint ignore directives here. **/
 (function( $ ){
 
-   $.widget( 'ui.errorBanner', {
+   $.widget( 'ui.showAgentRemove', {
       //_id: null,
       //_lastErrors: null,
       _invalidateTimeout: 0,
 
       options: {
-         message: null
+         staff_id: null,
+         ticket_id: null,
+         on_response: null
       },
       _create: function() {
+         var self = this;
+
          //this._id = Math.round( Math.random()*10000000 );
          //this._lastErrors = [];
-         this.element.addClass( 'ui-widget-error-banner' );
+         this.element.addClass( 'ui-widget-show-agent-remove' );
          this.element.template({
             renderOnInit: false,
             template: cTemplate,
             state: {
-               message: this.options.message
+               error: null,
+               wait: null
             },
             beforeRender: $.proxy( this._beforeRender, this ),
             onRender: $.proxy( this._afterRender, this )
@@ -40,14 +45,17 @@
           * This is how to set a deferred event listener that will automatically
           * be destroyed when the widget is destroyed.
           */
-         // this.element.on( 'EVENT.error-banner', '.CLASSNAME', {self:this}, this._HANDLERMETHOD );
+         // this.element.on( 'EVENT.show-agent-remove', '.CLASSNAME', {self:this}, this._HANDLERMETHOD );
 
          /*
           * Make sure render() is always called within the context/scope of
           * this widget.
           */
          this.render = $.proxy( this.render, this );
-         this.render();
+         this._remove_ticket_agent()
+         .then(function( o_response ){
+            self._triggerEvent( 'onResponse', { widget:self, response: o_response } );
+         });
       },// /_create()
 
       _invalidate: function( undefined ) {
@@ -78,6 +86,49 @@
          this._triggerEvent( 'afterRender', { widget:this } );
       },// /_afterRender()
 
+      _remove_ticket_agent: function(){
+         var deferred = $.Deferred();
+         var self = this;
+         var c_ticket_id = this.options.ticket_id;
+         var n_staff_id = this.options.staff_id;
+
+         this._showWait( ''.concat( 'Removing agent ',n_staff_id,' to ticket ',c_ticket_id,'...' ) );
+
+         $.ajax({
+            url: 'ajax.php/ticket_options/script/remove_ticket_agent.php',
+            method: 'post',
+            type: 'json',
+            dataType: 'json',
+            data: {
+               ticket_id: c_ticket_id,
+               staff_id: n_staff_id
+            }
+         })
+         .then(function( o_result, status, o_xhr ){
+
+            if( o_result.error ) {
+               return self._showError( o_result.error.message );
+            }
+
+            if( o_result.result == 'ok' )
+            {
+               deferred.resolve( o_result );
+               return;
+            }
+
+         })
+         .fail(function( o_xhr, c_status, o_error  ){
+            if( c_status == 'parsererror' )
+            {
+               return self._showError( 'remove_ticket_agent failure: '.concat( o_error.message ) );
+            }
+
+            debugger;
+         });
+
+         return deferred.promise();
+      },// /_remove_ticket_agent()
+
       /**
        * This method allows you to call a method listening to this element
        * only as well as trigger a bubbling event.
@@ -88,8 +139,8 @@
          var oEvent = $.Event( cFullEventType );
 
          switch( cType ){
-         case 'anything':
-            fnMethod = this.options.onEvent;
+         case 'onResponse':
+            fnMethod = this.options.on_response;
             break;
 
          }// /switch()
@@ -102,6 +153,22 @@
          //this._trigger( cType, oEvent, oData );
          this.element.trigger( oEvent, oData );
       },// /_triggerEvent()
+
+      _showError: function( cMessage ){
+         this.setState({
+            error: cMessage,
+            wait: null
+         });
+
+      },// /_showError()
+
+      _showWait: function( cMessage ){
+         this.setState({
+            error: null,
+            wait: cMessage
+         });
+
+      },// /_showWait()
 
       /**
        * This is a proxy method that allows you to get the template state.
@@ -122,24 +189,12 @@
          this.element.template( 'setState', oState, lRender, lDiff );
       },// /setState()
 
-      set_message: function( c_msg ){
-         this.setState({
-            message: c_msg
-         });
-      },// /set_message()
-
-      clear: function(){
-         this.setState({
-            message: null
-         });
-      },// /clear()
-
       _destroy: function(){
          // Undo everything.
          this._beforeRender();
-         this.element.off( '.error-banner' );
+         this.element.off( '.show-agent-remove' );
          this.element.template( 'destroy' );
-         this.element.removeClass( 'ui-widget-error-banner' );
+         this.element.removeClass( 'ui-widget-show-agent-remove' );
       }// /_destroy()
    });
 

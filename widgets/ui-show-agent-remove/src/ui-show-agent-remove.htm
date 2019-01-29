@@ -1,0 +1,21 @@
+<div class="show-agent-remove">
+
+   {{#error}}
+   <div class="error-banner">
+      {{error}}
+   </div>
+   {{/error}}
+   
+   {{#wait}}
+   <div class="info-banner">
+      {{wait}}
+   </div>
+   {{/wait}}
+
+   {{^error}}
+   {{^wait}}
+   Hello, World!
+   {{/wait}}
+   {{/error}}
+
+</div>

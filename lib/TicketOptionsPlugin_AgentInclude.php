@@ -50,8 +50,16 @@ class TicketOptionsPlugin_AgentInclude
       $a_result = db_fetch_array( $o_result );
       //echo '<pre>', print_r( $a_result, 1 ), '</pre>';
 
+
+
+      if( strlen( $a_result[ 'staff_id_list' ] ) < 1 )
+      {
+         return array();
+      }
+
       $a_id_list = explode( ' ', $a_result[ 'staff_id_list' ] );
       $a_included_staff = array();
+
 
       foreach( $a_id_list as $c_id )
       {
@@ -80,13 +88,14 @@ class TicketOptionsPlugin_AgentInclude
    {
       $n_ticket_id = $this->_ticket->getNumber();
       $n_staff_id = (int) $n_staff_id;
+      $n_added = 0;
 
       if( $_POST[ 'staff_id' ] < 1 )
       {
          // The sql schema file doesn't exist.
          $errors[ 'err' ] = 'Staff ID is not a valid integer.';
          $this->log( LOG_ERR, 'TicketOptionsPlugin_AgentInclude add_agent 101', $errors[ 'err' ] );
-         return false;
+         return $n_added;
       }
 
       // Fetch the ticket agent record if any.
@@ -98,22 +107,20 @@ class TicketOptionsPlugin_AgentInclude
          // The sql schema file doesn't exist.
          $errors[ 'err' ] = 'Failed to query table "'.AIP_TICKET_AGENT_TABLE.'" for agents.';
          $this->log( LOG_ERR, 'TicketOptionsPlugin_AgentInclude add_agent 102', $errors[ 'err' ] );
-         return false;
+         return $n_added;
       }
 
-
+      // Determines how many staff IDs are currently attached to this ticket.
+      $a_included_staff = array();
 
       if( db_num_rows( $o_result ) > 0 )
-      {      
-         $a_result = db_fetch_array( $o_result );
-         //echo '<pre>', print_r( $a_result, 1 ), '</pre>';
-
-         $a_included_staff = explode( ' ', $a_result[ 'staff_id_list' ] );
-      }
-      else
       {
-         // There are no included agents on this ticket.
-         $a_included_staff = array();
+         $a_result = db_fetch_array( $o_result );
+
+         if( strlen( $a_result[ 'staff_id_list' ] ) > 0 )
+         {
+            $a_included_staff = explode( ' ', $a_result[ 'staff_id_list' ] );
+         }
       }
 
       array_push( $a_included_staff, $n_staff_id );
@@ -133,10 +140,10 @@ class TicketOptionsPlugin_AgentInclude
          // The sql schema file doesn't exist.
          $errors[ 'err' ] = 'Failed to update table "'.AIP_TICKET_AGENT_TABLE.'" with agents.';
          $this->log( LOG_ERR, 'TicketOptionsPlugin_AgentInclude add_agent 103', $errors[ 'err' ] );
-         return false;
+         return $n_added;
       }
 
-      return $c_staff_id_list;
+      return $n_added;
 
    }// /add_agent()
 
@@ -145,14 +152,14 @@ class TicketOptionsPlugin_AgentInclude
    {
       $n_ticket_id = $this->_ticket->getNumber();
       $n_staff_id = (int) $n_staff_id;
-      $c_staff_id_list = '';
+      $n_removed = 0;
 
       if( $_POST[ 'staff_id' ] < 1 )
       {
          // The sql schema file doesn't exist.
          $errors[ 'err' ] = 'Staff ID is not a valid integer.';
          $this->log( LOG_ERR, 'TicketOptionsPlugin_AgentInclude remove_agent 101', $errors[ 'err' ] );
-         return false;
+         return $n_removed;
       }
 
       // Fetch the ticket agent record if any.
@@ -164,7 +171,7 @@ class TicketOptionsPlugin_AgentInclude
          // The sql schema file doesn't exist.
          $errors[ 'err' ] = 'Failed to query table "'.AIP_TICKET_AGENT_TABLE.'" for agents.';
          $this->log( LOG_ERR, 'TicketOptionsPlugin_AgentInclude remove_agent 102', $errors[ 'err' ] );
-         return false;
+         return $n_removed;
       }
 
 
@@ -172,7 +179,7 @@ class TicketOptionsPlugin_AgentInclude
       if( db_num_rows( $o_result ) < 1 )
       {
          // There are no included agents on this ticket.
-         return $c_staff_id_list;
+         return $n_removed;
       }
 
       $a_result = db_fetch_array( $o_result );
@@ -186,9 +193,8 @@ class TicketOptionsPlugin_AgentInclude
       if( $n_index === false )
       {
          // This staff ID does not exist in the list.
-         return $c_staff_id_list;
+         return $n_removed;
       }
-
 
       array_splice( $a_included_staff, $n_index, 1 );
       sort( $a_included_staff, SORT_NUMERIC );
@@ -208,10 +214,11 @@ class TicketOptionsPlugin_AgentInclude
          // The sql schema file doesn't exist.
          $errors[ 'err' ] = 'Failed to update table "'.AIP_TICKET_AGENT_TABLE.'" with agents.';
          $this->log( LOG_ERR, 'TicketOptionsPlugin_AgentInclude remove_agent 103', $errors[ 'err' ] );
-         return false;
+         return $n_removed;
       }
 
-      return $c_staff_id_list;
+      $n_removed = 1;
+      return $n_removed;
 
    }// /remove_agent()
 

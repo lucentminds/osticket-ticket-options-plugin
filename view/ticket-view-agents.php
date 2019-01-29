@@ -11,10 +11,12 @@ $o_included = new TicketOptionsPlugin_AgentInclude( $ticket );
    gets a new comment or internal note.
    </p>
 
-   <div id="agent-list-error"></div>
+   <div id="agent-list-error">error</div>
    <div id="agent-list-search"></div>
    <div id="agent-list-add"></div>
    <div id="agent-add-progress"></div>
+   <div id="agent-remove-progress"></div>
+   <div id="agent-confirm-remove"></div>
    <div id="agent-list"></div>
 
    <?php if( $errors ): ?>

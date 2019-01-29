@@ -45,45 +45,24 @@
       }
 
       $o_included = new TicketOptionsPlugin_AgentInclude( $o_ticket );
-      $a_agents = $o_included->fetch_agents( $errors );
 
       if( $errors )
       {
-         return reply_error( $errors[ 'err' ] );
+         return reply_error( 500, $errors[ 'err' ] );
       }
 
-      // Let's see if this agent is not in the list at all.
-      if( !is_agent_included( $a_agents, $n_staff_id ) )
-      {
-         // This agent is already NOT in the list.
-         return reply_result( $a_agents );
-      }// /foreach()
-
       
-      $a_agents = $o_included->remove_agent( $n_staff_id, $errors );
+      $n_removed = $o_included->remove_agent( $n_staff_id, $errors );
+
+      if( $errors )
+      {
+         return reply_error( 500, $errors[ 'err' ] );
+      }
 
 
-      return reply_result( $a_agents );
+      return reply_result( $n_removed );
 
    }// /process_request()
-
-
-   function is_agent_included( $a_agents, $n_staff_id )
-   {
-
-      // Let's see if this agent is in the list.
-      foreach( $a_agents as $a_agent )
-      {
-         if( $a_agent[ 'staff_id' ] == $n_staff_id )
-         {
-            // This agent is in the list.
-            return true;
-         }
-
-      }// /foreach()
-
-      return false;
-   }// /is_agent_included()
 
    function reply_error( $n_code, $c_message )
    {
@@ -98,11 +77,11 @@
 
    }// /reply_error()
 
-   function reply_result( $a_agents )
+   function reply_result( $n_removed )
    {
       $a_response = array(
-         'agents' => $a_agents,
          'error' => null,
+         'removed' => $n_removed,
          'result' => 'ok'
       );
 

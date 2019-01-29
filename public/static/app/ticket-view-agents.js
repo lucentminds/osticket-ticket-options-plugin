@@ -1,7 +1,7 @@
 (function( undefined ){
 
 /**
-build time: Mon Jan 28 2019 18:54:35 GMT-0600 (CST)
+build time: Mon Jan 28 2019 21:28:21 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/mustache/2.0.0/mustache.js
 **/
 /*!
@@ -607,7 +607,7 @@ build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/includ
 }));
 
 /**
-build time: Mon Jan 28 2019 18:54:35 GMT-0600 (CST)
+build time: Mon Jan 28 2019 21:28:21 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/jquery-debounce/jquery-debounce.js
 **/
 /**
@@ -669,7 +669,7 @@ build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/includ
 
 
 /**
-build time: Mon Jan 28 2019 18:54:35 GMT-0600 (CST)
+build time: Mon Jan 28 2019 21:28:21 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-state/ui-state.js
 **/
 /**
@@ -1000,7 +1000,7 @@ build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/includ
 }( jQuery ));
 
 /**
-build time: Mon Jan 28 2019 18:54:35 GMT-0600 (CST)
+build time: Mon Jan 28 2019 21:28:21 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-template/ui-template.js
 **/
 /**
@@ -1183,18 +1183,214 @@ build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/includ
 }( jQuery ));
 
 /**
-build time: Mon Jan 28 2019 18:54:35 GMT-0600 (CST)
+build time: Mon Jan 28 2019 21:28:21 GMT-0600 (CST)
+build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-dialog-confirm/build/ui-dialog-confirm.js
+**/
+(function( window, undefined ){
+
+/**
+build time: Mon Jan 28 2019 21:28:21 GMT-0600 (CST)
+build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-dialog-confirm/temp/ui-dialog-confirm-htm.js
+**/
+var cTemplate='<div class="dialog-confirm"> {{#error}} <div class="callout alert"> {{error}} </div> {{/error}} {{#wait}} <div class="callout primary"> {{wait}} </div> {{/wait}} {{^error}} {{^wait}} <div class="warning-banner"> Please confirm! </div> <p> {{message}} </p> <button class="dialog-confirm__btn-cancel action-button"> {{text_cancel}} </button> <button class="dialog-confirm__btn-ok action-button"> {{text_confirm}} </button> {{/wait}} {{/error}} </div>';
+/**
+build time: Mon Jan 28 2019 21:28:21 GMT-0600 (CST)
+build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-dialog-confirm/src/ui-dialog-confirm.js
+**/
+/**
+ * 01-28-2019
+ * The best app ever.
+ * Check for instance using $( el ).data( 'uiDialogConfirm' );
+ * ~~ Scott Johnson
+ */
+
+
+/** List jshint ignore directives here. **/
+/* jshint browser:true */
+/* global jQuery:false */
+/* global cTemplate:false */
+
+/** List jshint ignore directives here. **/
+(function( $ ){
+
+   $.widget( 'ui.dialogConfirm', {
+      //_id: null,
+      //_lastErrors: null,
+      _invalidateTimeout: 0,
+
+      options: {
+         message: null,
+         text_confirm: 'OK',
+         text_cancel: 'Cancel',
+         on_cancel_click: null,
+         on_confirm_click: null
+      },
+      _create: function() {
+         //this._id = Math.round( Math.random()*10000000 );
+         //this._lastErrors = [];
+         this.element.addClass( 'ui-widget-dialog-confirm' );
+         this.element.template({
+            renderOnInit: false,
+            template: cTemplate,
+            state: {
+               message: this.options.message,
+               text_confirm: this.options.text_confirm,
+               text_cancel: this.options.text_cancel,
+               error: null,
+               wait: null
+            },
+            beforeRender: $.proxy( this._beforeRender, this ),
+            onRender: $.proxy( this._afterRender, this )
+         });
+
+         /** 
+          * This is how to set a deferred event listener that will automatically
+          * be destroyed when the widget is destroyed.
+          */
+         this.element.on( 'click.dialog-confirm', '.dialog-confirm__btn-cancel', {self:this}, this._on_cancel_click );
+         this.element.on( 'click.dialog-confirm', '.dialog-confirm__btn-ok', {self:this}, this._on_confirm_click );
+
+         
+
+         /*
+          * Make sure render() is always called within the context/scope of
+          * this widget.
+          */
+         this.render = $.proxy( this.render, this );
+         this.render();
+      },// /_create()
+
+      _invalidate: function( undefined ) {
+         clearTimeout( this._invalidateTimeout );
+         this._invalidateTimeout = setTimeout( this.render, 20 );
+      },// /_invalidate()
+
+      render: function( undefined ) {
+         clearTimeout( this._invalidateTimeout );
+         this.element.template( 'render' );
+      },// /render()
+
+      /**
+       * This method allows you to undo anything that was done during the
+       * previous render.
+       */
+      _beforeRender: function( undefined ) {
+      },// /_beforeRender()
+
+      /**
+       * This method allows you to initialize widgets, bind events, or do
+       * anything else necessary after the new html has been rendered.
+       */
+      _afterRender: function( undefined ) {
+         var oState = this.getState();
+
+         // Trigger an event.
+         this._triggerEvent( 'afterRender', { widget:this } );
+      },// /_afterRender()
+      
+      _on_cancel_click: function( event ) {
+         var self = event.data.self;
+
+         // Trigger an event.
+         self._triggerEvent( 'clickCancel', { widget:self } );
+      },// /_on_cancel_click()
+      
+      _on_confirm_click: function( event ) {
+         var self = event.data.self;
+
+         // Trigger an event.
+         self._triggerEvent( 'clickConfirm', { widget:self } );
+      },// /_on_confirm_click()
+
+      /**
+       * This method allows you to call a method listening to this element
+       * only as well as trigger a bubbling event.
+       */
+      _triggerEvent: function( cType, oData ){
+         var fnMethod;
+         var cFullEventType = ( this.widgetEventPrefix + cType ).toLowerCase();
+         var oEvent = $.Event( cFullEventType );
+
+         switch( cType ){
+         case 'clickCancel':
+            fnMethod = this.options.on_cancel_click;
+            break;
+
+         case 'clickConfirm':
+            fnMethod = this.options.on_confirm_click;
+            break;
+
+         }// /switch()
+
+
+         if ( fnMethod ) {
+            fnMethod( oEvent, oData );
+         }
+
+         //this._trigger( cType, oEvent, oData );
+         this.element.trigger( oEvent, oData );
+      },// /_triggerEvent()
+
+      _showError: function( cMessage ){
+         this.setState({
+            error: cMessage,
+            wait: null
+         });
+
+      },// /_showError()
+
+      _showWait: function( cMessage ){
+         this.setState({
+            error: null,
+            wait: cMessage
+         });
+
+      },// /_showWait()
+
+      /**
+       * This is a proxy method that allows you to get the template state.
+       */
+      getState: function(){
+         return this.element.template( 'getState' );
+      },// /getState()
+
+      /**
+       * This is a proxy method that allows you to change the template state.
+       * @param  {object} oState      Object with changed state values.
+       * @param  {boolean} lRender   Whether or not to render changes.
+       * @param  {boolean} lDiff      Whether or not to check for changes.
+       *                         Useful for saving cpu cycles on changes
+       *                         that we don't care about.
+       */
+      setState: function( oState, lRender, lDiff ){
+         this.element.template( 'setState', oState, lRender, lDiff );
+      },// /setState()
+
+      _destroy: function(){
+         // Undo everything.
+         this._beforeRender();
+         this.element.off( '.dialog-confirm' );
+         this.element.template( 'destroy' );
+         this.element.removeClass( 'ui-widget-dialog-confirm' );
+      }// /_destroy()
+   });
+
+}( jQuery ));
+
+}( window ));
+/**
+build time: Mon Jan 28 2019 21:28:21 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-error-banner/build/ui-error-banner.js
 **/
 (function( window, undefined ){
 
 /**
-build time: Mon Jan 28 2019 18:54:35 GMT-0600 (CST)
+build time: Mon Jan 28 2019 21:28:21 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-error-banner/temp/ui-error-banner-htm.js
 **/
 var cTemplate='{{#message}} <div class="error-banner"> {{message}} </div> {{/message}}';
 /**
-build time: Mon Jan 28 2019 18:54:35 GMT-0600 (CST)
+build time: Mon Jan 28 2019 21:28:21 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-error-banner/src/ui-error-banner.js
 **/
 /**
@@ -1229,9 +1425,7 @@ build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/includ
             renderOnInit: false,
             template: cTemplate,
             state: {
-               message: this.options.message,
-               error: null,
-               wait: null
+               message: this.options.message
             },
             beforeRender: $.proxy( this._beforeRender, this ),
             onRender: $.proxy( this._afterRender, this )
@@ -1304,22 +1498,6 @@ build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/includ
          this.element.trigger( oEvent, oData );
       },// /_triggerEvent()
 
-      _showError: function( cMessage ){
-         this.setState({
-            error: cMessage,
-            wait: null
-         });
-
-      },// /_showError()
-
-      _showWait: function( cMessage ){
-         this.setState({
-            error: null,
-            wait: cMessage
-         });
-
-      },// /_showWait()
-
       /**
        * This is a proxy method that allows you to get the template state.
        */
@@ -1364,18 +1542,18 @@ build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/includ
 
 }( window ));
 /**
-build time: Mon Jan 28 2019 18:54:35 GMT-0600 (CST)
+build time: Mon Jan 28 2019 21:28:21 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-user-list/build/ui-user-list.js
 **/
 (function( window, undefined ){
 
 /**
-build time: Mon Jan 28 2019 18:54:35 GMT-0600 (CST)
+build time: Mon Jan 28 2019 21:28:21 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-user-list/temp/ui-user-list-htm.js
 **/
-var cTemplate='<div class="user-list"> {{#error}} <div class="callout alert"> {{error}} </div> {{/error}} {{#wait}} <div class="callout primary"> {{wait}} </div> {{/wait}} {{^error}} {{^wait}} <button class="user-list__btn-add action-button"> <i class="icon-plus"></i> Add an agent </button> {{^users}} <div class="warning-banner"> No agents found. Add some! </div> {{/users}} <div class="ticket-options-plugin__agents"> {{#users}} <div class="ticket-options-plugin__agent"> <i class="icon-remove-circle" data-staff_id="{{staff_id}}" title="Remove {{name}}"></i> <img class="ticket-options-plugin__agent-avatar" src="{{avatar}}"/> <div> <div class="ticket-options-plugin__agent-name ticket-options-plugin__agent-detail"> {{name}} </div> <div class="ticket-options-plugin__agent-email ticket-options-plugin__agent-detail"> {{email}} </div> <div class="ticket-options-plugin__agent-phone ticket-options-plugin__agent-detail"> {{#mobile}} {{mobile}} {{/mobile}} {{^mobile}} {{phone}} {{/mobile}} </div> <div class="ticket-options-plugin__agent-dept ticket-options-plugin__agent-detail"> {{department}} </div> </div> </div> {{/users}} </div> {{/wait}} {{/error}} </div>';
+var cTemplate='<div class="user-list"> {{#error}} <div class="callout alert"> {{error}} </div> {{/error}} {{#wait}} <div class="callout primary"> {{wait}} </div> {{/wait}} {{^error}} {{^wait}} <button class="user-list__btn-add action-button"> <i class="icon-plus"></i> Add an agent </button> {{^users}} <div class="info-banner"> No agents found. Add some! </div> {{/users}} <div class="ticket-options-plugin__agents"> {{#users}} <div class="ticket-options-plugin__agent"> <i class="user-list__btn-remove icon-remove-circle" data-staff_id="{{staff_id}}" title="Remove {{name}}"></i> <img class="ticket-options-plugin__agent-avatar" src="{{avatar}}"/> <div> <div class="ticket-options-plugin__agent-name ticket-options-plugin__agent-detail"> {{name}} </div> <div class="ticket-options-plugin__agent-email ticket-options-plugin__agent-detail"> {{email}} </div> <div class="ticket-options-plugin__agent-phone ticket-options-plugin__agent-detail"> {{#mobile}} {{mobile}} {{/mobile}} {{^mobile}} {{phone}} {{/mobile}} </div> <div class="ticket-options-plugin__agent-dept ticket-options-plugin__agent-detail"> {{department}} </div> </div> </div> {{/users}} </div> {{/wait}} {{/error}} </div>';
 /**
-build time: Mon Jan 28 2019 18:54:35 GMT-0600 (CST)
+build time: Mon Jan 28 2019 21:28:21 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-user-list/src/ui-user-list.js
 **/
 /**
@@ -1398,6 +1576,7 @@ build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/includ
       //_id: null,
       //_lastErrors: null,
       _invalidateTimeout: 0,
+      _user_list: null,
 
       options: {
          users: null,
@@ -1406,7 +1585,7 @@ build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/includ
       },
       _create: function() {
          //this._id = Math.round( Math.random()*10000000 );
-         //this._lastErrors = [];
+         this._user_list = this.options.users;
          this.element.addClass( 'ui-widget-user-list' );
          this.element.template({
             renderOnInit: false,
@@ -1425,6 +1604,7 @@ build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/includ
           * be destroyed when the widget is destroyed.
           */
          this.element.on( 'click.user-list', '.user-list__btn-add', {self:this}, this._on_add_click );
+         this.element.on( 'click.user-list', '.user-list__btn-remove', {self:this}, this._on_remove_click );
 
          /*
           * Make sure render() is always called within the context/scope of
@@ -1466,8 +1646,29 @@ build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/includ
          var self = event.data.self;
 
          // Trigger an event.
-         self._triggerEvent( 'add_click', { widget:self } );
+         self._triggerEvent( 'addClick', { widget:self } );
       },// /_on_add_click()
+
+      _on_remove_click: function( event ){
+         var self = event.data.self;
+         var i, l, n_user_id = $(this).data( 'staff_id' );
+         var o_user = null;
+
+
+         // Loop over each user to find this staff_id.
+         for( i = 0, l = self._user_list.length; i < l; i++ )
+         {
+            if( self._user_list[ i ].staff_id  == n_user_id ) {
+               o_user = self._user_list[ i ];
+            }
+         }// /for()
+
+         // Trigger an event.
+         self._triggerEvent( 'removeClick', { widget:self, user: o_user } );
+      },// /_on_remove_click()
+
+
+      
 
       /**
        * This method allows you to call a method listening to this element
@@ -1479,8 +1680,12 @@ build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/includ
          var oEvent = $.Event( cFullEventType );
 
          switch( cType ){
-         case 'add_click':
+         case 'addClick':
             fnMethod = this.options.on_add_click;
+            break;
+
+         case 'removeClick':
+            fnMethod = this.options.on_remove_click;
             break;
 
          }// /switch()
@@ -1529,42 +1734,6 @@ build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/includ
          this.element.template( 'setState', oState, lRender, lDiff );
       },// /setState()
 
-      ///**
-      // * This returns the data of the form.
-      // */
-      //getData: function(){
-      //   var oState = this.getState();
-      //   var oForm = $.deserialize( this._$form.serialize() );
-      //
-      //   return {
-      //      somestring: oState.somestring,
-      //      somedate: oState.somedate
-      //   };
-      //},// /getData()
-      //
-      ///**
-      // * This validates the data of the form.
-      // */
-      //validate: function(){
-      //   var oData = this.getData();
-      //   this._lastErrors = [];
-      //
-      //   if( oData.somestring.length < 3 ){
-      //      this._lastErrors.push({
-      //         message: 'Somestring is NOT valid. Must be at least three characters.'
-      //      });
-      //   }
-      //
-      //   return this._lastErrors.length < 1;
-      //},// /validate()
-      //
-      ///**
-      // * This returns the last validation errors.
-      // */
-      //getErrors: function(){
-      //   return this._lastErrors;
-      //},// /getErrors()
-
       _destroy: function(){
          // Undo everything.
          this._beforeRender();
@@ -1578,23 +1747,23 @@ build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/includ
 
 }( window ));
 /**
-build time: Mon Jan 28 2019 18:54:35 GMT-0600 (CST)
+build time: Mon Jan 28 2019 21:28:21 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-agent-search/build/ui-agent-search.js
 **/
 (function( window, undefined ){
 
 /**
-build time: Mon Jan 28 2019 18:54:35 GMT-0600 (CST)
+build time: Mon Jan 28 2019 21:28:21 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-agent-search/temp/ui-agent-search-htm.js
 **/
 var cTemplate='<div class="agent-search"> {{#error}} <div class="callout alert"> {{error}} </div> {{/error}} {{#wait}} <div class="callout primary"> {{wait}} </div> {{/wait}} {{^error}} {{^wait}} <form class="agent-search__form"> <label for="query_{{id}}">Search term:</label> <input class="agent-search__form-query" type="text" name="search_query" placeholder="Type a username or id." id="query_{{id}}"/> </form> <div class="agent-search__results"></div> {{/wait}} {{/error}} </div>';
 /**
-build time: Mon Jan 28 2019 18:54:35 GMT-0600 (CST)
+build time: Mon Jan 28 2019 21:28:21 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-agent-search/temp/ui-agent-search-htm-results.js
 **/
 var cResultsTemplate='<div class="agent-search-results"> {{#error}} <div class="error-banner"> {{error}} </div> {{/error}} {{#wait}} <div class="warning-banner"> {{wait}} </div> {{/wait}} {{^error}} {{^wait}} <div class="agent-search-results__agents"> {{#results}} <div class="agent-search-results__agent" data-staff_id="{{staff_id}}"> <div class="agent-search-results__agent-button"> <i class="icon-plus"></i> </div> <div class="agent-search-results__agent-card"> <img class="ticket-options-plugin__agent-avatar" src="{{avatar}}"/> <div> <div class="agent-search-results__agent-name agent-search-results__agent-detail"> {{name}} </div> <div class="agent-search-results__agent-email agent-search-results__agent-detail"> {{email}} </div> </div> </div> </div> {{/results}} </div> {{/wait}} {{/error}} </div>';
 /**
-build time: Mon Jan 28 2019 18:54:35 GMT-0600 (CST)
+build time: Mon Jan 28 2019 21:28:21 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-agent-search/src/ui-agent-search.js
 **/
 /**
@@ -2106,18 +2275,18 @@ build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/includ
 
 }( window ));
 /**
-build time: Mon Jan 28 2019 18:54:35 GMT-0600 (CST)
+build time: Mon Jan 28 2019 21:28:21 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-show-agent-add/build/ui-show-agent-add.js
 **/
 (function( window, undefined ){
 
 /**
-build time: Mon Jan 28 2019 18:54:35 GMT-0600 (CST)
+build time: Mon Jan 28 2019 21:28:21 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-show-agent-add/temp/ui-show-agent-add-htm.js
 **/
 var cTemplate='<div class="show-agent-add"> {{#error}} <div class="error-banner"> {{error}} </div> {{/error}} {{#wait}} <div class="info-banner"> {{wait}} </div> {{/wait}} {{^error}} {{^wait}} Hello, World! {{/wait}} {{/error}} </div>';
 /**
-build time: Mon Jan 28 2019 18:54:35 GMT-0600 (CST)
+build time: Mon Jan 28 2019 21:28:21 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-show-agent-add/src/ui-show-agent-add.js
 **/
 /**
@@ -2157,7 +2326,7 @@ build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/includ
             template: cTemplate,
             state: {
                error: null,
-               wait: ''.concat( 'Adding agent ',this.options.staff_id,' to ticket ',this.options.ticket_id,'...' )
+               wait: null,
             },
             beforeRender: $.proxy( this._beforeRender, this ),
             onRender: $.proxy( this._afterRender, this )
@@ -2242,14 +2411,14 @@ build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/includ
          .fail(function( o_xhr, c_status, o_error  ){
             if( c_status == 'parsererror' )
             {
-               return self._showError( 'get_ticket_agents failure: '.concat( o_error.message ) );
+               return self._showError( 'get_ticket_agent failure: '.concat( o_error.message ) );
             }
 
             debugger;
          });
 
          return deferred.promise();
-      },// /_search_now()
+      },// /_add_ticket_agent()
 
       /**
        * This method allows you to call a method listening to this element
@@ -2311,42 +2480,6 @@ build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/includ
          this.element.template( 'setState', oState, lRender, lDiff );
       },// /setState()
 
-      ///**
-      // * This returns the data of the form.
-      // */
-      //getData: function(){
-      //   var oState = this.getState();
-      //   var oForm = $.deserialize( this._$form.serialize() );
-      //
-      //   return {
-      //      somestring: oState.somestring,
-      //      somedate: oState.somedate
-      //   };
-      //},// /getData()
-      //
-      ///**
-      // * This validates the data of the form.
-      // */
-      //validate: function(){
-      //   var oData = this.getData();
-      //   this._lastErrors = [];
-      //
-      //   if( oData.somestring.length < 3 ){
-      //      this._lastErrors.push({
-      //         message: 'Somestring is NOT valid. Must be at least three characters.'
-      //      });
-      //   }
-      //
-      //   return this._lastErrors.length < 1;
-      //},// /validate()
-      //
-      ///**
-      // * This returns the last validation errors.
-      // */
-      //getErrors: function(){
-      //   return this._lastErrors;
-      //},// /getErrors()
-
       _destroy: function(){
          // Undo everything.
          this._beforeRender();
@@ -2360,7 +2493,225 @@ build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/includ
 
 }( window ));
 /**
-build time: Mon Jan 28 2019 18:54:35 GMT-0600 (CST)
+build time: Mon Jan 28 2019 21:28:21 GMT-0600 (CST)
+build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-show-agent-remove/build/ui-show-agent-remove.js
+**/
+(function( window, undefined ){
+
+/**
+build time: Mon Jan 28 2019 21:28:21 GMT-0600 (CST)
+build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-show-agent-remove/temp/ui-show-agent-remove-htm.js
+**/
+var cTemplate='<div class="show-agent-remove"> {{#error}} <div class="error-banner"> {{error}} </div> {{/error}} {{#wait}} <div class="info-banner"> {{wait}} </div> {{/wait}} {{^error}} {{^wait}} Hello, World! {{/wait}} {{/error}} </div>';
+/**
+build time: Mon Jan 28 2019 21:28:21 GMT-0600 (CST)
+build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-show-agent-remove/src/ui-show-agent-remove.js
+**/
+/**
+ * 01-28-2019
+ * The best app ever.
+ * Check for instance using $( el ).data( 'uiShowAgentRemove' );
+ * ~~ Scott Johnson
+ */
+
+
+/** List jshint ignore directives here. **/
+/* jshint browser:true */
+/* global jQuery:false */
+/* global cTemplate:false */
+
+/** List jshint ignore directives here. **/
+(function( $ ){
+
+   $.widget( 'ui.showAgentRemove', {
+      //_id: null,
+      //_lastErrors: null,
+      _invalidateTimeout: 0,
+
+      options: {
+         staff_id: null,
+         ticket_id: null,
+         on_response: null
+      },
+      _create: function() {
+         var self = this;
+
+         //this._id = Math.round( Math.random()*10000000 );
+         //this._lastErrors = [];
+         this.element.addClass( 'ui-widget-show-agent-remove' );
+         this.element.template({
+            renderOnInit: false,
+            template: cTemplate,
+            state: {
+               error: null,
+               wait: null
+            },
+            beforeRender: $.proxy( this._beforeRender, this ),
+            onRender: $.proxy( this._afterRender, this )
+         });
+
+         /** 
+          * This is how to set a deferred event listener that will automatically
+          * be destroyed when the widget is destroyed.
+          */
+         // this.element.on( 'EVENT.show-agent-remove', '.CLASSNAME', {self:this}, this._HANDLERMETHOD );
+
+         /*
+          * Make sure render() is always called within the context/scope of
+          * this widget.
+          */
+         this.render = $.proxy( this.render, this );
+         this._remove_ticket_agent()
+         .then(function( o_response ){
+            self._triggerEvent( 'onResponse', { widget:self, response: o_response } );
+         });
+      },// /_create()
+
+      _invalidate: function( undefined ) {
+         clearTimeout( this._invalidateTimeout );
+         this._invalidateTimeout = setTimeout( this.render, 20 );
+      },// /_invalidate()
+
+      render: function( undefined ) {
+         clearTimeout( this._invalidateTimeout );
+         this.element.template( 'render' );
+      },// /render()
+
+      /**
+       * This method allows you to undo anything that was done during the
+       * previous render.
+       */
+      _beforeRender: function( undefined ) {
+      },// /_beforeRender()
+
+      /**
+       * This method allows you to initialize widgets, bind events, or do
+       * anything else necessary after the new html has been rendered.
+       */
+      _afterRender: function( undefined ) {
+         var oState = this.getState();
+
+         // Trigger an event.
+         this._triggerEvent( 'afterRender', { widget:this } );
+      },// /_afterRender()
+
+      _remove_ticket_agent: function(){
+         var deferred = $.Deferred();
+         var self = this;
+         var c_ticket_id = this.options.ticket_id;
+         var n_staff_id = this.options.staff_id;
+
+         this._showWait( ''.concat( 'Removing agent ',n_staff_id,' to ticket ',c_ticket_id,'...' ) );
+
+         $.ajax({
+            url: 'ajax.php/ticket_options/script/remove_ticket_agent.php',
+            method: 'post',
+            type: 'json',
+            dataType: 'json',
+            data: {
+               ticket_id: c_ticket_id,
+               staff_id: n_staff_id
+            }
+         })
+         .then(function( o_result, status, o_xhr ){
+
+            if( o_result.error ) {
+               return self._showError( o_result.error.message );
+            }
+
+            if( o_result.result == 'ok' )
+            {
+               deferred.resolve( o_result );
+               return;
+            }
+
+         })
+         .fail(function( o_xhr, c_status, o_error  ){
+            if( c_status == 'parsererror' )
+            {
+               return self._showError( 'remove_ticket_agent failure: '.concat( o_error.message ) );
+            }
+
+            debugger;
+         });
+
+         return deferred.promise();
+      },// /_remove_ticket_agent()
+
+      /**
+       * This method allows you to call a method listening to this element
+       * only as well as trigger a bubbling event.
+       */
+      _triggerEvent: function( cType, oData ){
+         var fnMethod;
+         var cFullEventType = ( this.widgetEventPrefix + cType ).toLowerCase();
+         var oEvent = $.Event( cFullEventType );
+
+         switch( cType ){
+         case 'onResponse':
+            fnMethod = this.options.on_response;
+            break;
+
+         }// /switch()
+
+
+         if ( fnMethod ) {
+            fnMethod( oEvent, oData );
+         }
+
+         //this._trigger( cType, oEvent, oData );
+         this.element.trigger( oEvent, oData );
+      },// /_triggerEvent()
+
+      _showError: function( cMessage ){
+         this.setState({
+            error: cMessage,
+            wait: null
+         });
+
+      },// /_showError()
+
+      _showWait: function( cMessage ){
+         this.setState({
+            error: null,
+            wait: cMessage
+         });
+
+      },// /_showWait()
+
+      /**
+       * This is a proxy method that allows you to get the template state.
+       */
+      getState: function(){
+         return this.element.template( 'getState' );
+      },// /getState()
+
+      /**
+       * This is a proxy method that allows you to change the template state.
+       * @param  {object} oState      Object with changed state values.
+       * @param  {boolean} lRender   Whether or not to render changes.
+       * @param  {boolean} lDiff      Whether or not to check for changes.
+       *                         Useful for saving cpu cycles on changes
+       *                         that we don't care about.
+       */
+      setState: function( oState, lRender, lDiff ){
+         this.element.template( 'setState', oState, lRender, lDiff );
+      },// /setState()
+
+      _destroy: function(){
+         // Undo everything.
+         this._beforeRender();
+         this.element.off( '.show-agent-remove' );
+         this.element.template( 'destroy' );
+         this.element.removeClass( 'ui-widget-show-agent-remove' );
+      }// /_destroy()
+   });
+
+}( jQuery ));
+
+}( window ));
+/**
+build time: Mon Jan 28 2019 21:28:21 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/src/ticket-view-agents.js
 **/
 /**
@@ -2379,6 +2730,10 @@ build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/includ
    var $agent_list_error = $( '#agent-list-error' ).errorBanner();
    var $agent_list_search = $( '#agent-list-search' );
    var $agent_add_progress = $( '#agent-add-progress' );
+   var $agent_remove_progress = $( '#agent-remove-progress' );
+   var $agent_confirm_remove = $( '#agent-confirm-remove' );
+
+   
 
    var view = {
       _views: {},
@@ -2442,7 +2797,7 @@ build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/includ
                ticket_id: $.ticket_id
             }
          })
-         .then(function( o_result, status, o_xhr ){
+         .then(function( o_result/* , status, o_xhr */ ){
             if( o_result.error ) {
                return show_error( o_result.error.message );
             }
@@ -2453,7 +2808,13 @@ build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/includ
                   users: o_result.agents,
                   on_add_click: function( event, ui ){
                      view.show( 'add_agent_form' );
-                  }// /on_add_click()
+                  },// /on_add_click()
+
+                  on_remove_click: function( event, ui ){
+                     console.log( ui );
+                     view.show( 'remove_agent_confirm', { agent: ui.user });
+                  }// /on_remove_click()
+                  
                });
                return;
             }
@@ -2510,6 +2871,53 @@ build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/includ
          $agent_add_progress.showAgentAdd( 'destroy' );
       }
    });
+
+
+   view.add( 'remove_agent_progress', {
+      show: function( c_previous, o_data ){
+
+         $agent_remove_progress.showAgentRemove({
+            staff_id: o_data.agent.staff_id,
+            ticket_id: $.ticket_id,
+
+            on_response: function( /* event, ui */ ){
+               view.show( 'default' );
+            }
+         });
+      },
+
+      hide: function(){
+         $agent_remove_progress.showAgentRemove( 'destroy' );
+      }
+   });
+
+
+   view.add( 'remove_agent_confirm', {
+      show: function( c_previous, o_data ){
+         
+         $agent_confirm_remove.dialogConfirm({
+            message: ''.concat( 'This cannot be undone.',
+            ' Are you sure you wish to remove staff member "',o_data.agent.name,'" from this ticket?' ),
+
+            text_confirm: 'Yes, remove this agent',
+            text_cancel: 'No, Do NOT remove this agent',
+
+            on_cancel_click: function( /* event, ui */ ){
+               view.show( 'default' );
+            },
+
+            on_confirm_click: function( /* event, ui */ ){
+               view.show( 'remove_agent_progress', o_data );
+            }
+         });
+      },
+
+      hide: function(){
+         $agent_confirm_remove.dialogConfirm( 'destroy' );
+      }
+   });
+
+   
 
 
    view.show( 'default' );
