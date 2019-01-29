@@ -44,7 +44,8 @@ var build = module.exports = function (bob) { // jshint ignore:line
    buildJobMods.addDependencies('build', [
       bob.resolve( './widgets/ui-user-list' ),
       bob.resolve( './widgets/ui-error-banner' ),
-      bob.resolve( './widgets/ui-agent-search' )
+      bob.resolve( './widgets/ui-agent-search' ),
+      bob.resolve( './widgets/ui-show-agent-add' )
    ], {});
 
    // Create the 'deploy' job.
@@ -70,6 +71,7 @@ var build = module.exports = function (bob) { // jshint ignore:line
          concat([
             './widgets/ui-user-list/build/ui-user-list.css',
             './widgets/ui-agent-search/build/ui-agent-search.css',
+            './widgets/ui-show-agent-add/build/ui-show-agent-add.css',
             './src/ticket-view-agents.css'
          ],
             './temp/ticket-view-agents.css', {
@@ -87,6 +89,7 @@ var build = module.exports = function (bob) { // jshint ignore:line
             './widgets/ui-error-banner/build/ui-error-banner.js',
             './widgets/ui-user-list/build/ui-user-list.js',
             './widgets/ui-agent-search/build/ui-agent-search.js',
+            './widgets/ui-show-agent-add/build/ui-show-agent-add.js',
             './src/ticket-view-agents.js'
          ],
             './temp/ticket-view-agents.js', {
@@ -205,6 +208,7 @@ var build = module.exports = function (bob) { // jshint ignore:line
                './widgets/ui-error-banner/src',
                './widgets/ui-user-list/src',
                './widgets/ui-agent-search/src',
+               './widgets/ui-show-agent-add/src',
                './src'
             ]);
 

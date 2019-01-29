@@ -26,7 +26,7 @@
       _last_query: null,
 
       options: {
-         on_add_click: null
+         on_agent_click: null
       },
       _create: function() {
          this._id = Math.round( Math.random()*10000000 );
@@ -96,7 +96,7 @@
 
          this._$results = $( '.agent-search__results', this.element )
          .agentSearchResults({
-            on_add_click: this.options.on_add_click
+            on_agent_click: this.options.on_agent_click
          });
          this._$form = $( '.agent-search__form', this.element );
          this._$query = $( '.agent-search__form-query', this.element );
@@ -305,7 +305,7 @@
 
       options: {
          results: null,
-         on_add_click: null
+         on_agent_click: null
       },
       _create: function() {
          //this._id = Math.round( Math.random()*10000000 );
@@ -327,7 +327,7 @@
           * This is how to set a deferred event listener that will automatically
           * be destroyed when the widget is destroyed.
           */
-         this.element.on( 'click.agent-search-results', '.agent-search-results__agent', {self:this}, this._on_add_click );
+         this.element.on( 'click.agent-search-results', '.agent-search-results__agent', {self:this}, this._on_agent_click );
 
          /*
           * Make sure render() is always called within the context/scope of
@@ -365,16 +365,14 @@
          this._triggerEvent( 'afterRender', { widget:this } );
       },// /_afterRender()
 
-      _on_add_click: function( event ){
+      _on_agent_click: function( event ){
          var self = event.data.self;
          var n_staff_id = $(this).data( 'staff_id' );
 
          event.preventDefault();
 
-         console.log( 'click', n_staff_id );
-
-         self._triggerEvent( 'addClick', { widget:self, staff_id: n_staff_id } );
-      },// /_on_add_click()
+         self._triggerEvent( 'agentClick', { widget:self, staff_id: n_staff_id } );
+      },// /_on_agent_click()
 
       /**
        * This method allows you to call a method listening to this element
@@ -386,8 +384,8 @@
          var oEvent = $.Event( cFullEventType );
 
          switch( cType ){
-         case 'addClick':
-            fnMethod = this.options.on_add_click;
+         case 'agentClick':
+            fnMethod = this.options.on_agent_click;
             break;
 
          }// /switch()

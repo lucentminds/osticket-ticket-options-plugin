@@ -13,6 +13,7 @@
    var $agent_list = $( '#agent-list' );
    var $agent_list_error = $( '#agent-list-error' ).errorBanner();
    var $agent_list_search = $( '#agent-list-search' );
+   var $agent_add_progress = $( '#agent-add-progress' );
 
    var view = {
       _views: {},
@@ -22,7 +23,7 @@
          return this._views[ c_name ] = o_view;
       },// /add()
 
-      show: function( c_name ) {
+      show: function( c_name, o_data ) {
          var self = this;
 
          if( !this._views[ c_name ] ) {
@@ -36,21 +37,21 @@
          if( this._current != null ) {
             $.when( this._views[ this._current ].hide() )
             .then(function(){
-               self._show_now( c_name );
+               self._show_now( c_name, o_data );
             });
 
             return;
          }
 
-         return self._show_now( c_name );
+         return self._show_now( c_name, o_data );
 
       },// /show()
 
-      _show_now: function( c_name ) {
+      _show_now: function( c_name, o_data ) {
          var c_previous = this._current;
 
          this._current = c_name;
-         this._views[ c_name ].show( c_previous );
+         this._views[ c_name ].show( c_previous, o_data );
 
       }// /_show_now()
 
@@ -68,10 +69,13 @@
    view.add( 'default', {
       show: function(){
          $.ajax({
-            url: 'ajax.php/ticket_options/script/get_ticket_agents.php?ticket_id=20000',
+            url: 'ajax.php/ticket_options/script/get_ticket_agents.php',
             method: 'get',
             type: 'json',
-            dataType: 'json'
+            dataType: 'json',
+            data: {
+               ticket_id: $.ticket_id
+            }
          })
          .then(function( o_result, status, o_xhr ){
             if( o_result.error ) {
@@ -113,8 +117,8 @@
    view.add( 'add_agent_form', {
       show: function(){
          $agent_list_search.agentSearch({
-            on_add_click: function( event, ui ){
-               console.log( ui.staff_id );
+            on_agent_click: function( event, ui ){
+               view.show( 'add_agent_progress', { staff_id: ui.staff_id } );
             }
          });
       },
@@ -122,6 +126,23 @@
       hide: function(){
          $agent_list_search.agentSearch( 'destroy' );
          clear_error();
+      }
+   });
+
+
+   view.add( 'add_agent_progress', {
+      show: function( c_previous, o_data ){
+         $agent_add_progress.showAgentAdd({
+            staff_id: o_data.staff_id,
+            ticket_id: $.ticket_id,
+            on_response: function( /* event, ui */ ){
+               view.show( 'default' );
+            }
+         });
+      },
+
+      hide: function(){
+         $agent_add_progress.showAgentAdd( 'destroy' );
       }
    });
 

@@ -1,7 +1,7 @@
 /**
- * 01-24-2019
+ * 01-28-2019
  * The best app ever.
- * Check for instance using $( el ).data( 'uiUserList' );
+ * Check for instance using $( el ).data( 'uiShowAgentAdd' );
  * ~~ Scott Johnson
  */
 
@@ -14,27 +14,28 @@
 /** List jshint ignore directives here. **/
 (function( $ ){
 
-   $.widget( 'ui.userList', {
+   $.widget( 'ui.showAgentAdd', {
       //_id: null,
       //_lastErrors: null,
       _invalidateTimeout: 0,
 
       options: {
-         users: null,
-         on_remove_click: null,
-         on_add_click: null
+         staff_id: null,
+         ticket_id: null,
+         on_response: null
       },
       _create: function() {
+         var self = this;
+
          //this._id = Math.round( Math.random()*10000000 );
          //this._lastErrors = [];
-         this.element.addClass( 'ui-widget-user-list' );
+         this.element.addClass( 'ui-widget-show-agent-add' );
          this.element.template({
             renderOnInit: false,
             template: cTemplate,
             state: {
-               users: this.options.users,
                error: null,
-               wait: null
+               wait: ''.concat( 'Adding agent ',this.options.staff_id,' to ticket ',this.options.ticket_id,'...' )
             },
             beforeRender: $.proxy( this._beforeRender, this ),
             onRender: $.proxy( this._afterRender, this )
@@ -44,14 +45,17 @@
           * This is how to set a deferred event listener that will automatically
           * be destroyed when the widget is destroyed.
           */
-         this.element.on( 'click.user-list', '.user-list__btn-add', {self:this}, this._on_add_click );
+         // this.element.on( 'EVENT.show-agent-add', '.CLASSNAME', {self:this}, this._HANDLERMETHOD );
 
          /*
           * Make sure render() is always called within the context/scope of
           * this widget.
           */
          this.render = $.proxy( this.render, this );
-         this.render();
+         this._add_ticket_agent()
+         .then(function( o_response ){
+            self._triggerEvent( 'onResponse', { widget:self, response: o_response } );
+         });
       },// /_create()
 
       _invalidate: function( undefined ) {
@@ -76,18 +80,54 @@
        * anything else necessary after the new html has been rendered.
        */
       _afterRender: function( undefined ) {
-         /* var oState = this.getState(); */
+         var oState = this.getState();
 
          // Trigger an event.
          this._triggerEvent( 'afterRender', { widget:this } );
       },// /_afterRender()
 
-      _on_add_click: function( event ){
-         var self = event.data.self;
+      _add_ticket_agent: function(){
+         var deferred = $.Deferred();
+         var self = this;
+         var c_ticket_id = this.options.ticket_id;
+         var n_staff_id = this.options.staff_id;
 
-         // Trigger an event.
-         self._triggerEvent( 'add_click', { widget:self } );
-      },// /_on_add_click()
+         this._showWait( ''.concat( 'Adding agent ',n_staff_id,' to ticket ',c_ticket_id,'...' ) );
+
+         $.ajax({
+            url: 'ajax.php/ticket_options/script/add_ticket_agent.php',
+            method: 'post',
+            type: 'json',
+            dataType: 'json',
+            data: {
+               ticket_id: c_ticket_id,
+               staff_id: n_staff_id
+            }
+         })
+         .then(function( o_result, status, o_xhr ){
+
+            if( o_result.error ) {
+               return self._showError( o_result.error.message );
+            }
+
+            if( o_result.result == 'ok' )
+            {
+               deferred.resolve( o_result );
+               return;
+            }
+
+         })
+         .fail(function( o_xhr, c_status, o_error  ){
+            if( c_status == 'parsererror' )
+            {
+               return self._showError( 'get_ticket_agents failure: '.concat( o_error.message ) );
+            }
+
+            debugger;
+         });
+
+         return deferred.promise();
+      },// /_search_now()
 
       /**
        * This method allows you to call a method listening to this element
@@ -99,8 +139,8 @@
          var oEvent = $.Event( cFullEventType );
 
          switch( cType ){
-         case 'add_click':
-            fnMethod = this.options.on_add_click;
+         case 'onResponse':
+            fnMethod = this.options.on_response;
             break;
 
          }// /switch()
@@ -188,9 +228,9 @@
       _destroy: function(){
          // Undo everything.
          this._beforeRender();
-         this.element.off( '.user-list' );
+         this.element.off( '.show-agent-add' );
          this.element.template( 'destroy' );
-         this.element.removeClass( 'ui-widget-user-list' );
+         this.element.removeClass( 'ui-widget-show-agent-add' );
       }// /_destroy()
    });
 

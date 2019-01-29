@@ -14,64 +14,15 @@ $o_included = new TicketOptionsPlugin_AgentInclude( $ticket );
    <div id="agent-list-error"></div>
    <div id="agent-list-search"></div>
    <div id="agent-list-add"></div>
+   <div id="agent-add-progress"></div>
    <div id="agent-list"></div>
 
-      <?php $a_agents = $o_included->fetch_agents( $errors ) ?>
-      <?php if( !$a_agents ):?>
-
-      <div class="ticket-options-plugin__error error-banner">
-         <?= $errors[ 'err' ] ?>
-         
-      </div>
-
-      <?php endif ?>
-<?php
-/*
-   <?php if( $a_agents ):?>
-      <div class="ticket-options-plugin__agents">
-         
-         <?php foreach( $a_agents as $agent ):?>
-
-         <div class="ticket-options-plugin__agent">
-            <i class="icon-remove-circle" data-staff_id="<?= $agent[ 'staff_id' ] ?>"
-            title="Remove <?= $agent[ 'name' ] ?>"></i>
-            
-            <img class="ticket-options-plugin__agent-avatar" src="<?= $agent[ 'avatar' ] ?>"/>
-
-            <div>
-
-               <div class="ticket-options-plugin__agent-name ticket-options-plugin__agent-detail">
-               <?= $agent[ 'name' ] ?>
-                  
-               </div>
-
-
-               <div class="ticket-options-plugin__agent-email ticket-options-plugin__agent-detail">
-               <?= $agent[ 'email' ] ?>
-                  
-               </div>
-
-
-               <div class="ticket-options-plugin__agent-phone ticket-options-plugin__agent-detail">
-               <?= $agent[ 'mobile' ] ?$agent[ 'mobile' ] :$agent[ 'phone' ] ?>
-                  
-               </div>
-
-
-               <div class="ticket-options-plugin__agent-dept ticket-options-plugin__agent-detail">
-               <?= $agent[ 'department' ] ?>
-                  
-               </div>
-
-            </div>
-         </div>
-
-         <?php endforeach ?>
-
-      </div>
+   <?php if( $errors ): ?>
+   <div class="ticket-options-plugin__error error-banner">
+      <?= $errors[ 'err' ] ?>
+      
+   </div>
    <?php endif ?>
-   */
-?>
 
 
 </div>
@@ -79,6 +30,9 @@ $o_included = new TicketOptionsPlugin_AgentInclude( $ticket );
 <script type="text/javascript">
 // Make the CSRF token available to javascript. jQuery can hold it for us.
 $.csrf_token = '<?= $ost->getCSRF()->getToken() ?>';
+
+// Make the ticket ID available to javascript. jQuery can hold it for us.
+$.ticket_id = '<?= $ticket->getId() ?>';
 </script>
 
 <?php
