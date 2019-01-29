@@ -1,5 +1,7 @@
 <?php if(!defined('INCLUDE_DIR')) die('Fatal error');
 
+require_once( 'TicketOptionsPlugin_TicketAgent.php' );
+
 class TicketOptionsPlugin_AgentInclude
 {
    protected $_ticket;
@@ -26,40 +28,19 @@ class TicketOptionsPlugin_AgentInclude
    public function fetch_agents( &$errors )
    {
       $n_ticket_id = $this->_ticket->getNumber();
+      $o_ticket_agent = new TicketOptionsPlugin_TicketAgent( $n_ticket_id );
 
-      // Fetch the ticket agent record if any.
-      $c_sql = 'SELECT staff_id_list FROM `'.AIP_TICKET_AGENT_TABLE.'` WHERE ticket_id='.$n_ticket_id.';';
-      $o_result = db_query( $c_sql );
+      // Determines a list of staff IDs found in the table record.
+      $a_id_list = $o_ticket_agent->fetch( $errors );
 
-      if( !$o_result )
+      if( $errors )
       {
          // The sql schema file doesn't exist.
-         $errors[ 'err' ] = 'Failed to query table "'.AIP_TICKET_AGENT_TABLE.'" for agents.';
-         $this->log( LOG_ERR, 'TicketOptionsPlugin_AgentInclude get_agents 101', $errors[ 'err' ] );
+         $errors[ 'err' ] = 'Failed to fetch agents.';
          return false;
       }
 
-
-
-      if( db_num_rows( $o_result ) < 1 )
-      {
-         // There are no included agents on this ticket.
-         return array();
-      }
-      
-      $a_result = db_fetch_array( $o_result );
-      //echo '<pre>', print_r( $a_result, 1 ), '</pre>';
-
-
-
-      if( strlen( $a_result[ 'staff_id_list' ] ) < 1 )
-      {
-         return array();
-      }
-
-      $a_id_list = explode( ' ', $a_result[ 'staff_id_list' ] );
       $a_included_staff = array();
-
 
       foreach( $a_id_list as $c_id )
       {
@@ -75,8 +56,6 @@ class TicketOptionsPlugin_AgentInclude
 
          array_push( $a_included_staff, self::staff_factory( $o_staff_member ) );
          
-         
-         //echo '<pre>', print_r( $a_included_staff, 1 ), '</pre>';
       }// /foreach()
 
       return $a_included_staff;
