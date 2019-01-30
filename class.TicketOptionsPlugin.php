@@ -11,7 +11,7 @@ define( 'AIP_PATH', __DIR__ );
 define( 'AIP_PATH_RELATIVE', str_replace( ROOT_DIR.'include/', '', AIP_PATH ) );
 
 // Determines the full local path to the ticket-view.inc.php in production.
-define( 'AIP_PATH_VIEW', __DIR__. '/view' );
+define( 'AIP_PATH_INCLUDE', __DIR__. '/include' );
 
 // Determines the full local path to the public files.
 define( 'AIP_PATH_PUBLIC', __DIR__. '/public' );
@@ -66,6 +66,12 @@ class TicketOptionsPlugin extends Plugin
             'src' => AIP_PATH.'/replace/footer.inc.php',
             'original' => INCLUDE_DIR.'staff/footer.inc.php',
             'dest' => AIP_PATH.'/replaced/footer.inc.php'
+         ),
+
+         array(
+            'src' => AIP_PATH.'/replace/class.ticket.php',
+            'original' => INCLUDE_DIR.'class.ticket.php',
+            'dest' => AIP_PATH.'/replaced/class.ticket.php'
          )
 
       );
@@ -79,7 +85,7 @@ class TicketOptionsPlugin extends Plugin
          return;
       }
 
-      include( AIP_PATH_VIEW.'/ticket-view-agents.php' );
+      include( AIP_PATH_INCLUDE.'/ticket-view-agents.php' );
    }// /render_included_agents()
 
    function bootstrap()
@@ -441,7 +447,7 @@ class TicketOptionsPlugin extends Plugin
    // Returns the current instance of this class.
    public static function resolve_view( $c_filename )
    {
-      return AIP_PATH_VIEW.'/'.$c_filename;
+      return AIP_PATH_INCLUDE.'/'.$c_filename;
    }// /resolve_view()
 
    public static function add_javascript_src( $c_src_url )

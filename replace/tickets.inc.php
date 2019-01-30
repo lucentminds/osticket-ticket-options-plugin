@@ -1,2 +1,2 @@
 <!-- Replaced by TicketOptionsPlugin -->
-<?php include( AIP_PATH_VIEW.'/tickets.inc.php' );
+<?php include( AIP_PATH_INCLUDE.'/tickets.inc.php' );
