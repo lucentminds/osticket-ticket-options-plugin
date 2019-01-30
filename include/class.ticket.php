@@ -2406,6 +2406,19 @@ implements RestrictedAccess, Threadable {
                 $email->sendAlert($staff, $alert['subj'], $alert['body'], null, $options);
                 $sentlist[] = $staff->getEmail();
             }
+
+            /**
+             * Who should receive an alert.
+             * assigned staff/team
+             * included staff
+             * collaborators (non staff)
+             */
+            Signal::send('message-alert.sent', null, array(
+                'message_source' => $msg,
+                'options' => $options,
+                'recipients' => $recipients,
+                'sent_list' => $sentlist
+            ));
         }
 
         return $message;
