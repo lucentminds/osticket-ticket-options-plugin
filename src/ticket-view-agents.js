@@ -9,14 +9,23 @@
 /* jshint browser:true */
 /* global jQuery:false */
 
+
 (function ($, undefined) {
+$(document).on('ready pjax:success', function() { // This is required because osticket uses pjax for stuff.
+
+
    var $agent_list = $( '#agent-list' );
+
+   if( $agent_list.length < 1 ){
+      // We are not on a ticket page.
+      return;
+   }
+
    var $agent_list_error = $( '#agent-list-error' ).errorBanner();
    var $agent_list_search = $( '#agent-list-search' );
    var $agent_add_progress = $( '#agent-add-progress' );
    var $agent_remove_progress = $( '#agent-remove-progress' );
    var $agent_confirm_remove = $( '#agent-confirm-remove' );
-
    
 
    var view = {
@@ -205,5 +214,6 @@
 
 
    view.show( 'default' );
+});
 
-}( jQuery ))
+}( jQuery ));
