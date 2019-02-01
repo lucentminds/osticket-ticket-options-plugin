@@ -72,7 +72,25 @@ class TicketOptionsPlugin extends Plugin
             'src' => AIP_PATH.'/replace/class.ticket.php',
             'original' => INCLUDE_DIR.'class.ticket.php',
             'dest' => AIP_PATH.'/replaced/class.ticket.php'
-         )
+         ),
+
+         // array(
+         //    'src' => AIP_PATH.'/replace/list-item-row.tmpl.php',
+         //    'original' => INCLUDE_DIR.'list-item-row.tmpl.php',
+         //    'dest' => AIP_PATH.'/replaced/list-item-row.tmpl.php'
+         // ),
+
+         // array(
+         //    'src' => AIP_PATH.'/replace/scp.js',
+         //    'original' => SCP_DIR.'js/scp.js',
+         //    'dest' => AIP_PATH.'/replaced/scp.js'
+         // )
+
+         // array(
+         //    'src' => AIP_PATH.'/replace/thread.js',
+         //    'original' => SCP_DIR.'js/thread.js',
+         //    'dest' => AIP_PATH.'/replaced/thread.js'
+         // )
 
       );
 
@@ -94,6 +112,10 @@ class TicketOptionsPlugin extends Plugin
       $o_config = $this->getConfig();
 
       //$this->log( LOG_DEBUG, 'TicketOptionsPlugin bootstrap', 'Hello, World!' );
+
+      // Setup url routing.
+      require_once( AIP_PATH_LIB.'/TicketOptionsPlugin_ApiController.php' );
+      Signal::connect( 'ajax.scp', array ( 'TicketOptionsPlugin_ApiController', 'route_dispatch' ) );
 
       // Listen for ticket responses being e-mailed out.
       if( $o_config->get( 'enable_agent_include' ) == '1' )
@@ -466,7 +488,7 @@ class TicketOptionsPlugin extends Plugin
    {
       foreach( self::$_javascript_src_urls as $c_url )
       {
-         echo '<script type="text/javascript" src="'.$c_url.'"></script>'."\n";
+         echo "\n\n".'<script type="text/javascript" src="'.$c_url.'"></script>'."\n\n";
       }// /foreach()
       
    }// /render_javascript_sources()
