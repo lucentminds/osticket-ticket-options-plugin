@@ -27,19 +27,28 @@ define( 'AIP_PATH_TICKET_VIEW_REPLACED', __DIR__.'/replaced/ticket-view.inc.php'
 
 define( 'AIP_TICKET_AGENT_TABLE', TABLE_PREFIX.'plugin_ticketoptions_ticket_agent' );
 
+// Determines the full path to the "/scp" directory.
+define('AIP_SCP_DIR', ROOT_DIR.'scp' );
+
 //exit( INCLUDE_DIR . 'staff/staff.inc.php' );
 //public_html_56/ost/scp/admin.inc.php
-require_once(INCLUDE_DIR . 'class.plugin.php');
-require_once(INCLUDE_DIR . 'class.signal.php');
+
+// Need this for plugins.
+// require_once(INCLUDE_DIR . 'class.plugin.php');
+
+// // So we can listen to events.
+// require_once(INCLUDE_DIR . 'class.signal.php');
 
 
 
-// Import the Application class
-require_once(INCLUDE_DIR . 'class.app.php');
+// // Import the Application class
+// require_once(INCLUDE_DIR . 'class.app.php');
 
-require_once(INCLUDE_DIR . 'class.osticket.php');
+// require_once(INCLUDE_DIR . 'class.osticket.php');
+
 require_once('config.php');
 require_once( AIP_PATH_LIB.'/TicketOptionsPlugin_AgentInclude.php' );
+
 
 class TicketOptionsPlugin extends Plugin
 {
@@ -74,23 +83,23 @@ class TicketOptionsPlugin extends Plugin
             'dest' => AIP_PATH.'/replaced/class.ticket.php'
          ),
 
-         // array(
-         //    'src' => AIP_PATH.'/replace/list-item-row.tmpl.php',
-         //    'original' => INCLUDE_DIR.'list-item-row.tmpl.php',
-         //    'dest' => AIP_PATH.'/replaced/list-item-row.tmpl.php'
-         // ),
+         array(
+            'src' => AIP_PATH.'/replace/list-item-row.tmpl.php',
+            'original' => INCLUDE_DIR.'staff/templates/list-item-row.tmpl.php',
+            'dest' => AIP_PATH.'/replaced/list-item-row.tmpl.php'
+         ),
 
-         // array(
-         //    'src' => AIP_PATH.'/replace/scp.js',
-         //    'original' => SCP_DIR.'js/scp.js',
-         //    'dest' => AIP_PATH.'/replaced/scp.js'
-         // )
+         array(
+            'src' => AIP_PATH.'/replace/scp.js',
+            'original' => AIP_SCP_DIR.'/js/scp.js',
+            'dest' => AIP_PATH.'/replaced/scp.js'
+         ),
 
-         // array(
-         //    'src' => AIP_PATH.'/replace/thread.js',
-         //    'original' => SCP_DIR.'js/thread.js',
-         //    'dest' => AIP_PATH.'/replaced/thread.js'
-         // )
+         array(
+            'src' => AIP_PATH.'/replace/thread.js',
+            'original' => AIP_SCP_DIR.'/js/thread.js',
+            'dest' => AIP_PATH.'/replaced/thread.js'
+         )
 
       );
 
@@ -98,6 +107,7 @@ class TicketOptionsPlugin extends Plugin
 
    public static function render_included_agents()
    {
+      
       if( !self::agent_include_enabled() )
       {
          return;
@@ -121,7 +131,6 @@ class TicketOptionsPlugin extends Plugin
       if( $o_config->get( 'enable_agent_include' ) == '1' )
       {
          require_once( AIP_PATH_LIB.'/TicketOptionsPlugin_SignalRouter.php' );
-         //Signal::connect('user_reply.sent', array($this, 'on_user_reply') );
 
          /**
           * Who should receive an alert.
@@ -157,6 +166,9 @@ class TicketOptionsPlugin extends Plugin
       // Make sure we've replaced files.
       if( $this->replace_original_files( $errors ) === false )
       {
+         // Try and restore, but don't worry about errors.
+         $no_err = array();
+         $this->restore_original_files( $no_err );
          return false;
       }
 
@@ -478,20 +490,20 @@ class TicketOptionsPlugin extends Plugin
       return AIP_PATH_INCLUDE.'/'.$c_filename;
    }// /resolve_view()
 
-   public static function add_javascript_src( $c_src_url )
-   {
-      array_push( self::$_javascript_src_urls, $c_src_url );
+   // public static function add_javascript_src( $c_src_url )
+   // {
+   //    array_push( self::$_javascript_src_urls, $c_src_url );
 
-   }// /add_javascript_src()
+   // }// /add_javascript_src()
 
-   public static function render_javascript_sources()
-   {
-      foreach( self::$_javascript_src_urls as $c_url )
-      {
-         echo "\n\n".'<script type="text/javascript" src="'.$c_url.'"></script>'."\n\n";
-      }// /foreach()
+   // public static function render_javascript_sources()
+   // {
+   //    foreach( self::$_javascript_src_urls as $c_url )
+   //    {
+   //       echo "\n\n".'<script type="text/javascript" src="'.$c_url.'"></script>'."\n\n";
+   //    }// /foreach()
       
-   }// /render_javascript_sources()
+   // }// /render_javascript_sources()
 
 
 }// /class TicketOptionsPlugin

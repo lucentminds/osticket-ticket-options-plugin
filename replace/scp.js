@@ -435,7 +435,7 @@ var scp_prep = function() {
 
 
 
-
+     // Replaced by TicketOptionsPlugin
      // Don't mess with the header width. This plugin made the display wider.
      //$that.find('.content').width($that.width());
 

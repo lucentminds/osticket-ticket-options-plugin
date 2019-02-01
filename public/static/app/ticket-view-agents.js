@@ -1,7 +1,7 @@
 (function( undefined ){
 
 /**
-build time: Mon Jan 28 2019 21:28:21 GMT-0600 (CST)
+build time: Fri Feb 01 2019 11:47:46 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/mustache/2.0.0/mustache.js
 **/
 /*!
@@ -607,7 +607,7 @@ build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/includ
 }));
 
 /**
-build time: Mon Jan 28 2019 21:28:21 GMT-0600 (CST)
+build time: Fri Feb 01 2019 11:47:46 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/jquery-debounce/jquery-debounce.js
 **/
 /**
@@ -669,7 +669,7 @@ build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/includ
 
 
 /**
-build time: Mon Jan 28 2019 21:28:21 GMT-0600 (CST)
+build time: Fri Feb 01 2019 11:47:46 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-state/ui-state.js
 **/
 /**
@@ -1000,7 +1000,7 @@ build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/includ
 }( jQuery ));
 
 /**
-build time: Mon Jan 28 2019 21:28:21 GMT-0600 (CST)
+build time: Fri Feb 01 2019 11:47:46 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-template/ui-template.js
 **/
 /**
@@ -1183,18 +1183,18 @@ build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/includ
 }( jQuery ));
 
 /**
-build time: Mon Jan 28 2019 21:28:21 GMT-0600 (CST)
+build time: Fri Feb 01 2019 11:47:46 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-dialog-confirm/build/ui-dialog-confirm.js
 **/
 (function( window, undefined ){
 
 /**
-build time: Mon Jan 28 2019 21:28:21 GMT-0600 (CST)
+build time: Fri Feb 01 2019 11:47:46 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-dialog-confirm/temp/ui-dialog-confirm-htm.js
 **/
 var cTemplate='<div class="dialog-confirm"> {{#error}} <div class="callout alert"> {{error}} </div> {{/error}} {{#wait}} <div class="callout primary"> {{wait}} </div> {{/wait}} {{^error}} {{^wait}} <div class="warning-banner"> Please confirm! </div> <p> {{message}} </p> <button class="dialog-confirm__btn-cancel action-button"> {{text_cancel}} </button> <button class="dialog-confirm__btn-ok action-button"> {{text_confirm}} </button> {{/wait}} {{/error}} </div>';
 /**
-build time: Mon Jan 28 2019 21:28:21 GMT-0600 (CST)
+build time: Fri Feb 01 2019 11:47:46 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-dialog-confirm/src/ui-dialog-confirm.js
 **/
 /**
@@ -1379,18 +1379,18 @@ build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/includ
 
 }( window ));
 /**
-build time: Mon Jan 28 2019 21:28:21 GMT-0600 (CST)
+build time: Fri Feb 01 2019 11:47:46 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-error-banner/build/ui-error-banner.js
 **/
 (function( window, undefined ){
 
 /**
-build time: Mon Jan 28 2019 21:28:21 GMT-0600 (CST)
+build time: Fri Feb 01 2019 11:47:46 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-error-banner/temp/ui-error-banner-htm.js
 **/
 var cTemplate='{{#message}} <div class="error-banner"> {{message}} </div> {{/message}}';
 /**
-build time: Mon Jan 28 2019 21:28:21 GMT-0600 (CST)
+build time: Fri Feb 01 2019 11:47:46 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-error-banner/src/ui-error-banner.js
 **/
 /**
@@ -1542,18 +1542,18 @@ build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/includ
 
 }( window ));
 /**
-build time: Mon Jan 28 2019 21:28:21 GMT-0600 (CST)
+build time: Fri Feb 01 2019 11:47:46 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-user-list/build/ui-user-list.js
 **/
 (function( window, undefined ){
 
 /**
-build time: Mon Jan 28 2019 21:28:21 GMT-0600 (CST)
+build time: Fri Feb 01 2019 11:47:46 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-user-list/temp/ui-user-list-htm.js
 **/
 var cTemplate='<div class="user-list"> {{#error}} <div class="callout alert"> {{error}} </div> {{/error}} {{#wait}} <div class="callout primary"> {{wait}} </div> {{/wait}} {{^error}} {{^wait}} <button class="user-list__btn-add action-button"> <i class="icon-plus"></i> Add an agent </button> {{^users}} <div class="info-banner"> No agents found. Add some! </div> {{/users}} <div class="ticket-options-plugin__agents"> {{#users}} <div class="ticket-options-plugin__agent"> <i class="user-list__btn-remove icon-remove-circle" data-staff_id="{{staff_id}}" title="Remove {{name}}"></i> <img class="ticket-options-plugin__agent-avatar" src="{{avatar}}"/> <div> <div class="ticket-options-plugin__agent-name ticket-options-plugin__agent-detail"> {{name}} </div> <div class="ticket-options-plugin__agent-email ticket-options-plugin__agent-detail"> {{email}} </div> <div class="ticket-options-plugin__agent-phone ticket-options-plugin__agent-detail"> {{#mobile}} {{mobile}} {{/mobile}} {{^mobile}} {{phone}} {{/mobile}} </div> <div class="ticket-options-plugin__agent-dept ticket-options-plugin__agent-detail"> {{department}} </div> </div> </div> {{/users}} </div> {{/wait}} {{/error}} </div>';
 /**
-build time: Mon Jan 28 2019 21:28:21 GMT-0600 (CST)
+build time: Fri Feb 01 2019 11:47:46 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-user-list/src/ui-user-list.js
 **/
 /**
@@ -1747,23 +1747,23 @@ build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/includ
 
 }( window ));
 /**
-build time: Mon Jan 28 2019 21:28:21 GMT-0600 (CST)
+build time: Fri Feb 01 2019 11:47:46 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-agent-search/build/ui-agent-search.js
 **/
 (function( window, undefined ){
 
 /**
-build time: Mon Jan 28 2019 21:28:21 GMT-0600 (CST)
+build time: Fri Feb 01 2019 11:47:46 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-agent-search/temp/ui-agent-search-htm.js
 **/
 var cTemplate='<div class="agent-search"> {{#error}} <div class="callout alert"> {{error}} </div> {{/error}} {{#wait}} <div class="callout primary"> {{wait}} </div> {{/wait}} {{^error}} {{^wait}} <form class="agent-search__form"> <label for="query_{{id}}">Search term:</label> <input class="agent-search__form-query" type="text" name="search_query" placeholder="Type a username or id." id="query_{{id}}"/> </form> <div class="agent-search__results"></div> {{/wait}} {{/error}} </div>';
 /**
-build time: Mon Jan 28 2019 21:28:21 GMT-0600 (CST)
+build time: Fri Feb 01 2019 11:47:46 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-agent-search/temp/ui-agent-search-htm-results.js
 **/
 var cResultsTemplate='<div class="agent-search-results"> {{#error}} <div class="error-banner"> {{error}} </div> {{/error}} {{#wait}} <div class="warning-banner"> {{wait}} </div> {{/wait}} {{^error}} {{^wait}} <div class="agent-search-results__agents"> {{#results}} <div class="agent-search-results__agent" data-staff_id="{{staff_id}}"> <div class="agent-search-results__agent-button"> <i class="icon-plus"></i> </div> <div class="agent-search-results__agent-card"> <img class="ticket-options-plugin__agent-avatar" src="{{avatar}}"/> <div> <div class="agent-search-results__agent-name agent-search-results__agent-detail"> {{name}} </div> <div class="agent-search-results__agent-email agent-search-results__agent-detail"> {{email}} </div> </div> </div> </div> {{/results}} </div> {{/wait}} {{/error}} </div>';
 /**
-build time: Mon Jan 28 2019 21:28:21 GMT-0600 (CST)
+build time: Fri Feb 01 2019 11:47:46 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-agent-search/src/ui-agent-search.js
 **/
 /**
@@ -2275,18 +2275,18 @@ build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/includ
 
 }( window ));
 /**
-build time: Mon Jan 28 2019 21:28:21 GMT-0600 (CST)
+build time: Fri Feb 01 2019 11:47:46 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-show-agent-add/build/ui-show-agent-add.js
 **/
 (function( window, undefined ){
 
 /**
-build time: Mon Jan 28 2019 21:28:21 GMT-0600 (CST)
+build time: Fri Feb 01 2019 11:47:46 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-show-agent-add/temp/ui-show-agent-add-htm.js
 **/
 var cTemplate='<div class="show-agent-add"> {{#error}} <div class="error-banner"> {{error}} </div> {{/error}} {{#wait}} <div class="info-banner"> {{wait}} </div> {{/wait}} {{^error}} {{^wait}} Hello, World! {{/wait}} {{/error}} </div>';
 /**
-build time: Mon Jan 28 2019 21:28:21 GMT-0600 (CST)
+build time: Fri Feb 01 2019 11:47:46 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-show-agent-add/src/ui-show-agent-add.js
 **/
 /**
@@ -2493,18 +2493,18 @@ build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/includ
 
 }( window ));
 /**
-build time: Mon Jan 28 2019 21:28:21 GMT-0600 (CST)
+build time: Fri Feb 01 2019 11:47:46 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-show-agent-remove/build/ui-show-agent-remove.js
 **/
 (function( window, undefined ){
 
 /**
-build time: Mon Jan 28 2019 21:28:21 GMT-0600 (CST)
+build time: Fri Feb 01 2019 11:47:46 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-show-agent-remove/temp/ui-show-agent-remove-htm.js
 **/
 var cTemplate='<div class="show-agent-remove"> {{#error}} <div class="error-banner"> {{error}} </div> {{/error}} {{#wait}} <div class="info-banner"> {{wait}} </div> {{/wait}} {{^error}} {{^wait}} Hello, World! {{/wait}} {{/error}} </div>';
 /**
-build time: Mon Jan 28 2019 21:28:21 GMT-0600 (CST)
+build time: Fri Feb 01 2019 11:47:46 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-show-agent-remove/src/ui-show-agent-remove.js
 **/
 /**
@@ -2711,7 +2711,7 @@ build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/includ
 
 }( window ));
 /**
-build time: Mon Jan 28 2019 21:28:21 GMT-0600 (CST)
+build time: Fri Feb 01 2019 11:47:46 GMT-0600 (CST)
 build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/src/ticket-view-agents.js
 **/
 /**
@@ -2725,14 +2725,23 @@ build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/includ
 /* jshint browser:true */
 /* global jQuery:false */
 
+
 (function ($, undefined) {
+$(document).on('ready pjax:success', function() { // This is required because osticket uses pjax for stuff.
+
+
    var $agent_list = $( '#agent-list' );
+
+   if( $agent_list.length < 1 ){
+      // We are not on a ticket page.
+      return;
+   }
+
    var $agent_list_error = $( '#agent-list-error' ).errorBanner();
    var $agent_list_search = $( '#agent-list-search' );
    var $agent_add_progress = $( '#agent-add-progress' );
    var $agent_remove_progress = $( '#agent-remove-progress' );
    var $agent_confirm_remove = $( '#agent-confirm-remove' );
-
    
 
    var view = {
@@ -2921,6 +2930,7 @@ build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/includ
 
 
    view.show( 'default' );
+});
 
-}( jQuery ))
+}( jQuery ));
 }());

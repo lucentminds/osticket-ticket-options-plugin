@@ -36,7 +36,3 @@ $.csrf_token = '<?= $ost->getCSRF()->getToken() ?>';
 // Make the ticket ID available to javascript. jQuery can hold it for us.
 $.ticket_id = '<?= $ticket->getId() ?>';
 </script>
-
-<?php
-TicketOptionsPlugin::add_javascript_src( 'ajax.php/ticket_options/static/app/ticket-view-agents.js' );
-?>

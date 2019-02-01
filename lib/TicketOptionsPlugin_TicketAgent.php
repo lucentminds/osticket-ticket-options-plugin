@@ -22,6 +22,12 @@ class TicketOptionsPlugin_TicketAgent
       
    }// log()
 
+   protected static function log_static( $n_priority, $c_title, $c_msg, $l_alert=false, $l_force=false )
+   {
+      $ticket_agent = new TicketOptionsPlugin_TicketAgent( 0 );
+      $ticket_agent->log(  $n_priority, $c_title, $c_msg, $l_alert, $l_force  );
+   }// /protected()
+
 
    public function fetch( &$errors )
    {
@@ -99,7 +105,7 @@ class TicketOptionsPlugin_TicketAgent
          {
             // Not sure yet if I should skip if the staff member isn't found.
             $errors[ 'err' ] = 'Staff member "'.$c_id.'" not found.';
-            $this->log( LOG_ERR, 'TicketOptionsPlugin_TicketAgent lookup_staff 101', $errors[ 'err' ] );
+            self::log_static( LOG_ERR, 'TicketOptionsPlugin_TicketAgent lookup_staff 101', $errors[ 'err' ] );
             return null;
          }
 

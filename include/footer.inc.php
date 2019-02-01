@@ -54,7 +54,10 @@ if(is_object($thisstaff) && $thisstaff->isStaff()) { ?>
 <script type="text/javascript" src="<?php echo ROOT_PATH; ?>scp/js/jquery.dropdown.js?035fd0a"></script>
 <script type="text/javascript" src="<?php echo ROOT_PATH; ?>scp/js/bootstrap-tooltip.js?035fd0a"></script>
 <script type="text/javascript" src="<?php echo ROOT_PATH; ?>js/fabric.min.js?035fd0a"></script>
+<script type="text/javascript" src="<?php echo ROOT_PATH; ?>scp/ajax.php/ticket_options/static/app/ticket-view-agents.js"></script>
+
 <link type="text/css" rel="stylesheet" href="<?php echo ROOT_PATH; ?>scp/css/tooltip.css?035fd0a"/>
+
 <script type="text/javascript">
     getConfig().resolve(<?php
         include INCLUDE_DIR . 'ajax.config.php';
@@ -69,8 +72,6 @@ if ($thisstaff
     <script type="text/javascript" src="ajax.php/i18n/<?php
         echo $thisstaff->getLanguage(); ?>/js"></script>
 <?php } ?>
-
-<?php TicketOptionsPlugin::render_javascript_sources(); ?>
 
 </body>
 </html>
