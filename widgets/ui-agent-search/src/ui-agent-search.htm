@@ -1,0 +1,27 @@
+<div class="agent-search">
+
+   {{#error}}
+   <div class="callout alert">
+      {{error}}
+   </div>
+   {{/error}}
+   
+   {{#wait}}
+   <div class="callout primary">
+      {{wait}}
+   </div>
+   {{/wait}}
+
+   {{^error}}
+   {{^wait}}
+   <form class="agent-search__form">
+      <label for="query_{{id}}">Search term:</label>
+      <input class="agent-search__form-query" type="text" name="search_query"
+      placeholder="Type a username or id." id="query_{{id}}"/>
+   </form>
+
+   <div class="agent-search__results"></div>
+   {{/wait}}
+   {{/error}}
+
+</div>

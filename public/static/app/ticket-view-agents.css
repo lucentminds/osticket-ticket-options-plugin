@@ -1,0 +1,332 @@
+
+/**
+build time: Fri Feb 01 2019 11:47:46 GMT-0600 (CST)
+build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-dialog-confirm/build/ui-dialog-confirm.css
+**/
+.ui-widget-dialog-confirm
+{
+   border: 1px dashed #999999;
+   padding: 2em;
+}
+
+.ui-widget-dialog-confirm .item
+{
+   /* flex-grow: 0 */
+}
+
+/**
+ * Hide the number scroll arrows in number input fields.
+ */
+.ui-widget-dialog-confirm input[type=number]
+{
+   -moz-appearance: textfield;
+}
+
+.ui-widget-dialog-confirm input[type=number]::-webkit-outer-spin-button,
+.ui-widget-dialog-confirm input[type=number]::-webkit-inner-spin-button
+{
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Small only */
+/*@media screen and (max-width: 39.9375em) {}*/
+
+/* Medium and up */
+/*@media screen and (min-width: 40em) {}*/
+
+/* Medium only */
+/*@media screen and (min-width: 40em) and (max-width: 63.9375em) {}*/
+
+/* Large and up */
+/*@media screen and (min-width: 64em) {}*/
+
+/* Large only */
+/*@media screen and (min-width: 64em) and (max-width: 74.9375em) {}*/
+/**
+build time: Fri Feb 01 2019 11:47:46 GMT-0600 (CST)
+build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-user-list/build/ui-user-list.css
+**/
+.ui-widget-user-list
+{
+   /* display: flex */
+}
+
+.ui-widget-user-list .action-button
+{
+   margin: 0;
+   margin-bottom: 1em;
+}
+
+
+
+
+
+
+
+.ticket-options-plugin__agents
+{
+   display: flex;
+}
+
+.ticket-options-plugin__agents .icon-remove-circle
+{
+   font-size: 1.5em;
+   position: absolute;
+   cursor: pointer;
+}
+
+.ticket-options-plugin__agents .icon-remove-circle:hover
+{
+   background-color: #999999;
+}
+
+
+
+.ticket-options-plugin__agents .ticket-options-plugin__agent
+{
+   display: flex;
+   border: 1px solid #cccccc;
+   border-left: 1em solid #ff8637;
+   padding: 0.3em;
+   margin-right: 0.3em;
+}
+
+.ticket-options-plugin__agents .ticket-options-plugin__agent-avatar
+{
+   margin-right: 0.3em;
+}
+
+.ticket-options-plugin__agents .ticket-options-plugin__agent-detail
+{
+   margin-bottom: 0.2em;
+}
+
+
+.ticket-options-plugin__agents .ticket-options-plugin__agent-name
+{
+   font-weight: bold;
+}
+
+.ticket-options-plugin__agents .ticket-options-plugin__agent-email,
+.ticket-options-plugin__agents .ticket-options-plugin__agent-phone,
+.ticket-options-plugin__agents .ticket-options-plugin__agent-role,
+.ticket-options-plugin__agents .ticket-options-plugin__agent-dept
+{
+   font-size: 0.9em;
+}
+
+.ticket-options-plugin__agents .ticket-options-plugin__agent-phone,
+.ticket-options-plugin__agents .ticket-options-plugin__agent-role,
+.ticket-options-plugin__agents .ticket-options-plugin__agent-dept
+{
+   opacity: 0.5;
+}
+
+/* Small only */
+/*@media screen and (max-width: 39.9375em) {}*/
+
+/* Medium and up */
+/*@media screen and (min-width: 40em) {}*/
+
+/* Medium only */
+/*@media screen and (min-width: 40em) and (max-width: 63.9375em) {}*/
+
+/* Large and up */
+/*@media screen and (min-width: 64em) {}*/
+
+/* Large only */
+/*@media screen and (min-width: 64em) and (max-width: 74.9375em) {}*/
+/**
+build time: Fri Feb 01 2019 11:47:46 GMT-0600 (CST)
+build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-agent-search/build/ui-agent-search.css
+**/
+.ui-widget-agent-search
+{
+   /* display: flex */
+}
+
+
+
+
+.ui-widget-agent-search .agent-search__form
+{
+   margin-bottom: 1em;
+}
+
+.agent-search-results .agent-search-results__agents
+{
+   display: flex;
+   flex-wrap: wrap;
+}
+
+.agent-search-results .agent-search-results__agent
+{
+   margin-bottom: 1em;
+   display: flex;
+   align-items: center;
+   width: 17em;
+   justify-content: space-between;
+   border: 1px solid #999999;
+   margin-right: 1em;
+   cursor: pointer;
+}
+
+
+.agent-search-results .agent-search-results__agent:hover
+{
+   background-color: #74b9fd;
+}
+
+.agent-search-results .agent-search-results__agent-button
+{
+   text-align: center;
+   width: 3em;
+}
+
+.agent-search-results .agent-search-results__agent-card
+{
+   display: flex;
+   padding: 0.3em;
+   border-left: 1em solid #ff8637;
+   font-size: 0.8em;
+   width: 17em;
+}
+
+.agent-search-results .ticket-options-plugin__agent-avatar
+{
+   width: 3em;
+   height: 3em;
+   margin-right: 0.5em;
+}
+
+.agent-search-results .agent-search-results__agent-name
+{
+   font-weight: bold;
+}
+
+.agent-search-results .agent-search-results__agent-email
+{
+   font-size: 0.9em;
+   opacity: 0.5;
+}
+
+.agent-search-results .agent-search-results__agent-detail
+{
+   margin-bottom: 0.2em;
+}
+
+
+
+/* Small only */
+/*@media screen and (max-width: 39.9375em) {}*/
+
+/* Medium and up */
+/*@media screen and (min-width: 40em) {}*/
+
+/* Medium only */
+/*@media screen and (min-width: 40em) and (max-width: 63.9375em) {}*/
+
+/* Large and up */
+/*@media screen and (min-width: 64em) {}*/
+
+/* Large only */
+/*@media screen and (min-width: 64em) and (max-width: 74.9375em) {}*/
+/**
+build time: Fri Feb 01 2019 11:47:46 GMT-0600 (CST)
+build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-show-agent-add/build/ui-show-agent-add.css
+**/
+.ui-widget-show-agent-add
+{
+   /* display: flex */
+}
+
+.ui-widget-show-agent-add .item
+{
+   /* flex-grow: 0 */
+}
+
+/**
+ * Hide the number scroll arrows in number input fields.
+ */
+.ui-widget-show-agent-add input[type=number]
+{
+   -moz-appearance: textfield;
+}
+
+.ui-widget-show-agent-add input[type=number]::-webkit-outer-spin-button,
+.ui-widget-show-agent-add input[type=number]::-webkit-inner-spin-button
+{
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Small only */
+/*@media screen and (max-width: 39.9375em) {}*/
+
+/* Medium and up */
+/*@media screen and (min-width: 40em) {}*/
+
+/* Medium only */
+/*@media screen and (min-width: 40em) and (max-width: 63.9375em) {}*/
+
+/* Large and up */
+/*@media screen and (min-width: 64em) {}*/
+
+/* Large only */
+/*@media screen and (min-width: 64em) and (max-width: 74.9375em) {}*/
+/**
+build time: Fri Feb 01 2019 11:47:46 GMT-0600 (CST)
+build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/widgets/ui-show-agent-remove/build/ui-show-agent-remove.css
+**/
+.ui-widget-show-agent-remove
+{
+   /* display: flex */
+}
+
+.ui-widget-show-agent-remove .item
+{
+   /* flex-grow: 0 */
+}
+
+/**
+ * Hide the number scroll arrows in number input fields.
+ */
+.ui-widget-show-agent-remove input[type=number]
+{
+   -moz-appearance: textfield;
+}
+
+.ui-widget-show-agent-remove input[type=number]::-webkit-outer-spin-button,
+.ui-widget-show-agent-remove input[type=number]::-webkit-inner-spin-button
+{
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Small only */
+/*@media screen and (max-width: 39.9375em) {}*/
+
+/* Medium and up */
+/*@media screen and (min-width: 40em) {}*/
+
+/* Medium only */
+/*@media screen and (min-width: 40em) and (max-width: 63.9375em) {}*/
+
+/* Large and up */
+/*@media screen and (min-width: 64em) {}*/
+
+/* Large only */
+/*@media screen and (min-width: 64em) and (max-width: 74.9375em) {}*/
+/**
+build time: Fri Feb 01 2019 11:47:46 GMT-0600 (CST)
+build source: /home/sjohnson/project/osticket-helpdesk/public_html_56/ost/include/plugins/osticket-ticket-options-plugin/src/ticket-view-agents.css
+**/
+
+
+.ticket_info
+{
+   border: 1px dashed #cccccc;
+   margin-bottom: 1em;
+}
+

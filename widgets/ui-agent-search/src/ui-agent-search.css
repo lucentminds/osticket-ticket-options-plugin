@@ -1,0 +1,91 @@
+.ui-widget-agent-search
+{
+   /* display: flex */
+}
+
+
+
+
+.ui-widget-agent-search .agent-search__form
+{
+   margin-bottom: 1em;
+}
+
+.agent-search-results .agent-search-results__agents
+{
+   display: flex;
+   flex-wrap: wrap;
+}
+
+.agent-search-results .agent-search-results__agent
+{
+   margin-bottom: 1em;
+   display: flex;
+   align-items: center;
+   width: 17em;
+   justify-content: space-between;
+   border: 1px solid #999999;
+   margin-right: 1em;
+   cursor: pointer;
+}
+
+
+.agent-search-results .agent-search-results__agent:hover
+{
+   background-color: #74b9fd;
+}
+
+.agent-search-results .agent-search-results__agent-button
+{
+   text-align: center;
+   width: 3em;
+}
+
+.agent-search-results .agent-search-results__agent-card
+{
+   display: flex;
+   padding: 0.3em;
+   border-left: 1em solid #ff8637;
+   font-size: 0.8em;
+   width: 17em;
+}
+
+.agent-search-results .ticket-options-plugin__agent-avatar
+{
+   width: 3em;
+   height: 3em;
+   margin-right: 0.5em;
+}
+
+.agent-search-results .agent-search-results__agent-name
+{
+   font-weight: bold;
+}
+
+.agent-search-results .agent-search-results__agent-email
+{
+   font-size: 0.9em;
+   opacity: 0.5;
+}
+
+.agent-search-results .agent-search-results__agent-detail
+{
+   margin-bottom: 0.2em;
+}
+
+
+
+/* Small only */
+/*@media screen and (max-width: 39.9375em) {}*/
+
+/* Medium and up */
+/*@media screen and (min-width: 40em) {}*/
+
+/* Medium only */
+/*@media screen and (min-width: 40em) and (max-width: 63.9375em) {}*/
+
+/* Large and up */
+/*@media screen and (min-width: 64em) {}*/
+
+/* Large only */
+/*@media screen and (min-width: 64em) and (max-width: 74.9375em) {}*/

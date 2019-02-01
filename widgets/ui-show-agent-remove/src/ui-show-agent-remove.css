@@ -1,0 +1,39 @@
+.ui-widget-show-agent-remove
+{
+   /* display: flex */
+}
+
+.ui-widget-show-agent-remove .item
+{
+   /* flex-grow: 0 */
+}
+
+/**
+ * Hide the number scroll arrows in number input fields.
+ */
+.ui-widget-show-agent-remove input[type=number]
+{
+   -moz-appearance: textfield;
+}
+
+.ui-widget-show-agent-remove input[type=number]::-webkit-outer-spin-button,
+.ui-widget-show-agent-remove input[type=number]::-webkit-inner-spin-button
+{
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Small only */
+/*@media screen and (max-width: 39.9375em) {}*/
+
+/* Medium and up */
+/*@media screen and (min-width: 40em) {}*/
+
+/* Medium only */
+/*@media screen and (min-width: 40em) and (max-width: 63.9375em) {}*/
+
+/* Large and up */
+/*@media screen and (min-width: 64em) {}*/
+
+/* Large only */
+/*@media screen and (min-width: 64em) and (max-width: 74.9375em) {}*/

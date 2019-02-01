@@ -1,2 +1,12 @@
 # osticket-ticket-options-plugin
-Handy ticket options for osTicket
+Adds handy features and tweaks to individual tickets.
+
+## For development
+```shell
+npm run setup
+```
+
+## Todo
+* Fix sticky bar when sorting messages in descending order.
+
+* Create a way to add other agents to the e-mail notifications that get sent when a ticket has activity.
