@@ -19,12 +19,12 @@
    },
    "repository": {
       "type": "git",
-      "url": "git+https://github.com/life-corp/app.git"
+      "url": "git+https://github.com/lucentminds/osticket-ticket-options-plugin/app.git"
    },
    "bugs": {
-      "url": "https://github.com/life-corp/app/issues"
+      "url": "https://github.com/lucentminds/osticket-ticket-options-plugin/app/issues"
    },
-   "homepage": "https://github.com/life-corp/app#readme",
+   "homepage": "https://github.com/lucentminds/osticket-ticket-options-plugin/app#readme",
    "devDependencies": {
       "q": "^1.4.1",
       "node-sass": "^4.5.3",

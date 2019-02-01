@@ -12,7 +12,7 @@ return array(
    'version' => '0.1',
    'name' => 'Ticket options for osTicket 1.10.4',
    'author' => 'Scott Johnson',
-   'description' => 'Adds handy features and tweaks to individual tickets.',
+   'description' => 'Adds handy features and tweaks to individual tickets. <a href="https://github.com/lucentminds/osticket-ticket-options-plugin" target="_blank">https://github.com/lucentminds/osticket-ticket-options-plugin</a> .',
    'url' => 'https://lucentminds.com',
    'plugin' => 'class.TicketOptionsPlugin.php:TicketOptionsPlugin'
 );

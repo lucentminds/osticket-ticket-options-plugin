@@ -2413,12 +2413,14 @@ implements RestrictedAccess, Threadable {
              * included staff
              * collaborators (non staff)
              */
-            Signal::send('message-alert.sent', null, array(
+            $a_event = array(
+                'ticket' => $this,
                 'message_source' => $msg,
                 'options' => $options,
-                'recipients' => $recipients,
+                'emailer' => $email,
                 'sent_list' => $sentlist
-            ));
+            );
+            Signal::send('message-alert.sent', null, $a_event);
         }
 
         return $message;

@@ -93,20 +93,26 @@ class TicketOptionsPlugin extends Plugin
 
       $o_config = $this->getConfig();
 
-      $this->log( LOG_DEBUG, 'TicketOptionsPlugin bootstrap', 'Hello, World!' );
-
+      //$this->log( LOG_DEBUG, 'TicketOptionsPlugin bootstrap', 'Hello, World!' );
 
       // Listen for ticket responses being e-mailed out.
       if( $o_config->get( 'enable_agent_include' ) == '1' )
       {
+         require_once( AIP_PATH_LIB.'/TicketOptionsPlugin_SignalRouter.php' );
          //Signal::connect('user_reply.sent', array($this, 'on_user_reply') );
-         error_log( 'connect before' );
-         require_once( AIP_PATH_LIB.'/TicketOptionsPlugin_ApiController.php' );
-         Signal::connect( 'ajax.scp', array ( 'TicketOptionsPlugin_ApiController', 'route_dispatch' ) );
-         error_log( 'connect after' );
-      }
 
-      
+         /**
+          * Who should receive an alert.
+          * assigned staff/team
+          * included staff
+          * collaborators (non staff)
+          */
+         Signal::connect('message-alert.sent', array ( 'TicketOptionsPlugin_SignalRouter', 'route_message_alert_sent' ) );
+         // Signal::connect('ticket-reply.sent', array ( 'TicketOptionsPlugin_SignalRouter', 'route_ticket_reply_sent' ) );
+
+            
+      }
+ 
    }// bootstrap()
 
    public function log( $n_priority, $c_title, $c_msg, $l_alert=false, $l_force=false )
