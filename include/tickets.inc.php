@@ -65,6 +65,7 @@ $queue_columns = array(
         'assignee' => array(
             'width' => '16%',
             'heading' => __('Agent'),
+            'sort_col' => 'assignee',
             ),
         // 'dept' => array(
         //     'width' => '16%',
