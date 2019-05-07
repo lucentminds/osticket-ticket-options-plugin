@@ -2407,6 +2407,17 @@ implements RestrictedAccess, Threadable {
                 $sentlist[] = $staff->getEmail();
             }
 
+
+
+
+
+
+
+
+
+
+
+            // User just e-mailed a reply.
             /**
              * Who should receive an alert.
              * assigned staff/team
@@ -2416,15 +2427,27 @@ implements RestrictedAccess, Threadable {
             $a_event = array(
                 'ticket' => $this,
                 'message_source' => $msg,
+                'response' => $message->getBody()->body,
                 'options' => $options,
                 'emailer' => $email,
                 'sent_list' => $sentlist
             );
             Signal::send('message-alert.sent', null, $a_event);
+
+
+
+
+
+
+
+
+
+
+
         }
 
         return $message;
-    }
+    }// /postMessage()
 
     function postCannedReply($canned, $message, $alert=true) {
         global $ost, $cfg;
@@ -2586,6 +2609,44 @@ implements RestrictedAccess, Threadable {
             $attachments = $cfg->emailAttachments()?$response->getAttachments():array();
             $email->send($user, $msg['subj'], $msg['body'], $attachments,
                 $options);
+
+
+
+
+
+
+
+
+
+
+
+            // Agent just posted a reply.
+            /**
+             * Who should receive an alert.
+             * assigned staff/team
+             * included staff
+             * collaborators (non staff)
+             */
+            $a_event = array(
+                'ticket' => $this,
+                'message_source' => $msg,
+                'response' => $response,
+                'options' => $options,
+                'emailer' => $email,
+                'sent_list' => []
+            );
+            Signal::send('message-alert.sent', null, $a_event);
+            
+
+
+
+
+
+
+
+
+
+
         }
 
         if ($vars['emailcollab']) {

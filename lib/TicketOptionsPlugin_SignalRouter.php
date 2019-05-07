@@ -36,14 +36,19 @@ class TicketOptionsPlugin_SignalRouter
       $a_sent = $a_event[ 'sent_list' ];
       $options = $a_event[ 'options' ];
       $emailer = $a_event[ 'emailer' ];
+      $c_log_msg = $a_event['response'];
+      $c_log_msg = strip_tags( $c_log_msg );
+      $c_log_msg = substr( $c_log_msg, 0, 50 );
 
       // Loop over each agent and send them an e-mail.
       foreach( $a_agents as $a_agent )
       {
+
          if( !in_array( $a_agent[ 'email' ], $a_sent ) )
          {
             // This agent wasn't sent an e-mail yet.
             $emailer->sendAlert( $a_agent[ 'email' ], $c_subject, $c_msg, null, $options );
+            TOPLog::log( 'sent to: '.$a_agent[ 'email' ].' subject: '.$c_subject.' msg: '.$c_log_msg );
          }
 
       }// /foreach()
