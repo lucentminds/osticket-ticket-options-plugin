@@ -4,8 +4,11 @@
 // error_reporting(E_ALL);
 // ini_set('display_errors', 1);
 
-// Determines the full local path to to this plugin dir.
+// Determines the full local path to this plugin dir.
 define( 'AIP_PATH', __DIR__ );
+
+// Determines the full local path to this log dir.
+define( 'AIP_PATH_LOG', __DIR__. '/log' );
 
 // Determines the relative local path to this plugin dir.
 define( 'AIP_PATH_RELATIVE', str_replace( ROOT_DIR.'include/', '', AIP_PATH ) );
@@ -49,6 +52,16 @@ define('AIP_SCP_DIR', ROOT_DIR.'scp' );
 require_once('config.php');
 require_once( AIP_PATH_LIB.'/TicketOptionsPlugin_AgentInclude.php' );
 
+class TOPLog
+{
+   public static function log( $c_message )
+   {
+      $c_message = date( 'H:i:s' ).' '.$c_message;
+      file_put_contents( AIP_PATH_LOG.'/'.date( 'Y-m-d' ).'.log', $c_message."\n", FILE_APPEND );
+
+      return $c_message;
+   }
+}// /class TOPLog
 
 class TicketOptionsPlugin extends Plugin
 {
@@ -95,11 +108,11 @@ class TicketOptionsPlugin extends Plugin
             'dest' => AIP_PATH.'/replaced/scp.js'
          ),
 
-         array(
-            'src' => AIP_PATH.'/replace/thread.js',
-            'original' => AIP_SCP_DIR.'/js/thread.js',
-            'dest' => AIP_PATH.'/replaced/thread.js'
-         )
+         // array(
+         //    'src' => AIP_PATH.'/replace/thread.js',
+         //    'original' => AIP_SCP_DIR.'/js/thread.js',
+         //    'dest' => AIP_PATH.'/replaced/thread.js'
+         // )
 
       );
 
