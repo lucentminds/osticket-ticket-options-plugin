@@ -39,7 +39,7 @@
       "q": "^1.4.1"
    },
    "dependencies": {
-      "jquery": "^3.4.1",
+      "jquery": "^3.5.0",
       "what-input": "^5.1.3"
    }
 }
