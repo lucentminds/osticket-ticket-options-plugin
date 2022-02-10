@@ -27,7 +27,7 @@
    "homepage": "https://github.com/lucentminds/osticket-ticket-options-plugin/app#readme",
    "devDependencies": {
       "builder-bob": "git+https://github.com/lucentminds/builder-bob.git",
-      "node-sass": "^4.13.1",
+      "node-sass": "^7.0.0",
       "promise-empty-dir": "git+https://github.com/lucentminds/promise-empty-dir.git",
       "promise-file-concat": "git+https://github.com/lucentminds/promise-file-concat.git",
       "promise-file-copy": "git+https://github.com/lucentminds/promise-file-copy.git",
