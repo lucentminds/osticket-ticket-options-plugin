@@ -14,4 +14,4 @@ CREATE TABLE IF NOT EXISTS `%TABLE_PREFIX%plugin_ticketoptions_ticket_agent` (
 -- Indexes for table `_plugin_ticketoptions_ticket_agent`
 --
 ALTER TABLE `%TABLE_PREFIX%plugin_ticketoptions_ticket_agent`
-  ADD PRIMARY KEY (`ticket_id`);
+  ADD CONSTRAINT PRIMARY KEY IF NOT EXISTS (`ticket_id`);

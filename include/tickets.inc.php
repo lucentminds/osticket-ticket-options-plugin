@@ -1,4 +1,5 @@
-<link type="text/css" rel="stylesheet" href="ajax.php/ticket_options/static/asset/tickets-inc.css"/>
+<!-- Replaced by TicketOptionsPlugin -->
+<link type="text/css" rel="stylesheet" href="ajax.php/ticket_options/static/asset/show-all-ticket-columns.css"/>
 
 <?php
 $search = SavedSearch::create();
@@ -46,7 +47,6 @@ $queue_columns = array(
             'heading' => __('Subject'),
             'sort_col' => 'cdata__subject',
             ),
-        // 'icons' => array(),
         'name' => array(
             'width' => '18.1%',
             'heading' => __('From'),
@@ -65,13 +65,16 @@ $queue_columns = array(
         'assignee' => array(
             'width' => '16%',
             'heading' => __('Agent'),
+            // <!-- Replaced by TicketOptionsPlugin -->
             'sort_col' => 'assignee',
             ),
+        // <!-- Replaced by TicketOptionsPlugin -->
         // 'dept' => array(
         //     'width' => '16%',
         //     'heading' => __('Department'),
         //     'sort_col'  => 'dept__name',
         //     ),
+        // <!-- Replaced by TicketOptionsPlugin -->
         'date' => array(
             'width' => '14.6%',
             'heading' => __('Date Created'),
@@ -441,15 +444,10 @@ return false;">
     <div class="sticky bar opaque">
         <div class="content">
             <div class="pull-left flush-left">
-                <h2>
-                    <a href="<?php echo $refresh_url; ?>"
-                    title="<?php echo __('Refresh'); ?>">
-                    <i class="icon-refresh"></i> 
-                    <?php echo $results_type; ?>
-                    </a>
-                </h2>
+                <h2><a href="<?php echo $refresh_url; ?>"
+                    title="<?php echo __('Refresh'); ?>"><i class="icon-refresh"></i> <?php echo
+                    $results_type; ?></a></h2>
             </div>
-            
             <div class="pull-right flush-right">
             <?php
             if ($count) {
@@ -466,6 +464,8 @@ return false;">
  <input type="hidden" name="do" id="action" value="" >
  <input type="hidden" name="status" value="<?php echo
  Format::htmlchars($_REQUEST['status'], true); ?>" >
+
+ <!-- Replaced by TicketOptionsPlugin -->
  <table class="list" border="0" cellspacing="1" cellpadding="2" width="100%">
     <thead>
         <tr>
@@ -475,7 +475,6 @@ return false;">
             <?php } ?>
 
             <?php
-
             // Swap some columns based on the queue.
             if ( $showassigned ) {
                 unset($queue_columns['dept']);
@@ -487,6 +486,7 @@ return false;">
                 unset($queue_columns['assignee']);
             }
 
+            // <!-- Replaced by TicketOptionsPlugin -->
             if( !TicketOptionsPlugin::show_all_ticket_columns() )
             {
                 if ($search && !$status)
@@ -497,12 +497,14 @@ return false;">
                 {
                     unset($queue_columns['status']);
                 }
-
             }
 
             // Query string
             unset($args['sort'], $args['dir'], $args['_pjax']);
             $qstr = Http::build_query($args);
+            
+            
+            // <!-- Replaced by TicketOptionsPlugin -->
             
             ?>
             <?php foreach( $queue_columns as $k => $column ): ?>
@@ -541,6 +543,8 @@ return false;">
         $class = "row1";
         $total=0;
         $ids=($errors && $_POST['tids'] && is_array($_POST['tids']))?$_POST['tids']:null;
+
+        // <!-- Replaced by TicketOptionsPlugin -->
         ?>
         <?php foreach ($tickets as $T): ?>
         <?php
@@ -552,7 +556,17 @@ return false;">
                     $flag='locked';
                 elseif($T['isoverdue'])
                     $flag='overdue';
-
+                // <!-- Replaced by TicketOptionsPlugin -->
+                // $lc='';
+                // if ($showassigned) {
+                //     if ($T['staff_id'])
+                //         $lc = new AgentsName($T['staff__firstname'].' '.$T['staff__lastname']);
+                //     elseif ($T['team_id'])
+                //         $lc = Team::getLocalById($T['team_id'], 'name', $T['team__name']);
+                // }
+                // else {
+                //     $lc = Dept::getLocalById($T['dept_id'], 'name', $T['dept__name']);
+                // }
                 $tid=$T['number'];
                 $subject = $subject_field->display($subject_field->to_php($T['cdata__subject']));
                 $threadcount=$T['thread_count'];
@@ -575,9 +589,7 @@ return false;">
                 <?php } ?>
 
 
-
-
-
+                <!-- Replaced by TicketOptionsPlugin -->
                 
                 <?php foreach( $queue_columns as $c_column_id => $a_column_value ): ?>
 
@@ -591,6 +603,9 @@ return false;">
                         href="tickets.php?id=<?php echo $T['ticket_id']; ?>"
                         data-preview="#tickets/<?php echo $T['ticket_id']; ?>/preview"
                         ><?php echo $tid; ?></a></td>
+
+
+                    <!-- Replaced by TicketOptionsPlugin -->
                     <?php break; ?>
 
                     
@@ -618,6 +633,7 @@ return false;">
                             <?php endif ?>
 
 
+                            <!-- Replaced by TicketOptionsPlugin -->
                             <?php if( $threadcount > 1 ): ?>
                             <span class="pull-right faded-more"><i class="icon-comments-alt"></i>
                                 <small><?= $threadcount; ?></small>
@@ -629,7 +645,10 @@ return false;">
                         </div>
 
                     </td>
-                    <?php break; ?>
+                    <?php
+                    // <!-- Replaced by TicketOptionsPlugin -->
+                    break;
+                    ?>
 
 
                     <?php case 'name': ?>
@@ -642,10 +661,9 @@ return false;">
                             echo $T['collab_count'] ? '150px' : '170px'; ?>"><?php
                         $un = new UsersName($T['user__name']);
                             echo Format::htmlchars($un);
-                        ?></span></div>
-                    </td>
+                    ?></span></div></td>
                     <?php break; ?>
-
+                    <!-- Replaced by TicketOptionsPlugin -->
 
                     <?php case 'status': ?>
                         <?php if( TicketOptionsPlugin::show_all_ticket_columns() || ($search && !$status) ): ?>
@@ -710,12 +728,9 @@ return false;">
 
 
             </tr>
-
+            <!-- Replaced by TicketOptionsPlugin -->
             <?php endforeach ?>
             <?php
-
-
-
         if (!$total)
             $ferror=__('There are no tickets matching your criteria.');
         ?>
@@ -777,4 +792,3 @@ $(function() {
     $('[data-toggle=tooltip]').tooltip();
 });
 </script>
-

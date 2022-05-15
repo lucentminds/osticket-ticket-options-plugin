@@ -92,9 +92,10 @@ class TicketOptionsPlugin_ApiController extends ApiController
    public static function route_dispatch( $object, $data )
    {
       self::$_route_dispatch_object = $object;
-      self::get( '^/ticket_options(/static/[^\?]*)$', array( TicketOptionsPlugin_ApiController, 'show_view' ) );
-      self::get( '^/ticket_options(/script/[^\?]*)$', array( TicketOptionsPlugin_ApiController, 'show_view' ) );
-      self::post( '^/ticket_options(/script/[^\?]*)$', array( TicketOptionsPlugin_ApiController, 'show_view' ) );
+      $instance = 
+      self::get( '^/ticket_options(/static/[^\?]*)$', array( 'TicketOptionsPlugin_ApiController', 'show_view' ) );
+      self::get( '^/ticket_options(/script/[^\?]*)$', array( 'TicketOptionsPlugin_ApiController', 'show_view' ) );
+      self::post( '^/ticket_options(/script/[^\?]*)$', array( 'TicketOptionsPlugin_ApiController', 'show_view' ) );
 
    }// /route_dispatch()
 

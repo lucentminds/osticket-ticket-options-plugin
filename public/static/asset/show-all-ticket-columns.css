@@ -37,6 +37,44 @@
    }
 }
 
+
+
+
+
+/***********************************************************************
+               <!-- Replaced by TicketOptionsPlugin -->
+/***********************************************************************/
+/* TicketOptionsPlugin.show_all_ticket_columns */
+body
+{
+   overflow: auto;
+}
+
+/* Ticket list table */
+table.list.queue.tickets
+{
+   font-size: 0.9em;
+}
+
+/* Admin tables */
+table.form_table.settings_table,
+table.list
+{
+   margin: auto;
+}
+
+.jb-overflowmenu {
+   width: initial;
+}
+
+.ticketoptionsplugin__scp__index #container,
+.ticketoptionsplugin__scp__tickets #container
+{
+   /* <!-- Replaced by TicketOptionsPlugin --> */
+   width: 99%;
+   margin: 0.5em auto 0.5em auto;
+}
+
 /* Medium only */
 /*@media screen and (min-width: 40em) and (max-width: 63.9375em) {}*/
 

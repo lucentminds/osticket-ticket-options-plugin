@@ -48,7 +48,7 @@ class TicketOptionsPlugin_SignalRouter
          {
             // This agent wasn't sent an e-mail yet.
             $emailer->sendAlert( $a_agent[ 'email' ], $c_subject, $c_msg, null, $options );
-            TOPLog::log( 'sent to: '.$a_agent[ 'email' ].' subject: '.$c_subject.' msg: '.$c_log_msg );
+            TOPLog::log( 'info', 'sent to: '.$a_agent[ 'email' ].' subject: '.$c_subject.' msg: '.$c_log_msg );
          }
 
       }// /foreach()

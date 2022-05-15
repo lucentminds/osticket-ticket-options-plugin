@@ -11,209 +11,245 @@
 
 
 (function ($, undefined) {
-$(document).on('ready pjax:success', function() { // This is required because osticket uses pjax for stuff.
+   $(function(){
+      console.log( 'ready' );
+
+      if( window.location.hash == '#ticket_details' ){
+         return show_details_content();
+      }
+   });
+   $(document).on('ready pjax:success', function() { // This is required because osticket uses pjax for stuff.
+      refresh_tab_content();
+   });
+
+   const refresh_tab_content = function(){
 
 
-   var $agent_list = $( '#agent-list' );
+      var $agent_list = $( '#agent-list' );
 
-   if( $agent_list.length < 1 ){
-      // We are not on a ticket page.
-      return;
-   }
+      if( $agent_list.length < 1 ){
+         // We are not on a ticket page.
+         return;
+      }
 
-   var $agent_list_error = $( '#agent-list-error' ).errorBanner();
-   var $agent_list_search = $( '#agent-list-search' );
-   var $agent_add_progress = $( '#agent-add-progress' );
-   var $agent_remove_progress = $( '#agent-remove-progress' );
-   var $agent_confirm_remove = $( '#agent-confirm-remove' );
-   
+      var $agent_list_error = $( '#agent-list-error' ).errorBanner();
+      var $agent_list_search = $( '#agent-list-search' );
+      var $agent_add_progress = $( '#agent-add-progress' );
+      var $agent_remove_progress = $( '#agent-remove-progress' );
+      var $agent_confirm_remove = $( '#agent-confirm-remove' );
+      
 
-   var view = {
-      _views: {},
-      _current: null,
+      var view = {
+         _views: {},
+         _current: null,
 
-      add: function( c_name, o_view ) {
-         return this._views[ c_name ] = o_view;
-      },// /add()
+         add: function( c_name, o_view ) {
+            return this._views[ c_name ] = o_view;
+         },// /add()
 
-      show: function( c_name, o_data ) {
-         var self = this;
+         show: function( c_name, o_data ) {
+            var self = this;
 
-         if( !this._views[ c_name ] ) {
-            throw new Error( ''.concat( 'View "',c_name,'" is not defined.' ) );
-         }
-
-         if( this._current == this._views[ c_name ] ) {
-            return;
-         }
-
-         if( this._current != null ) {
-            $.when( this._views[ this._current ].hide() )
-            .then(function(){
-               self._show_now( c_name, o_data );
-            });
-
-            return;
-         }
-
-         return self._show_now( c_name, o_data );
-
-      },// /show()
-
-      _show_now: function( c_name, o_data ) {
-         var c_previous = this._current;
-
-         this._current = c_name;
-         this._views[ c_name ].show( c_previous, o_data );
-
-      }// /_show_now()
-
-
-   };
-
-   var show_error = function( c_msg ){
-      return $agent_list_error.errorBanner( 'set_message', c_msg );
-   };// /show_error()
-
-   var clear_error = function(){
-      return $agent_list_error.errorBanner( 'clear' );
-   };// /clear_error()
-
-   view.add( 'default', {
-      show: function(){
-         $.ajax({
-            url: 'ajax.php/ticket_options/script/get_ticket_agents.php',
-            method: 'get',
-            type: 'json',
-            dataType: 'json',
-            data: {
-               ticket_id: $.ticket_id
-            }
-         })
-         .then(function( o_result/* , status, o_xhr */ ){
-            if( o_result.error ) {
-               return show_error( o_result.error.message );
+            if( !this._views[ c_name ] ) {
+               throw new Error( ''.concat( 'View "',c_name,'" is not defined.' ) );
             }
 
-            if( o_result.result == 'ok' )
-            {
-               $agent_list.userList({
-                  users: o_result.agents,
-                  on_add_click: function( event, ui ){
-                     view.show( 'add_agent_form' );
-                  },// /on_add_click()
-
-                  on_remove_click: function( event, ui ){
-                     console.log( ui );
-                     view.show( 'remove_agent_confirm', { agent: ui.user });
-                  }// /on_remove_click()
-                  
-               });
+            if( this._current == this._views[ c_name ] ) {
                return;
             }
 
-            debugger;
-            
-         })
-         .fail(function( o_xhr, c_status, o_error  ){
-            if( c_status == 'parsererror' )
-            {
-               return show_error( 'get_ticket_agents failure: '.concat( o_error.message ) );
+            if( this._current != null ) {
+               $.when( this._views[ this._current ].hide() )
+               .then(function(){
+                  self._show_now( c_name, o_data );
+               });
+
+               return;
+            }
+
+            return self._show_now( c_name, o_data );
+
+         },// /show()
+
+         _show_now: function( c_name, o_data ) {
+            var c_previous = this._current;
+
+            this._current = c_name;
+            this._views[ c_name ].show( c_previous, o_data );
+
+         }// /_show_now()
+
+
+      };
+
+      var show_error = function( c_msg ){
+         return $agent_list_error.errorBanner( 'set_message', c_msg );
+      };// /show_error()
+
+      var clear_error = function(){
+         return $agent_list_error.errorBanner( 'clear' );
+      };// /clear_error()
+
+      view.add( 'default', {
+         show: function(){
+            $.ajax({
+               url: 'ajax.php/ticket_options/script/get_ticket_agents.php',
+               method: 'get',
+               type: 'json',
+               dataType: 'json',
+               data: {
+                  ticket_id: $.ticket_id
+               }
+            })
+            .then(function( o_result/* , status, o_xhr */ ){
+               if( o_result.error ) {
+                  return show_error( o_result.error.message );
+               }
+
+               if( o_result.result == 'ok' )
+               {
+                  $agent_list.userList({
+                     users: o_result.agents,
+                     on_add_click: function( event, ui ){
+                        view.show( 'add_agent_form' );
+                     },// /on_add_click()
+
+                     on_remove_click: function( event, ui ){
+                        console.log( ui );
+                        view.show( 'remove_agent_confirm', { agent: ui.user });
+                     }// /on_remove_click()
+                     
+                  });
+                  return;
+               }
+
+               debugger;
                
-            }
+            })
+            .fail(function( o_xhr, c_status, o_error  ){
+               if( c_status == 'parsererror' )
+               {
+                  return show_error( 'get_ticket_agents failure: '.concat( o_error.message ) );
+                  
+               }
 
-            debugger;
-         });
+               debugger;
+            });
 
-      },
+         },
 
-      hide: function(){
-         $agent_list.userList( 'destroy' );
-         clear_error();
-      }
+         hide: function(){
+            $agent_list.userList( 'destroy' );
+            clear_error();
+         }
+      });
+
+      view.add( 'add_agent_form', {
+         show: function(){
+            $agent_list_search.agentSearch({
+               on_agent_click: function( event, ui ){
+                  view.show( 'add_agent_progress', { staff_id: ui.staff_id } );
+               }
+            });
+         },
+
+         hide: function(){
+            $agent_list_search.agentSearch( 'destroy' );
+            clear_error();
+         }
+      });
+
+
+      view.add( 'add_agent_progress', {
+         show: function( c_previous, o_data ){
+            $agent_add_progress.showAgentAdd({
+               staff_id: o_data.staff_id,
+               ticket_id: $.ticket_id,
+               on_response: function( /* event, ui */ ){
+                  view.show( 'default' );
+               }
+            });
+         },
+
+         hide: function(){
+            $agent_add_progress.showAgentAdd( 'destroy' );
+         }
+      });
+
+
+      view.add( 'remove_agent_progress', {
+         show: function( c_previous, o_data ){
+
+            $agent_remove_progress.showAgentRemove({
+               staff_id: o_data.agent.staff_id,
+               ticket_id: $.ticket_id,
+
+               on_response: function( /* event, ui */ ){
+                  view.show( 'default' );
+               }
+            });
+         },
+
+         hide: function(){
+            $agent_remove_progress.showAgentRemove( 'destroy' );
+         }
+      });
+
+
+      view.add( 'remove_agent_confirm', {
+         show: function( c_previous, o_data ){
+            
+            $agent_confirm_remove.dialogConfirm({
+               message: ''.concat( 'This cannot be undone.',
+               ' Are you sure you wish to remove staff member "',o_data.agent.name,'" from this ticket?' ),
+
+               text_confirm: 'Yes, remove this agent',
+               text_cancel: 'No, Do NOT remove this agent',
+
+               on_cancel_click: function( /* event, ui */ ){
+                  view.show( 'default' );
+               },
+
+               on_confirm_click: function( /* event, ui */ ){
+                  view.show( 'remove_agent_progress', o_data );
+               }
+            });
+         },
+
+         hide: function(){
+            $agent_confirm_remove.dialogConfirm( 'destroy' );
+         }
+      });
+
+      
+
+
+      view.show( 'default' );
+   };// /refresh_tab_content()
+
+   const show_details_content = function(){
+      $( '#tasks_content' ).hide();
+      $( '#ticket_thread' ).hide();
+      $( '#ticket_details_content' ).show();
+      $( 'ul.tabs li.active' ).removeClass( 'active' );
+      window.location.hash = 'ticket_details';
+      refresh_tab_content();
+      
+      setTimeout(function(){
+         $( '#ticket-details-tab' ).parent().addClass( 'active' );
+      });
+   };// /show_details_content()
+
+   $( '#ticket-details-tab' ).on( 'click', function(){
+      show_details_content();
    });
 
-   view.add( 'add_agent_form', {
-      show: function(){
-         $agent_list_search.agentSearch({
-            on_agent_click: function( event, ui ){
-               view.show( 'add_agent_progress', { staff_id: ui.staff_id } );
-            }
-         });
-      },
-
-      hide: function(){
-         $agent_list_search.agentSearch( 'destroy' );
-         clear_error();
-      }
+   $( '#ticket-tasks-tab' ).add( '#ticket-thread-tab' ).on( 'click', function(){
+      $( '#ticket_details_content' ).hide();
+      $( '#tasks_content' ).show();
+      $( '#ticket_thread' ).show();
    });
 
 
-   view.add( 'add_agent_progress', {
-      show: function( c_previous, o_data ){
-         $agent_add_progress.showAgentAdd({
-            staff_id: o_data.staff_id,
-            ticket_id: $.ticket_id,
-            on_response: function( /* event, ui */ ){
-               view.show( 'default' );
-            }
-         });
-      },
-
-      hide: function(){
-         $agent_add_progress.showAgentAdd( 'destroy' );
-      }
-   });
-
-
-   view.add( 'remove_agent_progress', {
-      show: function( c_previous, o_data ){
-
-         $agent_remove_progress.showAgentRemove({
-            staff_id: o_data.agent.staff_id,
-            ticket_id: $.ticket_id,
-
-            on_response: function( /* event, ui */ ){
-               view.show( 'default' );
-            }
-         });
-      },
-
-      hide: function(){
-         $agent_remove_progress.showAgentRemove( 'destroy' );
-      }
-   });
-
-
-   view.add( 'remove_agent_confirm', {
-      show: function( c_previous, o_data ){
-         
-         $agent_confirm_remove.dialogConfirm({
-            message: ''.concat( 'This cannot be undone.',
-            ' Are you sure you wish to remove staff member "',o_data.agent.name,'" from this ticket?' ),
-
-            text_confirm: 'Yes, remove this agent',
-            text_cancel: 'No, Do NOT remove this agent',
-
-            on_cancel_click: function( /* event, ui */ ){
-               view.show( 'default' );
-            },
-
-            on_confirm_click: function( /* event, ui */ ){
-               view.show( 'remove_agent_progress', o_data );
-            }
-         });
-      },
-
-      hide: function(){
-         $agent_confirm_remove.dialogConfirm( 'destroy' );
-      }
-   });
-
-   
-
-
-   view.show( 'default' );
-});
 
 }( jQuery ));
