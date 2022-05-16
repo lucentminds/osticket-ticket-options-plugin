@@ -148,6 +148,8 @@ class TicketModel extends VerySimpleModel {
 
             'Web' =>
             /* @trans */ 'Web',
+            'Chat' =>
+            /* @trans */ 'Chat',
             'API' =>
             /* @trans */ 'API',
             'Other' =>
