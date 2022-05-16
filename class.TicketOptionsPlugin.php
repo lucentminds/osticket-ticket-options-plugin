@@ -5,33 +5,36 @@
 // ini_set('display_errors', 1);
 
 // Determines the full local path to this plugin dir.
-define( 'AIP_PATH', __DIR__ );
+define( 'TICKET_OPTIONS_PLUGIN_DEBUG', false );
+
+// Determines the full local path to this plugin dir.
+define( 'TICKET_OPTIONS_PLUGIN_PATH', __DIR__ );
 
 // Determines the full local path to this log dir.
-define( 'AIP_PATH_LOG', __DIR__. '/log' );
+define( 'TICKET_OPTIONS_PLUGIN_PATH_LOG', __DIR__. '/log' );
 
 // Determines the relative local path to this plugin dir.
-define( 'AIP_PATH_RELATIVE', str_replace( ROOT_DIR.'include/', '', AIP_PATH ) );
+define( 'TICKET_OPTIONS_PLUGIN_PATH_RELATIVE', str_replace( ROOT_DIR.'include/', '', TICKET_OPTIONS_PLUGIN_PATH ) );
 
 // Determines the full local path to the ticket-view.inc.php in production.
-define( 'AIP_PATH_INCLUDE', __DIR__. '/include' );
+define( 'TICKET_OPTIONS_PLUGIN_PATH_INCLUDE', __DIR__. '/include' );
 
 // Determines the full local path to the public files.
-define( 'AIP_PATH_PUBLIC', __DIR__. '/public' );
+define( 'TICKET_OPTIONS_PLUGIN_PATH_PUBLIC', __DIR__. '/public' );
 
 // Determines the full local path to the lib in production.
-define( 'AIP_PATH_LIB', __DIR__. '/lib' );
+define( 'TICKET_OPTIONS_PLUGIN_PATH_LIB', __DIR__. '/lib' );
 
 // Determines the full local path to the ticket-view.inc.php in production.
-define( 'AIP_PATH_TICKET_VIEW', INCLUDE_DIR.'staff/ticket-view.inc.php' );
+define( 'TICKET_OPTIONS_PLUGIN_PATH_TICKET_VIEW', INCLUDE_DIR.'staff/ticket-view.inc.php' );
 
 // Determines the full local path to the ticket-view.inc.php in production.
-define( 'AIP_PATH_TICKET_VIEW_REPLACED', __DIR__.'/replaced/ticket-view.inc.php' );
+define( 'TICKET_OPTIONS_PLUGIN_PATH_TICKET_VIEW_REPLACED', __DIR__.'/replaced/ticket-view.inc.php' );
 
-define( 'AIP_TICKET_AGENT_TABLE', TABLE_PREFIX.'plugin_ticketoptions_ticket_agent' );
+define( 'TICKET_OPTIONS_PLUGIN_TICKET_AGENT_TABLE', TABLE_PREFIX.'plugin_ticketoptions_ticket_agent' );
 
 // Determines the full path to the "/scp" directory.
-define('AIP_SCP_DIR', ROOT_DIR.'scp' );
+define('TICKET_OPTIONS_PLUGIN_SCP_DIR', ROOT_DIR.'scp' );
 
 //exit( INCLUDE_DIR . 'staff/staff.inc.php' );
 //public_html_56/ost/scp/admin.inc.php
@@ -44,20 +47,36 @@ define('AIP_SCP_DIR', ROOT_DIR.'scp' );
 
 
 
-// // Import the Application class
-// require_once(INCLUDE_DIR . 'class.app.php');
-
-// require_once(INCLUDE_DIR . 'class.osticket.php');
-
+// Import the Application class
 require_once('config.php');
-require_once( AIP_PATH_LIB.'/TicketOptionsPlugin_AgentInclude.php' );
 
 class TOPLog
 {
-   public static function log( $c_message )
+   public static function log( $c_level, $c_message = null )
    {
+      if( !TICKET_OPTIONS_PLUGIN_DEBUG )
+      {
+         return $c_message;
+      }
+
+      switch( $c_level ){
+         case 'debug':
+            $c_message = 'DEBUG: '.$c_message;
+            break;
+
+         case 'info':
+            $c_message = 'INFO: '.$c_message;
+            break;
+
+         default:
+         exit( 'TOPLog invalid log level: '.$c_level );
+      }// /switch()
+      
       $c_message = date( 'H:i:s' ).' '.$c_message;
-      file_put_contents( AIP_PATH_LOG.'/'.date( 'Y-m-d' ).'.log', $c_message."\n", FILE_APPEND );
+      $c_message = str_replace( ROOT_DIR, '.../', $c_message );
+      $c_lines = wordwrap( $c_message, 120, "\n\t" );
+
+      file_put_contents( TICKET_OPTIONS_PLUGIN_PATH_LOG.'/'.date( 'Y-m-d' ).'.log', $c_lines."\n", FILE_APPEND );
 
       return $c_message;
    }
@@ -71,92 +90,56 @@ class TicketOptionsPlugin extends Plugin
 
    protected $_included;
 
-   protected $a_replace_paths = array(
-         array(
-            'src' => AIP_PATH.'/replace/tickets.inc.php',
-            'original' => INCLUDE_DIR.'staff/tickets.inc.php',
-            'dest' => AIP_PATH.'/replaced/tickets.inc.php'
-         ),
+   protected $a_replace_paths = [
+      [
+         'src' => TICKET_OPTIONS_PLUGIN_PATH.'/replace/class.queue.php',
+         'original' => INCLUDE_DIR.'class.queue.php',
+         'dest' => TICKET_OPTIONS_PLUGIN_PATH.'/replaced/class.queue.php',
+      ],
 
-         array(
-            'src' => AIP_PATH.'/replace/ticket-view.inc.php',
-            'original' => INCLUDE_DIR.'staff/ticket-view.inc.php',
-            'dest' => AIP_PATH.'/replaced/ticket-view.inc.php'
-         ),
+      [
+         'src' => TICKET_OPTIONS_PLUGIN_PATH.'/replace/class.ticket.php',
+         'original' => INCLUDE_DIR.'class.ticket.php',
+         'dest' => TICKET_OPTIONS_PLUGIN_PATH.'/replaced/class.ticket.php',
+      ],
 
-         array(
-            'src' => AIP_PATH.'/replace/footer.inc.php',
-            'original' => INCLUDE_DIR.'staff/footer.inc.php',
-            'dest' => AIP_PATH.'/replaced/footer.inc.php'
-         ),
+      [
+         'src' => TICKET_OPTIONS_PLUGIN_PATH.'/replace/footer.inc.php',
+         'original' => INCLUDE_DIR.'staff/footer.inc.php',
+         'dest' => TICKET_OPTIONS_PLUGIN_PATH.'/replaced/footer.inc.php',
+      ],
+      
+      [
+         'src' => TICKET_OPTIONS_PLUGIN_PATH.'/replace/header.inc.php',
+         'original' => INCLUDE_DIR.'staff/header.inc.php',
+         'dest' => TICKET_OPTIONS_PLUGIN_PATH.'/replaced/header.inc.php',
+      ],
+      
+      [
+         'src' => TICKET_OPTIONS_PLUGIN_PATH.'/replace/queue-tickets.tmpl.php',
+         'original' => INCLUDE_DIR.'staff/templates/queue-tickets.tmpl.php',
+         'dest' => TICKET_OPTIONS_PLUGIN_PATH.'/replaced/queue-tickets.tmpl.php',
+      ],
 
-         array(
-            'src' => AIP_PATH.'/replace/class.ticket.php',
-            'original' => INCLUDE_DIR.'class.ticket.php',
-            'dest' => AIP_PATH.'/replaced/class.ticket.php'
-         ),
-
-         array(
-            'src' => AIP_PATH.'/replace/list-item-row.tmpl.php',
-            'original' => INCLUDE_DIR.'staff/templates/list-item-row.tmpl.php',
-            'dest' => AIP_PATH.'/replaced/list-item-row.tmpl.php'
-         ),
-
-         array(
-            'src' => AIP_PATH.'/replace/scp.js',
-            'original' => AIP_SCP_DIR.'/js/scp.js',
-            'dest' => AIP_PATH.'/replaced/scp.js'
-         ),
-
-         // array(
-         //    'src' => AIP_PATH.'/replace/thread.js',
-         //    'original' => AIP_SCP_DIR.'/js/thread.js',
-         //    'dest' => AIP_PATH.'/replaced/thread.js'
-         // )
-
-      );
+      [
+         'src' => TICKET_OPTIONS_PLUGIN_PATH.'/replace/ticket-view.inc.php',
+         'original' => INCLUDE_DIR.'staff/ticket-view.inc.php',
+         'dest' => TICKET_OPTIONS_PLUGIN_PATH.'/replaced/ticket-view.inc.php',
+      ],
+   ];
 
    protected static $_javascript_src_urls = array();
-
-   public static function render_included_agents()
-   {
-      
-      if( !self::agent_include_enabled() )
-      {
-         return;
-      }
-
-      include( AIP_PATH_INCLUDE.'/ticket-view-agents.php' );
-   }// /render_included_agents()
 
    function bootstrap()
    {
 
       $o_config = $this->getConfig();
 
-      //$this->log( LOG_DEBUG, 'TicketOptionsPlugin bootstrap', 'Hello, World!' );
+      // $this->log( LOG_DEBUG, 'TicketOptionsPlugin bootstrap', 'Hello, World!', false, true );
 
       // Setup url routing.
-      require_once( AIP_PATH_LIB.'/TicketOptionsPlugin_ApiController.php' );
-      Signal::connect( 'ajax.scp', array ( 'TicketOptionsPlugin_ApiController', 'route_dispatch' ) );
-
-      // Listen for ticket responses being e-mailed out.
-      if( $o_config->get( 'enable_agent_include' ) == '1' )
-      {
-         require_once( AIP_PATH_LIB.'/TicketOptionsPlugin_SignalRouter.php' );
-
-         /**
-          * Who should receive an alert.
-          * assigned staff/team
-          * included staff
-          * collaborators (non staff)
-          */
-         Signal::connect('message-alert.sent', array ( 'TicketOptionsPlugin_SignalRouter', 'route_message_alert_sent' ) );
-         // Signal::connect('ticket-reply.sent', array ( 'TicketOptionsPlugin_SignalRouter', 'route_ticket_reply_sent' ) );
-
-            
-      }
- 
+      require_once( TICKET_OPTIONS_PLUGIN_PATH_LIB.'/TicketOptionsPlugin_ApiController.php' );
+      Signal::connect( 'ajax.scp', array ( 'TicketOptionsPlugin_ApiController', 'route_dispatch' ) ); 
    }// bootstrap()
 
    public function log( $n_priority, $c_title, $c_msg, $l_alert=false, $l_force=false )
@@ -175,28 +158,33 @@ class TicketOptionsPlugin extends Plugin
    function enable()
    {
       global $errors;
+      TOPLog::log( 'debug', "\n\n***** TicketOptionsPlugin enable *****\n" );
 
       // Make sure we've replaced files.
+      TOPLog::log( 'debug', '------- replace_original_files.' );
       if( $this->replace_original_files( $errors ) === false )
       {
          // Try and restore, but don't worry about errors.
          $no_err = array();
+         TOPLog::log( 'debug', '------- restore_original_files.' );
          $this->restore_original_files( $no_err );
          return false;
       }
 
 
-      require_once( AIP_PATH.'/install/TicketOptionsPlugin_Installer.php' );
+      require_once( TICKET_OPTIONS_PLUGIN_PATH.'/install/TicketOptionsPlugin_Installer.php' );
 
       // Determines the db installer.
       $installer = new TicketOptionsPlugin_Installer();
 
       // Make sure we've installed the db tables.
+      TOPLog::log( 'debug', '------- Run the TicketOptionsPlugin_Installer.' );
       if( $installer->install( $errors ) === false )
       {
          return false;
       }
 
+      TOPLog::log( 'debug', "\n***** TicketOptionsPlugin enabled *****\n\n" );
       return parent::enable();
 
    }// /enable()
@@ -204,6 +192,7 @@ class TicketOptionsPlugin extends Plugin
    function disable()
    {
       global $errors;
+      TOPLog::log( 'debug', "\n\n***** TicketOptionsPlugin disable *****\n\n" );
 
       // Make sure we've restored files we've replaced.
       if( $this->restore_original_files( $errors ) === false )
@@ -212,7 +201,7 @@ class TicketOptionsPlugin extends Plugin
       }
 
 
-      require_once( AIP_PATH.'/install/TicketOptionsPlugin_Installer.php' );
+      require_once( TICKET_OPTIONS_PLUGIN_PATH.'/install/TicketOptionsPlugin_Installer.php' );
 
       // Determines the db installer.
       $installer = new TicketOptionsPlugin_Installer();
@@ -228,6 +217,7 @@ class TicketOptionsPlugin extends Plugin
       // $this->log( LOG_ERR, 'TicketOptionsPlugin disable fail', 'I can\'t do that right now Dave.' );
       // return false;
 
+      TOPLog::log( 'debug', "\n***** TicketOptionsPlugin disabled *****\n\n" );
       return parent::disable();
    }// /disable()
 
@@ -252,6 +242,7 @@ class TicketOptionsPlugin extends Plugin
    {
       if( !file_exists( $c_file_path ) )
       {
+         TOPLog::log( 'debug', 'TicketOptionsPlugin is_replaced_file: file does not exist: '.$c_file_path );
          return false;
       }
       
@@ -264,6 +255,7 @@ class TicketOptionsPlugin extends Plugin
          return true;
       }
 
+      TOPLog::log( 'debug', 'TicketOptionsPlugin is_replaced_file: no replaced tag in '.$c_file_path );
       return false;
       
    }// /is_replaced_file()
@@ -306,8 +298,24 @@ class TicketOptionsPlugin extends Plugin
             return false;
          }
 
+         if( !is_readable( $a_path[ 'src' ] ) )
+         {
+            // The page we want to replace is not writable.
+            $errors[ 'err' ] = 'Path "'.$a_path[ 'src' ].'" is not readable.';
+            $this->log( LOG_ERR, 'TicketOptionsPlugin enable fail 105', $errors[ 'err' ] );
+            return false;
+         }
+
+         if( !is_writable( $a_path[ 'original' ] ) )
+         {
+            // The page we want to replace is not writable.
+            $errors[ 'err' ] = 'Path "'.$a_path[ 'original' ].'" is not writable.';
+            $this->log( LOG_ERR, 'TicketOptionsPlugin enable fail 106', $errors[ 'err' ] );
+            return false;
+         }
+
          // Copy the original file to the "replaced" directory.
-         if( !copy( $a_path[ 'original' ], $a_path[ 'dest' ] ) )
+         if( !$this->copy_content( $a_path[ 'original' ], $a_path[ 'dest' ] ) )
          {
             // Get the copy error.
             $a_error = error_get_last();
@@ -326,7 +334,7 @@ class TicketOptionsPlugin extends Plugin
          }
 
          // Copy the replacement file over the original.
-         if( !copy( $a_path[ 'src' ], $a_path[ 'original' ] ) )
+         if( !$this->copy_content( $a_path[ 'src' ], $a_path[ 'original' ] ) )
          {
             // Get the copy error.
             $a_error = error_get_last();
@@ -344,6 +352,7 @@ class TicketOptionsPlugin extends Plugin
             return false;
          }
 
+         TOPLog::log( 'debug', '+++++++ replaced '.$a_path[ 'original' ] );
       }// /foreach()
 
       return true;
@@ -356,10 +365,10 @@ class TicketOptionsPlugin extends Plugin
       // return false;
 
       // // Determines the full local path to the ticket-view.inc.php in production.
-      // define( 'AIP_PATH_TICKET_VIEW', INCLUDE_DIR.'staff/ticket-view.inc.php' );
+      // define( 'TICKET_OPTIONS_PLUGIN_PATH_TICKET_VIEW', INCLUDE_DIR.'staff/ticket-view.inc.php' );
 
       // // Determines the full local path to the ticket-view.inc.php in production.
-      // define( 'AIP_PATH_TICKET_VIEW_REPLACED', __DIR__.'replaced/ticket-view.inc.php' );
+      // define( 'TICKET_OPTIONS_PLUGIN_PATH_TICKET_VIEW_REPLACED', __DIR__.'replaced/ticket-view.inc.php' );
    }// /replace_original_files()
 
    /** 
@@ -380,6 +389,7 @@ class TicketOptionsPlugin extends Plugin
             * then delete the one in the "replaced" directory.
             */
 
+            
             if( !$this->is_replaced_file( $a_path[ 'original' ] ) )
             {
                // The file at "original" doesn't look like one we put there.
@@ -389,7 +399,7 @@ class TicketOptionsPlugin extends Plugin
             }
 
             // Copy the original file back from the "replaced" directory.
-            if( !copy( $a_path[ 'dest' ], $a_path[ 'original' ] ) )
+            if( !$this->copy_content( $a_path[ 'dest' ], $a_path[ 'original' ] ) )
             {
                $errors[ 'err' ] = 'Failed to restore original "'.$a_path[ 'original' ].'".';
                $this->log( LOG_ERR, 'TicketOptionsPlugin restore fail 102', $errors[ 'err' ] );
@@ -464,7 +474,7 @@ class TicketOptionsPlugin extends Plugin
    public static function instance()
    {
       global $ost;
-      return $ost->plugins->getInstance( AIP_PATH_RELATIVE );
+      return $ost->plugins->getInstance( TICKET_OPTIONS_PLUGIN_PATH_RELATIVE );
    }// /instance()
 
    // Returns a current config value.
@@ -479,28 +489,28 @@ class TicketOptionsPlugin extends Plugin
       return self::get_value( 'enable_details_tab' ) == '1';
    }// /details_tab_enabled()
 
-   // Returns `true` if the details tab is enabled.
-   public static function agent_include_enabled()
+   // Returns `true` if the  agent response e-mails are enabled.
+   public static function agent_context_email_enabled()
    {
-      return self::get_value( 'enable_agent_include' ) == '1';
-   }// /agent_include_enabled()
+      return self::get_value( 'enable_agent_context_email' ) == '1';
+   }// /agent_context_email_enabled()
 
-   // Returns `true` if the details tab is enabled.
+   // Returns `true` if the ticket thread should have the latest response on top.
    public static function staff_thread_order()
    {
       return self::get_value( 'sort_staff_thread_desc' ) ?'desc' :'asc';
    }// /staff_thread_order()
 
-   // Returns `true` if the details tab is enabled.
-   public static function show_all_ticket_columns()
+   // Returns `true` if ticket queues should be wide.
+   public static function wide_ticket_queues()
    {
-      return self::get_value( 'show_all_ticket_columns' ) == '1';
-   }// /show_all_ticket_columns()
+      return self::get_value( 'wide_ticket_queues' ) == '1';
+   }// /wide_ticket_queues()
 
    // Returns the current instance of this class.
    public static function resolve_view( $c_filename )
    {
-      return AIP_PATH_INCLUDE.'/'.$c_filename;
+      return TICKET_OPTIONS_PLUGIN_PATH_INCLUDE.'/'.$c_filename;
    }// /resolve_view()
 
    // public static function add_javascript_src( $c_src_url )
@@ -518,5 +528,27 @@ class TicketOptionsPlugin extends Plugin
       
    // }// /render_javascript_sources()
 
+   function copy_content( $c_path_src, $c_path_dest )
+   {
+      TOPLog::log( 'debug', 'TicketOptionsPlugin copy_content get: '.$c_path_src );
+      $c_content = file_get_contents( $c_path_src );
+
+      if( $c_content === false )
+      {
+         $this->log( LOG_ERR, 'TicketOptionsPlugin copy_content fail 101', 
+         'Failed to get contents of "'.$c_path_src.'".' );
+         return false;
+      }
+      
+      TOPLog::log( 'debug', 'TicketOptionsPlugin copy_content put: '.$c_path_dest );
+      if( file_put_contents( $c_path_dest, $c_content ) === false )
+      {
+         $this->log( LOG_ERR, 'TicketOptionsPlugin copy_content fail 102', 
+         'Failed to write content to "'.$c_path_dest.'".' );
+         return false;
+      }
+
+      return true;
+   }// /copy_content()
 
 }// /class TicketOptionsPlugin

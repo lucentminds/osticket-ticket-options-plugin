@@ -1,0 +1,1 @@
+Determines php files that will be callable by the osticket users.

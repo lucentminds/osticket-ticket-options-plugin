@@ -1,0 +1,26 @@
+
+
+.ticket_info
+{
+   border: 1px dashed #cccccc;
+   margin-bottom: 1em;
+}
+
+ul.tabs li > div
+{
+   font-weight: 400;
+   line-height: 20px;
+   color: #444;
+   color: rgba(0,0,0,0.6);
+   display: block;
+   outline: none;
+   padding: 5px 10px;
+   cursor: pointer;
+}
+
+ul.tabs li.active > div
+{
+   font-weight: bold;
+   /* color: #222; */
+   color: rgba(0,0,0,0.8);
+}
