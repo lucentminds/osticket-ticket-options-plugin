@@ -20,14 +20,14 @@ class TicketOptionsPlugin_Installer extends \SetupWizard
    
    public function install( &$errors )
    {
-      $c_path_schema_file = AIP_PATH.'/install/install_ticket_options.sql';
+      $c_path_schema_file = TICKET_OPTIONS_PLUGIN_PATH.'/install/install_ticket_options.sql';
       return $this->execute_schema_file( $c_path_schema_file, $errors );
 
    }// /install()
 
    public function remove( &$errors )
    {
-      $c_path_schema_file = AIP_PATH.'/install/delete_ticket_options.sql';
+      $c_path_schema_file = TICKET_OPTIONS_PLUGIN_PATH.'/install/delete_ticket_options.sql';
       return $this->execute_schema_file( $c_path_schema_file, $errors );
 
    }// /remove()

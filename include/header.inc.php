@@ -1,11 +1,21 @@
 <?php
 // <!-- Replaced by TicketOptionsPlugin -->
 
-// TicketOptionsPlugin.show_all_ticket_columns
+// TicketOptionsPlugin.wide_ticket_queues
 $a_url_path_info = pathinfo( $_SERVER[ 'SCRIPT_NAME' ] );
-$c_url_path_name = $a_url_path_info[ 'dirname' ].'/'.$a_url_path_info[ 'filename' ];
+$c_url_path_name = $a_url_path_info[ 'dirname' ];
 $c_url_path_name_relative = str_replace( ROOT_PATH, '',  $c_url_path_name );
+
+$c_url_ticket_class = '';
+if(  preg_match( '/^scp/', $c_url_path_name_relative ) && 
+    preg_match( '/tickets|index/', $a_url_path_info['filename'] ) )
+{
+    $c_url_ticket_class = 'tickets-queue';
+}
+
+
 define( 'CSS_URL_PATH_NAME', 'ticketoptionsplugin__'.str_replace( '/', '__', $c_url_path_name_relative ) );
+define( 'CSS_TICKET_CLASS', 'ticketoptionsplugin__'.$c_url_ticket_class );
 
 header("Content-Type: text/html; charset=UTF-8");
 header("Content-Security-Policy: frame-ancestors ".$cfg->getAllowIframes().";");
@@ -62,6 +72,13 @@ if (osTicket::is_ie())
     <link rel="icon" type="image/png" href="<?php echo ROOT_PATH ?>images/oscar-favicon-32x32.png" sizes="32x32" />
     <link rel="icon" type="image/png" href="<?php echo ROOT_PATH ?>images/oscar-favicon-16x16.png" sizes="16x16" />
 
+
+<!-- Replaced by TicketOptionsPlugin -->
+<?php if( TicketOptionsPlugin::wide_ticket_queues() ):?>
+    <link type="text/css" rel="stylesheet" href="<?php echo ROOT_PATH ?>scp/ajax.php/ticket_options/static/asset/wide-ticket-queues.css"/>
+
+<?php endif?>
+
     <?php
     if($ost && ($headers=$ost->getExtraHeaders())) {
         echo "\n\t".implode("\n\t", $headers)."\n";
@@ -70,12 +87,10 @@ if (osTicket::is_ie())
 </head>
 
 
-<!-- TicketOptionsPlugin.show_all_ticket_columns -->
-<body class="<?= CSS_URL_PATH_NAME ?>">
+<!-- TicketOptionsPlugin.wide_ticket_queues -->
+<body class="<?= CSS_URL_PATH_NAME ?> <?= CSS_TICKET_CLASS ?>">
 <script type="text/javascript">
     window.TicketOptionsPlugin = {
-        body_class_path: '<?= CSS_URL_PATH_NAME ?>',
-        original_body_class_path: '<?= CSS_URL_PATH_NAME ?>',
         root_path: '<?= ROOT_PATH ?>',
     };
 </script>

@@ -3055,8 +3055,14 @@ extends QueueColumnFilter {
 
     function filter($text, $row) {
         if ($link = $this->getLink($row))
-            // TicketOptionsPlugin.show_all_ticket_columns
-            return sprintf('<a style="display:inline;font-weight:normal;" href="%s">%s</a>', $link, $text);
+        {
+            // TicketOptionsPlugin.wide_ticket_queues
+            if( TicketOptionsPlugin::wide_ticket_queues() )
+            {
+               return sprintf('<a style="display:inline;font-weight:normal;" href="%s">%s</a>', $link, $text);
+            }
+            return sprintf('<a style="display:inline" href="%s">%s</a>', $link, $text);
+        }
     }
 
     function mangleQuery($query, $column) {

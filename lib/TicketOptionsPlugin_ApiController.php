@@ -37,7 +37,7 @@ class TicketOptionsPlugin_ApiController extends ApiController
 
    public function include_php( $c_path )
    {
-      $c_full_local_path = AIP_PATH_PUBLIC.$c_path;
+      $c_full_local_path = TICKET_OPTIONS_PLUGIN_PATH_PUBLIC.$c_path;
 
       if( !file_exists( $c_full_local_path ) )
       {
@@ -50,7 +50,7 @@ class TicketOptionsPlugin_ApiController extends ApiController
 
    public function show_static_content( $c_path, $c_content_type = 'text/html' )
    {
-      $c_full_local_path = AIP_PATH_PUBLIC.$c_path;
+      $c_full_local_path = TICKET_OPTIONS_PLUGIN_PATH_PUBLIC.$c_path;
 
       if( !file_exists( $c_full_local_path ) )
       {
@@ -64,7 +64,7 @@ class TicketOptionsPlugin_ApiController extends ApiController
 
    // public function show_view_css( $c_path )
    // {
-   //    $c_full_local_path = AIP_PATH_PUBLIC.$c_path;
+   //    $c_full_local_path = TICKET_OPTIONS_PLUGIN_PATH_PUBLIC.$c_path;
 
    //    if( !file_exists( $c_full_local_path ) )
    //    {
@@ -77,7 +77,7 @@ class TicketOptionsPlugin_ApiController extends ApiController
 
    // public function show_view_js( $c_path )
    // {
-   //    $c_full_local_path = AIP_PATH_PUBLIC.$c_path;
+   //    $c_full_local_path = TICKET_OPTIONS_PLUGIN_PATH_PUBLIC.$c_path;
 
    //    if( !file_exists( $c_full_local_path ) )
    //    {

@@ -1,7 +1,5 @@
 /**
- * 01-25-2019
- * Main app/tab.
- * ~~ {%= author_name %}
+ * 05-15-2022
  */
 
 /** List jshint ignore directives here. **/

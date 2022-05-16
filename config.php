@@ -39,11 +39,11 @@ class TicketOptionsConfig extends PluginConfig
             ],
          ]),
 
-         'show_all_ticket_columns' => new BooleanField([
-            'id' => 'show_all_ticket_columns',
-            'label' => 'Show all columns in ticket list',
+         'wide_ticket_queues' => new BooleanField([
+            'id' => 'wide_ticket_queues',
+            'label' => 'Enable wide ticket queues',
             'required' => false,
-            'hint' => __( 'Show all columns in ticket list including priority and status. Also enables wide view of ticket queues.' ),
+            'hint' => __( 'Enables wide tables when viewing of ticket queues.' ),
             'configuration' => [
                'desc' => 'enabled',
             ],

@@ -1,6 +1,6 @@
 <?php
 // <!-- Replaced by TicketOptionsPlugin -->
-define( 'AIP_QUEUE_TICKETS_TMPL_DIR', INCLUDE_DIR.'staff/templates' );
+define( 'TICKET_OPTIONS_PLUGIN_QUEUE_TICKETS_TMPL_DIR', INCLUDE_DIR.'staff/templates' );
 
 // Calling convention (assumed global scope):
 // $tickets - <QuerySet> with all columns and annotations necessary to
@@ -138,9 +138,9 @@ $pageNav->setURL('tickets.php', $args);
   <div class="pull-right" style="height:25px">
     <span class="valign-helper"></span>
     <?php
-    require AIP_QUEUE_TICKETS_TMPL_DIR.'/queue-quickfilter.tmpl.php';
+    require TICKET_OPTIONS_PLUGIN_QUEUE_TICKETS_TMPL_DIR.'/queue-quickfilter.tmpl.php';
     if ($queue->getSortOptions())
-        require AIP_QUEUE_TICKETS_TMPL_DIR.'/queue-sort.tmpl.php';
+        require TICKET_OPTIONS_PLUGIN_QUEUE_TICKETS_TMPL_DIR.'/queue-sort.tmpl.php';
     ?>
   </div>
     <form action="tickets.php" method="get" onsubmit="javascript:
@@ -235,7 +235,7 @@ if ($queue->id > 0 && $queue->isOwner($thisstaff)) { ?>
  <input type="hidden" name="do" id="action" value="" >
 
 <!-- Replaced by TicketOptionsPlugin -->
-<?php if( TicketOptionsPlugin::show_all_ticket_columns() ):?>
+<?php if( TicketOptionsPlugin::wide_ticket_queues() ):?>
 <table class="list queue tickets" border="0" cellspacing="1" cellpadding="2" width="100%">
 
 <?php else:?>

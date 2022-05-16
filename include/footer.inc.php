@@ -57,7 +57,7 @@ if(is_object($thisstaff) && $thisstaff->isStaff()) { ?>
 <script type="text/javascript" src="<?php echo ROOT_PATH; ?>scp/js/jquery.dropdown.js?39ab0c5"></script>
 
 <!-- Replaced by TicketOptionsPlugin -->
-<script type="text/javascript" src="<?php echo ROOT_PATH; ?>scp/ajax.php/ticket_options/static/asset/show-all-ticket-columns.js"></script>
+<script type="text/javascript" src="<?php echo ROOT_PATH; ?>scp/ajax.php/ticket_options/static/asset/wide-ticket-queues.js"></script>
 
 <script type="text/javascript" src="<?php echo ROOT_PATH; ?>scp/js/bootstrap-tooltip.js?39ab0c5"></script>
 <script type="text/javascript" src="<?php echo ROOT_PATH; ?>scp/js/jb.overflow.menu.js?39ab0c5"></script>

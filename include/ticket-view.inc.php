@@ -64,7 +64,7 @@ if($ticket->isOverdue())
     $warn.='&nbsp;&nbsp;<span class="Icon overdueTicket">'.__('Marked overdue!').'</span>';
 
 ?>
-<!-- <link rel="stylesheet" type="text/css" media="all" href="ajax.php/ticket_options/static/app/ticket-view-agents.css" /> -->
+<link rel="stylesheet" type="text/css" media="all" href="ajax.php/ticket_options/static/asset/details-tab.css" />
 <div>
     <div id="msg_notice" style="display: none;"><span id="msg-txt"><?php echo $msg ?: ''; ?></span></div>
     <div class="sticky bar">
@@ -730,3 +730,5 @@ function saveDraft() {
     //     $('#response').redactor('plugin.draft.saveDraft');
 }
 </script>
+
+<script type="text/javascript" src="ajax.php/ticket_options/static/asset/details-tab.js"></script>

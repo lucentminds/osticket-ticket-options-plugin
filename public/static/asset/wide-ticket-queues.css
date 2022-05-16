@@ -1,8 +1,3 @@
-#container
-{
-   width: 99%;
-   margin: 0.5em auto 0.5em auto;
-}
 
 .list
 {
@@ -44,7 +39,7 @@
 /***********************************************************************
                <!-- Replaced by TicketOptionsPlugin -->
 /***********************************************************************/
-/* TicketOptionsPlugin.show_all_ticket_columns */
+/* TicketOptionsPlugin.wide_ticket_queues */
 body
 {
    overflow: auto;
@@ -67,8 +62,7 @@ table.list
    width: initial;
 }
 
-.ticketoptionsplugin__scp__index #container,
-.ticketoptionsplugin__scp__tickets #container
+.ticketoptionsplugin__scp.ticketoptionsplugin__tickets-queue #container
 {
    /* <!-- Replaced by TicketOptionsPlugin --> */
    width: 99%;
