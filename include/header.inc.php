@@ -2,19 +2,23 @@
 // <!-- Replaced by TicketOptionsPlugin -->
 
 // TicketOptionsPlugin.wide_ticket_queues
-$a_url_path_info = pathinfo( $_SERVER[ 'SCRIPT_NAME' ] );
-$c_url_path_name = $a_url_path_info[ 'dirname' ];
-$c_url_path_name_relative = str_replace( ROOT_PATH, '',  $c_url_path_name );
 
+// Determines an path details of the current script.
+$a_url_path_info = pathinfo( $_SERVER[ 'SCRIPT_NAME' ] );
+
+// Determines the directory path the script is in.
+$c_url_path_name = $a_url_path_info[ 'dirname' ];
+
+// Determines the final class that will be added to the body.
 $c_url_ticket_class = '';
-if(  preg_match( '/^scp/', $c_url_path_name_relative ) && 
-    preg_match( '/tickets|index/', $a_url_path_info['filename'] ) )
+
+if( preg_match( '/^\/scp/', $c_url_path_name ) && 
+    preg_match( '/tickets|index/', $a_url_path_info['filename'] ) && 
+    !preg_match( '/(\?|&)id=/', $_SERVER[ 'REQUEST_URI' ] ) )
 {
     $c_url_ticket_class = 'tickets-queue';
 }
 
-
-define( 'CSS_URL_PATH_NAME', 'ticketoptionsplugin__'.str_replace( '/', '__', $c_url_path_name_relative ) );
 define( 'CSS_TICKET_CLASS', 'ticketoptionsplugin__'.$c_url_ticket_class );
 
 header("Content-Type: text/html; charset=UTF-8");
@@ -88,7 +92,7 @@ if (osTicket::is_ie())
 
 
 <!-- TicketOptionsPlugin.wide_ticket_queues -->
-<body class="<?= CSS_URL_PATH_NAME ?> <?= CSS_TICKET_CLASS ?>">
+<body class="<?= CSS_TICKET_CLASS ?>">
 <script type="text/javascript">
     window.TicketOptionsPlugin = {
         root_path: '<?= ROOT_PATH ?>',

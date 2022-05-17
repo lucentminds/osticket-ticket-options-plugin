@@ -3,7 +3,6 @@
 
 // <!-- Replaced by TicketOptionsPlugin -->
 // TicketOptionsPlugin.wide_ticket_queues
-
 jQuery(function($) {
    var n_resize_timeout = 0;
    const $window = $(window);
@@ -26,9 +25,11 @@ jQuery(function($) {
    const TicketOptionsPlugin = window.TicketOptionsPlugin;
 
    // Initialize regex patterns.
-   const reg_path = /scp\/(tickets|index)\.php$/;
+   const reg_scp = /(^\/scp\/.*$)/;
+   const reg_path = /(^\/scp\/$)|(^\/scp\/(tickets|index)\.php$)/;
    const reg_search = /[?|&]id=\d+/;
    const reg_namespaced = /^ticketoptionsplugin__/;
+   const reg_root_path = new RegExp( `^${TicketOptionsPlugin.root_path}` );
 
    const refresh_changes = function(){
       const $body = $(document.body);
@@ -39,17 +40,6 @@ jQuery(function($) {
       // Determines if the current url looks like a ticket queue url.
       const is_ticket_queue = reg_path.test( o_url.pathname ) &&
          !reg_search.test( o_url.search );
-      
-      // Determines a value like: "scp/tickets.php"
-      TicketOptionsPlugin.relative_path = o_url.pathname.replace( TicketOptionsPlugin.root_path, '' );
-      
-      // Determines a value like "scp" by removing the page/filename.
-      TicketOptionsPlugin.relative_path = TicketOptionsPlugin.relative_path.replace( /\/[^\/]+$/, '' );
-      console.log( 'TicketOptionsPlugin.relative_path', TicketOptionsPlugin.relative_path );
-
-      // let c_body_class_path = TicketOptionsPlugin.relative_path.replace( /\.[^\.]*$/, '' ).replace( /\//g, '__' );
-      // Determines a namespaced classname like "ticketoptionsplugin__scp".
-      let c_body_class_path = `ticketoptionsplugin__${TicketOptionsPlugin.relative_path}`;
       
       // Determines a Set of classnames currently in use by the body tag.
       const o_classes_old = (function(){
@@ -67,9 +57,6 @@ jQuery(function($) {
        */
       const a_classes_new = [... o_classes_old]
          .filter( c => !reg_namespaced.test( c )  );
-      
-      // Add the updated body class path.
-      a_classes_new.push( c_body_class_path );
 
       if( is_ticket_queue ){
          // Add the "tickets-queue" class name to the array.
