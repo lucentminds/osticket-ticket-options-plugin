@@ -6,20 +6,22 @@
 jQuery(function($) {
    var n_resize_timeout = 0;
    const $window = $(window);
-   $window
-   .on( 'resize', function(){
-      clearTimeout( n_resize_timeout );
-      n_resize_timeout = setTimeout(function(){
-         $window.trigger( 'ticketoptionsplugin_resized' );
-      }, 500 );
-   })
-   .on( 'ticketoptionsplugin_resized', function(){
-      clearTimeout( n_resize_timeout );
+   
+   // $window
+   // .on( 'resize', function(){
+   //    clearTimeout( n_resize_timeout );
+   //    n_resize_timeout = setTimeout(function(){
+   //       $window.trigger( 'ticketoptionsplugin_resized' );
+   //    }, 500 );
+   // })
+   // .on( 'ticketoptionsplugin_resized', function(){
+   //    clearTimeout( n_resize_timeout );
 
-      // Reset the sticky/non-stick title menu thing width.
-      const $sticky_bar = $('div.sticky.bar:not(.stop)');
-      $sticky_bar.find( '.content' ).width( $sticky_bar.width() );
-   });
+   //    // Reset the sticky/non-stick title menu thing width.
+   //    const $sticky_bar = $('div.sticky.bar:not(.stop)');
+   //    const n_sticky_bar_width = $sticky_bar.width();
+   //    $sticky_bar.find( '.content' ).width( n_sticky_bar_width );
+   // });
    
    // Determines the global plugin object.
    const TicketOptionsPlugin = window.TicketOptionsPlugin;
@@ -30,6 +32,8 @@ jQuery(function($) {
    const reg_search = /[?|&]id=\d+/;
    const reg_namespaced = /^ticketoptionsplugin__/;
    const reg_root_path = new RegExp( `^${TicketOptionsPlugin.root_path}` );
+
+   // const resize_content
 
    const refresh_changes = function(){
       const $body = $(document.body);
@@ -70,7 +74,7 @@ jQuery(function($) {
          // The class names have changed. Update the body tag in the DOM.
          document.body.className = c_classnames_new;
       }
-   };
+   };// /refresh_changes()
 
 
    $(document).on('pjax:complete pjax:send', function( event ) {
